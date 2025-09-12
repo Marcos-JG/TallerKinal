@@ -12,7 +12,7 @@
 	<artifactId>TallerKinal</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TallerKinal</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Proyecto taller con Spring Boot</description>
     <url/>
     <licenses>
         <license/>
