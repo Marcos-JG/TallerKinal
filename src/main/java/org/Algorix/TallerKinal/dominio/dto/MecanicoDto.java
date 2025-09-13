@@ -3,7 +3,7 @@ package org.Algorix.TallerKinal.dominio.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class MecanicoDto {
-    public Long id;
+    public Long id_mecanico;
 
     @NotBlank(message = "El nombre no puede estar vacio")
     public String nombre;

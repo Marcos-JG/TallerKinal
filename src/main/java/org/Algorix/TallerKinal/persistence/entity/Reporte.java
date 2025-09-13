@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class Reporte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_reporte;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")

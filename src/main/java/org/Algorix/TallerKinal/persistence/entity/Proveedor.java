@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Proveedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_proveedor;
 
     public String nombreEmpresa;
     public String contacto;

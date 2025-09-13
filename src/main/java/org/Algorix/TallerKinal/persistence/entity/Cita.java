@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_cita;
 
     public LocalDate fechaCita;
 

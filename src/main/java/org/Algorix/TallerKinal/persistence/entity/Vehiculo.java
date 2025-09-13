@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class Vehiculo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_vehiculo;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")

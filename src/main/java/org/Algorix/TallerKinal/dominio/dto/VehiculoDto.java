@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class VehiculoDto {
-    public Long id;
+    public Long id_vehiculo;
     public Long idCliente;
 
     @NotBlank(message = "Las placas no pueden estar vacias")

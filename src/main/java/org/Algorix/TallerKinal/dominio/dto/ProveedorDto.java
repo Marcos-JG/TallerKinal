@@ -3,7 +3,7 @@ package org.Algorix.TallerKinal.dominio.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public class ProveedorDto {
-    public Long id;
+    public Long id_proveedor;
 
     @NotBlank(message = "El nombre de la empresa no puede estar vacio")
     public String nombreEmpresa;

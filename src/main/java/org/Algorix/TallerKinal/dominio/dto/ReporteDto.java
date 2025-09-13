@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.DecimalMin;
 
 public class ReporteDto {
-    public Long id;
+    public Long id_reporte;
 
     @Min(value = 1, message = "El id de la cita debe ser válido")
     public Long idCita;

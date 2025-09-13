@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class ProductoInventario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_producto;
 
     @ManyToOne
     @JoinColumn(name = "id_proveedor")

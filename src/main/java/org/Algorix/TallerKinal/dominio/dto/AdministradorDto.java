@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 public class AdministradorDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_admin;
 
     @NotBlank(message = "El nombre no puede estar vacio")
     public String nombre;

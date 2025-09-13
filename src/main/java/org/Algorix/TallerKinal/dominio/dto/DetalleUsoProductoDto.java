@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.DecimalMin;
 
 public class DetalleUsoProductoDto {
-    public Long id;
+    public Long id_detalle_uso_producto;
 
     @Min(value = 1, message = "El id del trabajo realizado debe ser válido")
     public Long idTrabajoRealizado;

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 
 public class CitaDto {
-    public Long id;
+    public Long id_cita;
 
     @PastOrPresent(message = "La fecha de la cita no puede ser futura")
     public LocalDate fechaCita;

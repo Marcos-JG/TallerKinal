@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Mecanico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public Long id_mecanico;
 
     public String nombre;
     public String apellido;
