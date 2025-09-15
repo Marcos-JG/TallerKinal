@@ -5,18 +5,18 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "detalle_uso_producto")
-public class DetalleUsoProducto {
+public class DetalleUsoProductoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_detalle_uso_producto;
 
     @ManyToOne
     @JoinColumn(name = "id_trabajo_realizado")
-    public TrabajoRealizado trabajoRealizado;
+    public TrabajoRealizadoEntity trabajoRealizado;
 
     @ManyToOne
     @JoinColumn(name = "id_producto_inventario")
-    public ProductoInventario productoInventario;
+    public ProductoInventarioEntity productoInventario;
 
     public Integer cantidadUsada;
     public BigDecimal precioUnitario;

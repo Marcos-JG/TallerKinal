@@ -5,14 +5,14 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "reportes")
-public class Reporte {
+public class ReporteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_reporte;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")
-    public Cita cita;
+    public CitaEntity cita;
 
     public String descripcionGeneral;
     public BigDecimal total;

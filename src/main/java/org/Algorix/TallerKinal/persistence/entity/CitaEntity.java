@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "citas")
-public class Cita {
+public class CitaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_cita;
@@ -14,17 +14,17 @@ public class Cita {
 
     @ManyToOne
     @JoinColumn(name = "id_empleado")
-    public Mecanico empleado;
+    public MecanicoEntity empleado;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    public Cliente cliente;
+    public ClienteEntity cliente;
 
     public String tipoCita;
 
     @ManyToOne
     @JoinColumn(name = "id_vehiculo")
-    public Vehiculo vehiculo;
+    public VehiculoEntity vehiculo;
 
     public String estadoCita;
 

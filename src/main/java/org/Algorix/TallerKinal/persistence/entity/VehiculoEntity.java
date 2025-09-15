@@ -5,14 +5,14 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "vehiculos")
-public class Vehiculo {
+public class VehiculoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_vehiculo;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    public Cliente cliente;
+    public ClienteEntity cliente;
 
     public String placas;
     public String color;
