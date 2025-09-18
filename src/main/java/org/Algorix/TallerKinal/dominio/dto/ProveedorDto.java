@@ -6,14 +6,14 @@ public class ProveedorDto {
      Long id_proveedor;
 
     @NotBlank(message = "El nombre de la empresa no puede estar vacio")
-     String commpanyName;
+     String nombreEmpresa;
 
     @NotBlank(message = "El contacto no puede estar vacio")
-     String contact;
+     String contacto;
 
     @NotBlank(message = "El teléfono no puede estar vacio")
-     String phone;
+     String telefono;
 
     @NotBlank(message = "El correo no puede estar vacio")
-     String email;
+     String correo;
 }

@@ -9,18 +9,18 @@ public class VehiculoDto {
      Long idCliente;
 
     @NotBlank(message = "Las placas no pueden estar vacias")
-     String licensePlate;
+     String placas;
 
     @NotBlank(message = "El color no puede estar vacio")
      String color;
 
     @NotBlank(message = "El modelo no puede estar vacio")
-     String model;
+     String modelo;
 
     @NotBlank(message = "La marca no puede estar vacia")
      String marca;
 
     @Min(value = 1886, message = "El año no puede ser menor a 1886")
     @Max(value = 2100, message = "El año no puede ser mayor a 2100")
-     Integer year;
+     Integer año;
 }

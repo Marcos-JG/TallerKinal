@@ -12,11 +12,11 @@ public class TrabajoRealizadoDto {
      Long idCita;
 
     @NotBlank(message = "La descripción no puede estar vacia")
-     String description;
+     String descripcion;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "La mano de obra no puede ser negativa")
-     BigDecimal handLabor;
+     BigDecimal manoObra;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El total del trabajo no puede ser negativo")
-     BigDecimal totalWork;
+     BigDecimal totalTrabajo;
 }
