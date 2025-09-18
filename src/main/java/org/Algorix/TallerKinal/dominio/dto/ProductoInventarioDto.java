@@ -13,25 +13,25 @@ public class ProductoInventarioDto {
      Long idProveedor;
 
     @NotBlank(message = "El nombre no puede estar vacio")
-     String nombre;
+     String name;
 
     @NotBlank(message = "La descripción no puede estar vacia")
-     String descripcion;
+     String description;
      Long idCategoria;
 
     @NotBlank(message = "La especificación no puede estar vacia")
-     String especificacion;
+     String specifications;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio unitario no puede ser negativo")
-     BigDecimal precioUnitario;
+     BigDecimal unitPrice;
 
     @Min(value = 0, message = "El stock actual no puede ser menor a 0")
-     Integer stockActual;
+     Integer actualStock;
 
     @Min(value = 0, message = "El stock mínimo no puede ser menor a 0")
-     Integer stockMinimo;
+     Integer minStock;
      Long idMarca;
 
     @PastOrPresent(message = "La fecha de entrada no puede ser futura")
-     LocalDate fechaEntrada;
+     LocalDate dateEntry;
 }

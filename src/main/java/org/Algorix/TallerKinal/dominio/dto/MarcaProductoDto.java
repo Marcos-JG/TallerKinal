@@ -6,5 +6,5 @@ public class MarcaProductoDto {
     Long id_marca;
 
     @NotBlank(message = "El nombre no puede estar vacio")
-    String nombre;
+    String name;
 }
