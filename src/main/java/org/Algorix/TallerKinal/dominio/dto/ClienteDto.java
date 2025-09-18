@@ -6,14 +6,14 @@ public class ClienteDto {
     Long id_cliente;
 
     @NotBlank(message = "El nombre no puede estar vacio")
-    String nombre;
+    String name;
 
     @NotBlank(message = "El apellido no puede estar vacio")
-    String apellido;
+    String lastName;
 
     @NotBlank(message = "El correo no puede estar vacio")
-    String correo;
+    String email;
 
     @NotBlank(message = "La contraseña no puede estar vacia")
-    String contraseña;
+    String password;
 }

@@ -12,7 +12,7 @@ public class ReporteDto {
      Long idCita;
 
     @NotBlank(message = "La descripción general no puede estar vacia")
-     String descripcionGeneral;
+     String description;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El total no puede ser negativo")
      BigDecimal total;

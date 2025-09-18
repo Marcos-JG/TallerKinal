@@ -6,11 +6,11 @@ public class MecanicoDto {
     Long id_mecanico;
 
     @NotBlank(message = "El nombre no puede estar vacio")
-    String nombre;
+    String name;
 
     @NotBlank(message = "El apellido no puede estar vacio")
-    String apellido;
+    String lastName;
 
     @NotBlank(message = "El teléfono no puede estar vacio")
-    String telefono;
+    String phone;
 }

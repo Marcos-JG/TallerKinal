@@ -3,23 +3,22 @@ package org.Algorix.TallerKinal.dominio.dto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+
 public class AdministradorDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id_admin;
 
     @NotBlank(message = "El nombre no puede estar vacio")
-    String nombre;
+    String name;
 
     @NotBlank(message = "El apellido no puede estar vacio")
-    String apellido;
+    String lastName;
 
     @NotBlank(message = "El correo no puede estar vacio")
-    String correo;
+    String email;
 
     @NotBlank(message = "La contraseña no puede estar vacia")
-    String contraseña;
+    String password;
 
     @NotBlank(message = "El teléfono no puede estar vacio")
-    String telefono;
+    String phone;
 }
