@@ -2,9 +2,10 @@ package org.Algorix.TallerKinal.dominio.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class CategoriaProductoDto {
-    public Long id_categoria;
+public record CategoriaProductoDto (
+        Long id_categoria,
 
-    @NotBlank(message = "El nombre no puede estar vacio")
-    public String name;
+        @NotBlank(message = "El nombre no puede estar vacio")
+        String name
+){
 }

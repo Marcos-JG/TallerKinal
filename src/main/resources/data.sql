@@ -1,6 +1,6 @@
 -- Datos de prueba: 5 filas por tabla
 -- Limpia tablas para evitar duplicados y asegura orden de inserción
-INSERT IGNORE INTO administradores( nombre, apellido, correo, contraseña, telefono) VALUES
+INSERT IGNORE INTO administradores( nombre, apellido, correo, contrasena, telefono) VALUES
 ('Admin','Uno','admin1@taller.com','pass1','555-0001'),
 ('Admin','Dos','admin2@taller.com','pass2','555-0002'),
 ('Admin','Tres','admin3@taller.com','pass3','555-0003'),
@@ -8,7 +8,7 @@ INSERT IGNORE INTO administradores( nombre, apellido, correo, contraseña, telef
 ('Admin','Cinco','admin5@taller.com','pass5','555-0005');
 
 -- Clientes
-INSERT IGNORE INTO clientes( nombre, apellido, correo, contraseña) VALUES
+INSERT IGNORE INTO clientes( nombre, apellido, correo, contrasena) VALUES
 ('Cliente','Uno','cliente1@taller.com','cpass1'),
 ('Cliente','Dos','cliente2@taller.com','cpass2'),
 ('Cliente','Tres','cliente3@taller.com','cpass3'),

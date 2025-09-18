@@ -1,4 +1,22 @@
 package org.Algorix.TallerKinal.dominio.service;
 
+import org.Algorix.TallerKinal.dominio.dto.MarcaProductoDto;
+import org.Algorix.TallerKinal.dominio.repository.MarcaProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
 public class MarcaProductoService {
+    private final MarcaProductoRepository marcaProductoRepository;
+
+    @Autowired
+    public MarcaProductoService(MarcaProductoRepository marcaProductoRepository) {
+        this.marcaProductoRepository = marcaProductoRepository;
+    }
+
+    public List<MarcaProductoDto> obtenerTodo() {
+        return marcaProductoRepository.obtenerTodo();
+    }
 }

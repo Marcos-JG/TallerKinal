@@ -1,23 +1,24 @@
 package org.Algorix.TallerKinal.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
-
+@Data
 @Entity
 @Table(name = "vehiculos")
 public class VehiculoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_vehiculo;
+    private Long id_vehiculo;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    public ClienteEntity cliente;
+    private ClienteEntity cliente;
 
-    public String placas;
-    public String color;
-    public String modelo;
-    public String marca;
-    public Integer año;
+    private String placas;
+    private String color;
+    private String modelo;
+    private String marca;
+    private Integer año;
 }
 
