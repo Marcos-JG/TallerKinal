@@ -5,14 +5,14 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "trabajos_realizados")
-public class TrabajoRealizado {
+public class TrabajoRealizadoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_trabajo;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")
-    public Cita cita;
+    public CitaEntity cita;
 
     public String descripcion;
     public BigDecimal manoObra;

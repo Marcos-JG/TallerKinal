@@ -3,12 +3,14 @@ package org.Algorix.TallerKinal.persistence.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "marcas_producto")
-public class MarcaProducto {
+@Table(name = "mecanicos")
+public class MecanicoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_marca;
+    public Long id_mecanico;
 
     public String nombre;
+    public String apellido;
+    public String telefono;
 }
 

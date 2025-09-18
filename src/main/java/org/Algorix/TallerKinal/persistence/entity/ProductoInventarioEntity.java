@@ -6,21 +6,21 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "productos_inventario")
-public class ProductoInventario {
+public class ProductoInventarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_producto;
 
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
-    public Proveedor proveedor;
+    public ProveedorEntity proveedor;
 
     public String nombre;
     public String descripcion;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
-    public CategoriaProducto categoria;
+    public CategoriaProductoEntity categoria;
 
     public String especificacion;
     public BigDecimal precioUnitario;
@@ -29,7 +29,7 @@ public class ProductoInventario {
 
     @ManyToOne
     @JoinColumn(name = "id_marca")
-    public MarcaProducto marca;
+    public MarcaProductoEntity marca;
 
     public LocalDate fechaEntrada;
 }
