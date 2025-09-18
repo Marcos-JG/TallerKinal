@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 public class ReporteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_reporte;
+    private Long id_reporte;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")
-    public CitaEntity cita;
+    private CitaEntity cita;
 
-    public String descripcionGeneral;
-    public BigDecimal total;
+    private String descripcionGeneral;
+    private BigDecimal total;
 }
 

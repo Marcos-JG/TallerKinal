@@ -9,10 +9,10 @@ import lombok.Data;
 public class ProveedorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_proveedor;
+    private Long id_proveedor;
 
-    public String nombreEmpresa;
-    public String contacto;
-    public String telefono;
-    public String correo;
+    private String nombreEmpresa;
+    private String contacto;
+    private String telefono;
+    private String correo;
 }

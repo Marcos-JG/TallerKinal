@@ -10,14 +10,14 @@ import java.math.BigDecimal;
 public class TrabajoRealizadoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_trabajo;
+    private Long id_trabajo;
 
     @ManyToOne
     @JoinColumn(name = "id_cita")
-    public CitaEntity cita;
+    private CitaEntity cita;
 
-    public String descripcion;
-    public BigDecimal manoObra;
-    public BigDecimal totalTrabajo;
+    private String descripcion;
+    private BigDecimal manoObra;
+    private BigDecimal totalTrabajo;
 }
 

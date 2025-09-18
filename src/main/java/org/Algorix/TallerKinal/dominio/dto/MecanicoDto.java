@@ -2,15 +2,16 @@ package org.Algorix.TallerKinal.dominio.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class MecanicoDto {
-    Long id_mecanico;
+public record MecanicoDto (
+        Long id_mecanico,
 
-    @NotBlank(message = "El nombre no puede estar vacio")
-    String name;
+        @NotBlank(message = "El nombre no puede estar vacio")
+        String name,
 
-    @NotBlank(message = "El apellido no puede estar vacio")
-    String lastName;
+        @NotBlank(message = "El apellido no puede estar vacio")
+        String lastName,
 
-    @NotBlank(message = "El teléfono no puede estar vacio")
-    String phone;
+        @NotBlank(message = "El teléfono no puede estar vacio")
+        String phone
+){
 }
