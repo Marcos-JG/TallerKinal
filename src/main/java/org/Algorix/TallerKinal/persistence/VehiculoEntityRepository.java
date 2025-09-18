@@ -14,8 +14,5 @@ public class VehiculoEntityRepository implements VehiculoRepository {
         this.crudVehiculo = crudVehiculo;
     }
 
-    @Override
-    public List<VehiculoDto> obtenerTodo() {
-        return List.of();
-    }
+
 }

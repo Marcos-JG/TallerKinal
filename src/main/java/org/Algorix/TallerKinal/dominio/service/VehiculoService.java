@@ -13,6 +13,6 @@ public class VehiculoService {
     }
 
     public List<VehiculoDto> VehiculoRepository() {
-        return this.vehiculoRepository.obtenerTodo();
+        return null;
     }
 }
