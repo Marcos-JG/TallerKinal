@@ -18,4 +18,12 @@ public class ProductoInventarioService {
     public List<ProductoInventarioDto> obtenerTodo() {
         return this.productoRepository.obtenerTodo();
     }
+
+    public ProductoInventarioDto obtenerProductoPorCodigo(Long codigo){
+        return this.productoRepository.obtenerProductoPorCodigo(codigo);
+    }
+
+    public void eliminarProducto(Long codigo) {
+        this.productoRepository.eliminarProducto(codigo);
+    }
 }

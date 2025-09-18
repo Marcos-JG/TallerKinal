@@ -8,30 +8,31 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 
-public class ProductoInventarioDto {
-     Long id_producto;
-     Long idProveedor;
+public record ProductoInventarioDto(
+     Long id_producto,
+     Long idProveedor,
 
     @NotBlank(message = "El nombre no puede estar vacio")
-     String name;
+     String name,
 
     @NotBlank(message = "La descripción no puede estar vacia")
-     String description;
-     Long idCategoria;
+     String description,
+     Long idCategoria,
 
     @NotBlank(message = "La especificación no puede estar vacia")
-     String specifications;
+     String specifications,
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio unitario no puede ser negativo")
-     BigDecimal unitPrice;
+     BigDecimal unitPrice,
 
     @Min(value = 0, message = "El stock actual no puede ser menor a 0")
-     Integer actualStock;
+     Integer actualStock,
 
     @Min(value = 0, message = "El stock mínimo no puede ser menor a 0")
-     Integer minStock;
-     Long idMarca;
+     Integer minStock,
+     Long idMarca,
 
     @PastOrPresent(message = "La fecha de entrada no puede ser futura")
-     LocalDate dateEntry;
+     LocalDate dateEntry
+    ){
 }

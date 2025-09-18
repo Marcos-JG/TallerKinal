@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface ProductoRepository {
     List<ProductoInventarioDto> obtenerTodo();
+    ProductoInventarioDto obtenerProductoPorCodigo(Long codigo);
+    void eliminarProducto(Long codigo);
 }
