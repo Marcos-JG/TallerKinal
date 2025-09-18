@@ -10,26 +10,26 @@ import java.time.LocalDate;
 public class CitaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_cita;
+    public Long id_cita;
 
-    private LocalDate fechaCita;
+    public LocalDate fechaCita;
 
     @ManyToOne
     @JoinColumn(name = "id_empleado")
-    private MecanicoEntity empleado;
+    public MecanicoEntity empleado;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private ClienteEntity cliente;
+    public ClienteEntity cliente;
 
-    private String tipoCita;
+    public String tipoCita;
 
     @ManyToOne
     @JoinColumn(name = "id_vehiculo")
-    private VehiculoEntity vehiculo;
+    public VehiculoEntity vehiculo;
 
-    private String estadoCita;
+    public String estadoCita;
 
-    private String comentario;
+    public String comentario;
 }
 

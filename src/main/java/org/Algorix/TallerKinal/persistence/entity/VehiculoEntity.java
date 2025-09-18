@@ -19,6 +19,6 @@ public class VehiculoEntity {
     private String color;
     private String modelo;
     private String marca;
-    private Integer año;
+    private Integer ano;
 }
 
