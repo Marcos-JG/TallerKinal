@@ -3,8 +3,6 @@ package org.Algorix.TallerKinal.dominio.dto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "administradores")
 public class AdministradorDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

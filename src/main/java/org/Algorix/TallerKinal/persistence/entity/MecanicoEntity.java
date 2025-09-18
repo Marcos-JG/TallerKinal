@@ -1,7 +1,9 @@
 package org.Algorix.TallerKinal.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "mecanicos")
 public class MecanicoEntity {

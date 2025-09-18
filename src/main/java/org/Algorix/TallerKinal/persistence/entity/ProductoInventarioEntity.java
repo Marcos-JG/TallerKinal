@@ -1,36 +1,38 @@
 package org.Algorix.TallerKinal.persistence.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@Data
 @Entity
 @Table(name = "productos_inventario")
 public class ProductoInventarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_producto;
+    private Long id_producto;
 
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
-    public ProveedorEntity proveedor;
+    private ProveedorEntity proveedor;
 
-    public String nombre;
-    public String descripcion;
+    private String nombre;
+    private String descripcion;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
-    public CategoriaProductoEntity categoria;
+    private CategoriaProductoEntity categoria;
 
-    public String especificacion;
-    public BigDecimal precioUnitario;
-    public Integer stockActual;
-    public Integer stockMinimo;
+    private String especificacion;
+    private BigDecimal precioUnitario;
+    private Integer stockActual;
+    private Integer stockMinimo;
 
     @ManyToOne
     @JoinColumn(name = "id_marca")
-    public MarcaProductoEntity marca;
+    private MarcaProductoEntity marca;
 
-    public LocalDate fechaEntrada;
+    private LocalDate fechaEntrada;
 }
 

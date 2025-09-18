@@ -1,8 +1,10 @@
 package org.Algorix.TallerKinal.persistence.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import lombok.Data;
 
+import java.math.BigDecimal;
+@Data
 @Entity
 @Table(name = "trabajos_realizados")
 public class TrabajoRealizadoEntity {

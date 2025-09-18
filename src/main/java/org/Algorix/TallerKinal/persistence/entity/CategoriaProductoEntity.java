@@ -2,7 +2,9 @@ package org.Algorix.TallerKinal.persistence.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "categorias_producto")
 public class CategoriaProductoEntity {

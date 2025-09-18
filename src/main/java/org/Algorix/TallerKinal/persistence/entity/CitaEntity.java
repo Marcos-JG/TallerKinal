@@ -1,8 +1,10 @@
 package org.Algorix.TallerKinal.persistence.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import lombok.Data;
 
+import java.time.LocalDate;
+@Data
 @Entity
 @Table(name = "citas")
 public class CitaEntity {
