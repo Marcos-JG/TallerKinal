@@ -6,17 +6,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.DecimalMin;
 
 public class TrabajoRealizadoDto {
-    public Long id_trabajo_realizado;
+     Long id_trabajo_realizado;
 
     @Min(value = 1, message = "El id de la cita debe ser válido")
-    public Long idCita;
+     Long idCita;
 
     @NotBlank(message = "La descripción no puede estar vacia")
-    public String descripcion;
+     String descripcion;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "La mano de obra no puede ser negativa")
-    public BigDecimal manoObra;
+     BigDecimal manoObra;
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El total del trabajo no puede ser negativo")
-    public BigDecimal totalTrabajo;
+     BigDecimal totalTrabajo;
 }

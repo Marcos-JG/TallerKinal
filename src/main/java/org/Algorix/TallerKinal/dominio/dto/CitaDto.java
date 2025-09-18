@@ -7,25 +7,25 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 
 public class CitaDto {
-    public Long id_cita;
+    Long id_cita;
 
     @PastOrPresent(message = "La fecha de la cita no puede ser futura")
-    public LocalDate fechaCita;
+    LocalDate fechaCita;
 
     @Min(value = 1, message = "El id del empleado debe ser válido")
-    public Long idEmpleado;
+    Long idEmpleado;
 
     @Min(value = 1, message = "El id del cliente debe ser válido")
-    public Long idCliente;
+    Long idCliente;
 
     @NotBlank(message = "El tipo de cita no puede estar vacio")
-    public String tipoCita;
+    String tipoCita;
 
     @Min(value = 1, message = "El id del vehiculo debe ser válido")
-    public Long idVehiculo;
+    Long idVehiculo;
 
     @NotBlank(message = "El estado de la cita no puede estar vacio")
-    public String estadoCita;
+    String estadoCita;
 
-    public String comentario;
+    String comentario;
 }
