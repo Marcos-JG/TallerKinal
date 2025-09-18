@@ -14,5 +14,5 @@ public class ClienteEntity {
     public String nombre;
     public String apellido;
     public String correo;
-    public String contraseña;
+    public String contrasena;
 }
