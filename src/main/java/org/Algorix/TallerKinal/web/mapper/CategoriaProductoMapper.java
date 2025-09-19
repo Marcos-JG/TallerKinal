@@ -1,6 +1,5 @@
 package org.Algorix.TallerKinal.web.mapper;
 
-public interface CategoriaProductoMapper {
 
 import org.Algorix.TallerKinal.dominio.dto.CategoriaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModCategoriaDto;

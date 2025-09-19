@@ -14,10 +14,10 @@ public record DetalleUsoProductoDto (
         Long idProductoInventario,
 
     @Min(value = 1, message = "La cantidad usada debe ser al menos 1")
-    Integer usedQuantity;
+    Integer usedQuantity,
 
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio unitario no puede ser negativo")
-    BigDecimal unitPrice;
+    BigDecimal unitPrice,
 
         @DecimalMin(value = "0.0", inclusive = true, message = "El subtotal no puede ser negativo")
         BigDecimal subtotal
