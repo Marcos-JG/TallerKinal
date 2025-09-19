@@ -2,14 +2,12 @@ package org.Algorix.TallerKinal.dominio.dto;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.*;
 
 public record CitaDto (
         Long id_cita,
 
-        @PastOrPresent(message = "La fecha de la cita no puede ser futura")
+        @FutureOrPresent(message = "La fecha de la cita no puede ser pasada")
         LocalDate appointmentDate,
 
         @Min(value = 1, message = "El id del empleado debe ser válido")
