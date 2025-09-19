@@ -99,4 +99,11 @@ public class RestExceptionHandler {
         Error error = new Error("vehiculo_duplicado_placa", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
+
+    @ExceptionHandler(CitaNoExiste.class)
+    public ResponseEntity<Error> handleException(CitaNoExiste ex) {
+        Error error = new Error("cita_no_existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
 }
+
