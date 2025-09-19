@@ -49,7 +49,7 @@ localhost:8083/taller-kinal/api
 
 /v1/administradores
 
-## 🗂️ Mapeo CRUD por Entidad
+## Mapeo CRUD por Entidad
 
 | Entidad                | Endpoint                          | Métodos Soportados                |
 |------------------------|-----------------------------------|-----------------------------------|
