@@ -24,18 +24,53 @@ public interface ProductoInventarioMapper {
 
     public List<ProductoInventarioDto> toDto(Iterable<ProductoInventarioEntity> entities);
 
-    @Mapping(source = "idProveedor", target = "proveedor.id_proveedor")
+    // Corrige mapeos: usamos ids del DTO para poblar entidades en el target
+    @Mapping(source = "idProveedor", target = "proveedor", qualifiedByName = "mapIdProveedorToProveedorEntity")
     @Mapping(source = "name",target = "nombre")
     @Mapping(source = "description",target = "descripcion")
-    @Mapping(source = "idCategoria",target = "categoria.id_categoria")
+    @Mapping(source = "idCategoria",target = "categoria", qualifiedByName = "mapIdCategoriaToCategoriaEntity")
     @Mapping(source = "specification",target = "especificacion")
     @Mapping(source = "unitPrice",target = "precioUnitario")
     @Mapping(source = "currentStock",target = "stockActual")
     @Mapping(source = "minimumStock",target = "stockMinimo")
-    @Mapping(source = "idMarca",target = "marca.id_marca")
+    @Mapping(source = "idMarca",target = "marca", qualifiedByName = "mapIdMarcaToMarcaEntity")
     @Mapping(source = "entryDate",target = "fechaEntrada")
     ProductoInventarioEntity toEntity(ProductoInventarioDto d);
 
+    @Named("mapIdProveedorToProveedorEntity")
+    default ProveedorEntity mapIdProveedorToProveedorEntity(Long idProveedor) {
+        if (idProveedor == null) return null;
+        ProveedorEntity proveedor = new ProveedorEntity();
+        proveedor.setId_proveedor(idProveedor);
+        return proveedor;
+    }
 
+    @Named("mapIdCategoriaToCategoriaEntity")
+    default CategoriaProductoEntity mapIdCategoriaToCategoriaEntity(Long idCategoria) {
+        if (idCategoria == null) return null;
+        CategoriaProductoEntity categoria = new CategoriaProductoEntity();
+        categoria.setId_categoria(idCategoria);
+        return categoria;
+    }
+
+    @Named("mapIdMarcaToMarcaEntity")
+    default MarcaProductoEntity mapIdMarcaToMarcaEntity(Long idMarca) {
+        if (idMarca == null) return null;
+        MarcaProductoEntity marca = new MarcaProductoEntity();
+        marca.setId_marca(idMarca);
+        return marca;
+    }
+
+    // Corrige mapeos también para el DTO de modificación
+    @Mapping(source = "idProveedor", target = "proveedor", qualifiedByName ="mapIdProveedorToProveedorEntity" )
+    @Mapping(source = "name",target = "nombre")
+    @Mapping(source = "description",target = "descripcion")
+    @Mapping(source = "specification",target = "especificacion")
+    @Mapping(source = "idCategoria",target = "categoria", qualifiedByName = "mapIdCategoriaToCategoriaEntity")
+    @Mapping(source = "unitPrice",target = "precioUnitario")
+    @Mapping(source = "currentStock",target = "stockActual")
+    @Mapping(source = "minimumStock",target = "stockMinimo")
+    @Mapping(source = "idMarca",target = "marca", qualifiedByName = "mapIdMarcaToMarcaEntity")
+    @Mapping(source = "entryDate",target = "fechaEntrada")
     void modificarEntityFromDto(ModProductoInventarioDto modProductoInventarioDto, @MappingTarget ProductoInventarioEntity productoInventarioEntity);
 }

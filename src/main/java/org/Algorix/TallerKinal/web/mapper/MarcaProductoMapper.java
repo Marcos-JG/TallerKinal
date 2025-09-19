@@ -25,9 +25,5 @@ public interface MarcaProductoMapper {
     @Mapping(source = "name", target = "nombre")
     void modificarEntityFromDto(ModMarcaProductoDto modMarcaProductoDto, @MappingTarget MarcaProductoEntity marcaProductoEntity);
 
-
-
-
-
 }
 

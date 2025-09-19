@@ -29,7 +29,6 @@ public class MarcaProductoController {
 
     @GetMapping("{codigo}")
     public ResponseEntity<MarcaProductoDto> obtenerMarcaPorCodigo(
-            @Parameter(description = "Identificador de la pelicula a recuperar",example = "5")
             @PathVariable Long codigo){
         return ResponseEntity.ok(this.marcaProductoService.obtenerMarcaPorCodigo(codigo));
     }
