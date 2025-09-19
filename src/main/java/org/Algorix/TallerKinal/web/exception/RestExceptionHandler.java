@@ -100,9 +100,10 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(error);
     }
 
-    @ExceptionHandler(AdministradorNoExiste.class)
-    public ResponseEntity<Error> handleException(AdministradorNoExiste ex) {
-        Error error = new Error("administrador_no_existe", ex.getMessage());
+    @ExceptionHandler(CitaNoExiste.class)
+    public ResponseEntity<Error> handleException(CitaNoExiste ex) {
+        Error error = new Error("cita_no_existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
 }
+

@@ -45,15 +45,6 @@ public class ClienteEntityRepository implements ClienteRepository {
             throw new CorreoDuplicado(clienteDto.email());
         }
         ClienteEntity cliente = this.clienteMapper.toEntity(clienteDto);
-        // fallback manual mapping si el mapper no mapea correctamente
-        if (cliente == null) {
-            cliente = new ClienteEntity();
-        }
-        if (cliente.getNombre() == null) cliente.setNombre(clienteDto.name());
-        if (cliente.getApellido() == null) cliente.setApellido(clienteDto.lastName());
-        if (cliente.getCorreo() == null) cliente.setCorreo(clienteDto.email());
-        if (cliente.getContrasena() == null) cliente.setContrasena(clienteDto.password());
-
         ClienteEntity saved = this.crudCliente.save(cliente);
         return this.clienteMapper.toDto(saved);
     }

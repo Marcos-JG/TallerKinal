@@ -1,6 +1,5 @@
 package org.Algorix.TallerKinal.dominio.service;
 
-import jakarta.validation.constraints.NotBlank;
 import org.Algorix.TallerKinal.dominio.dto.AdministradorDto;
 import org.Algorix.TallerKinal.dominio.dto.UserAdminDto;
 import org.Algorix.TallerKinal.dominio.repository.AdministadorRepository;
