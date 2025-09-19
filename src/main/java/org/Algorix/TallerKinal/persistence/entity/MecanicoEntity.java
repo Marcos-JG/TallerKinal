@@ -9,10 +9,12 @@ import lombok.Data;
 public class MecanicoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_mecanico;
+    private Long id_mecanico;
 
-    public String nombre;
-    public String apellido;
-    public String telefono;
+    @Column(length = 100)
+    private String nombre;
+    @Column(length = 100)
+    private String apellido;
+    @Column(length = 20)
+    private String telefono;
 }
-

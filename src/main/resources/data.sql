@@ -56,7 +56,7 @@ INSERT IGNORE INTO productos_inventario( id_proveedor, nombre, descripcion, id_c
 (5,'Neumático 205/55','Neumático radial',5,'RIM17',85.00,15,2,5,'2025-02-28');
 
 -- Vehículos
-INSERT IGNORE INTO vehiculos( id_cliente, placas, color, modelo, marca, año) VALUES
+INSERT IGNORE INTO vehiculos( id_cliente, placas, color, modelo, marca, ano) VALUES
 (1,'ABC-123','Rojo','Model X','MarcaA',2018),
 (2,'DEF-456','Azul','Model Y','MarcaB',2020),
 (3,'GHI-789','Blanco','Model Z','MarcaC',2015),

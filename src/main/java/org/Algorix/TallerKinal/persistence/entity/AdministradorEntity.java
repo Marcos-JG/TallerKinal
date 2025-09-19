@@ -10,16 +10,15 @@ import lombok.Data;
 public class AdministradorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_admin;
+    private Long id_admin;
     @Column(length = 100)
-    public String nombre;
+    private String nombre;
     @Column(length = 100)
-    public String apellido;
+    private String apellido;
     @Column(length = 100, unique = true)
-    public String correo;
+    private String correo;
     @Column(length = 100)
-    public String contrasena;
+    private String contrasena;
     @Column(length = 8, unique = true)
-    public String telefono;
+    private String telefono;
 }
-

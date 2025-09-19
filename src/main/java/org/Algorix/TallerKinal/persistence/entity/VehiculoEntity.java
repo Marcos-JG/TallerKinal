@@ -9,16 +9,20 @@ import lombok.Data;
 public class VehiculoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_vehiculo;
+    private Long id_vehiculo;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    public ClienteEntity cliente;
+    private ClienteEntity cliente;
 
-    public String placas;
-    public String color;
-    public String modelo;
-    public String marca;
-    public Integer año;
+    @Column(length = 50, unique = true, nullable = false)
+    private String placas;
+    @Column(length = 30)
+    private String color;
+    @Column(length = 50)
+    private String modelo;
+    @Column(length = 50)
+    private String marca;
+    @Column
+    private Integer ano;
 }
-

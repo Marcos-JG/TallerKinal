@@ -1,5 +1,7 @@
 package org.Algorix.TallerKinal.web.mapper;
 
+public interface CategoriaProductoMapper {
+
 import org.Algorix.TallerKinal.dominio.dto.CategoriaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModCategoriaDto;
 import org.Algorix.TallerKinal.persistence.entity.CategoriaProductoEntity;
@@ -23,4 +25,3 @@ public interface CategoriaProductoMapper {
     @Mapping(source = "name", target = "nombre")
     void modificarEntityFromDto(ModCategoriaDto modCategoriaDto, @MappingTarget CategoriaProductoEntity categoriaProductoEntity);
 }
-

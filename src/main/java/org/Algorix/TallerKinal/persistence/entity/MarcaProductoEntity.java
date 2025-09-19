@@ -9,8 +9,8 @@ import lombok.Data;
 public class MarcaProductoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_marca;
+    private Long id_marca;
 
-    public String nombre;
+    @Column(length = 100, unique = true, nullable = false)
+    private String nombre;
 }
-

@@ -9,10 +9,14 @@ import lombok.Data;
 public class ClienteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id_cliente;
+    private Long id_cliente;
 
-    public String nombre;
-    public String apellido;
-    public String correo;
-    public String contrasena;
+    @Column(length = 100)
+    private String nombre;
+    @Column(length = 100)
+    private String apellido;
+    @Column(length = 100, unique = true)
+    private String correo;
+    @Column(length = 100)
+    private String contrasena;
 }
