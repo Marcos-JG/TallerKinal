@@ -15,7 +15,7 @@ public class VehiculoEntity {
     @JoinColumn(name = "id_cliente")
     private ClienteEntity cliente;
 
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String placas;
     @Column(length = 30)
     private String color;

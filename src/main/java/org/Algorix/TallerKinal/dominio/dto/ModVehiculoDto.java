@@ -1,6 +1,8 @@
 package org.Algorix.TallerKinal.dominio.dto;
 
-public class ModVehiculoDto {
-    public String color;
-    public Long idCliente;
+public record ModVehiculoDto (
+        String color,
+        Long idCliente
+){
+
 }
