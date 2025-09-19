@@ -19,12 +19,12 @@ public interface VehiculoMapper {
     @Mapping(source = "ano", target = "year")
     VehiculoDto toDto(VehiculoEntity e);
     List<VehiculoDto> toDto(Iterable<VehiculoEntity> entities);
-    @Mapping(target = "cliente", source = "idCliente", qualifiedByName = "mapIdClienteToClienteEntity")
-    @Mapping(target = "placas", source = "licensePlate")
-    @Mapping(target = "color", source = "color")
-    @Mapping(target = "marca", source = "marca")
-    @Mapping(target = "modelo", source = "model")
-    @Mapping(target = "ano", source = "year")
+    @Mapping(source = "idCliente", qualifiedByName = "mapIdClienteToClienteEntity", target = "cliente")
+    @Mapping(source = "licensePlate", target = "placas")
+    @Mapping(source = "color", target = "color")
+    @Mapping(source = "marca", target = "marca")
+    @Mapping(source = "model", target = "modelo")
+    @Mapping(source = "year", target = "ano")
     VehiculoEntity toEntity(VehiculoDto vehiculoDto);
 
     @Named("mapIdClienteToClienteEntity")
@@ -35,7 +35,7 @@ public interface VehiculoMapper {
         return cliente;
     }
 
-    @Mapping(target = "color", source = "color")
-    @Mapping(target = "cliente", source = "idCliente", qualifiedByName = "mapIdClienteToClienteEntity")
+    @Mapping(source = "color", target = "color")
+    @Mapping(source = "idCliente", qualifiedByName = "mapIdClienteToClienteEntity", target = "cliente")
     void modificarEntityFromDto(ModVehiculoDto modVehiculoDto, @MappingTarget VehiculoEntity vehiculoEntity);
 }

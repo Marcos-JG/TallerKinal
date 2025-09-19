@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/vehiculos")
-@Tag(name = "Vehiculo", description = "Gestiona las operaciones de peliculas")
+@Tag(name = "Vehiculo")
 public class VehiculoController {
     private final VehiculoService vehiculoService;
 
@@ -53,6 +53,11 @@ public class VehiculoController {
     public ResponseEntity<VehiculoDto> modificarVehiculo
             (@PathVariable String placas, @RequestBody @Valid ModVehiculoDto modVehiculoDto){
         return ResponseEntity.ok(this.vehiculoService.modificarVehiculo(placas, modVehiculoDto));
+    }
+
+    @DeleteMapping("{id}")
+    public void eliminarVehiculo(@PathVariable Long id) {
+        this.vehiculoService.eliminarVehiculo(id);
     }
 
 }

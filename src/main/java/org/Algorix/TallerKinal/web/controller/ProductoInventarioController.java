@@ -1,16 +1,20 @@
 package org.Algorix.TallerKinal.web.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
+import org.Algorix.TallerKinal.dominio.dto.ModProductoInventarioDto;
 import org.Algorix.TallerKinal.dominio.dto.ProductoInventarioDto;
 import org.Algorix.TallerKinal.dominio.service.ProductoInventarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/productos-inventario")
+@RequestMapping("/v1/productos-inventario")
 public class ProductoInventarioController {
     private final ProductoInventarioService productoInventarioService;
 
@@ -20,8 +24,33 @@ public class ProductoInventarioController {
     }
 
     @GetMapping
-    public List<ProductoInventarioDto> listarInventario() {
-        return productoInventarioService.obtenerTodo();
+    public ResponseEntity<List<ProductoInventarioDto>> listarInventario() {
+        return ResponseEntity.ok(this.productoInventarioService.obtenerTodo());
     }
+
+    @GetMapping("{codigo}")
+    public ResponseEntity<ProductoInventarioDto> obtenerProductoPorCodigo(
+            @Parameter(description = "Identificador de la pelicula a recuperar",example = "5")
+            @PathVariable Long codigo){
+        return ResponseEntity.ok(this.productoInventarioService.obtenerProductoPorCodigo(codigo));
+    }
+
+    @DeleteMapping("{codigo}")
+    public ResponseEntity<ProductoInventarioDto> eliminarProducto(@PathVariable Long codigo){
+        this.productoInventarioService.eliminarProducto(codigo);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("{codigo}")
+    public ResponseEntity<ProductoInventarioDto> modificarProducto
+            (@PathVariable Long codigo, @RequestBody @Valid ModProductoInventarioDto modProductoInventarioDto){
+        return ResponseEntity.ok(this.productoInventarioService.modificarProducto(codigo,modProductoInventarioDto));
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductoInventarioDto> guardarProducto(@RequestBody ProductoInventarioDto productoInventarioDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.productoInventarioService.guardarProducto(productoInventarioDto));
+    }
+
 }
 

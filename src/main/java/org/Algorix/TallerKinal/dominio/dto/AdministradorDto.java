@@ -21,4 +21,5 @@ public record AdministradorDto(
         @NotBlank(message = "El teléfono no puede estar vacio")
         String phone
 ) {
+
 }
