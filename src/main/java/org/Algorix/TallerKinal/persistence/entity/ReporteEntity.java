@@ -16,7 +16,8 @@ public class ReporteEntity {
     @JoinColumn(name = "id_cita")
     private CitaEntity cita;
 
+    @Column(length = 255)
     private String descripcionGeneral;
+    @Column(precision = 10, scale = 2)
     private BigDecimal total;
 }
-

@@ -16,8 +16,10 @@ public class TrabajoRealizadoEntity {
     @JoinColumn(name = "id_cita")
     private CitaEntity cita;
 
+    @Column(length = 255)
     private String descripcion;
+    @Column(precision = 10, scale = 2)
     private BigDecimal manoObra;
+    @Column(precision = 10, scale = 2)
     private BigDecimal totalTrabajo;
 }
-
