@@ -55,4 +55,9 @@ public class VehiculoController {
         return ResponseEntity.ok(this.vehiculoService.modificarVehiculo(placas, modVehiculoDto));
     }
 
+    @DeleteMapping("{id}")
+    public void eliminarVehiculo(@PathVariable Long id) {
+        this.vehiculoService.eliminarVehiculo(id);
+    }
+
 }

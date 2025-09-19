@@ -1,6 +1,5 @@
 package org.Algorix.TallerKinal.persistence;
 
-import jdk.jfr.Registered;
 import org.Algorix.TallerKinal.dominio.dto.CitaDto;
 import org.Algorix.TallerKinal.dominio.dto.ModCitaDto;
 import org.Algorix.TallerKinal.dominio.repository.CitaRepository;
@@ -42,11 +41,13 @@ public class CitaEntityRepository implements CitaRepository {
 
     @Override
     public CitaDto modificarCita(Long id, ModCitaDto modCitaDto) {
-        return null;
+        CitaEntity cita = this.crudCita.findById(id).orElse(null);
+        this.citaMapper.modificarEntityFromDto(modCitaDto, cita);
+        return this.citaMapper.toDto(this.crudCita.save(cita));
     }
 
     @Override
     public void eliminarCita(Long id) {
-
+        this.crudCita.deleteById(id);
     }
 }
