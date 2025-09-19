@@ -15,10 +15,14 @@ public class VehiculoEntity {
     @JoinColumn(name = "id_cliente")
     private ClienteEntity cliente;
 
+    @Column(length = 20, unique = true, nullable = false)
     private String placas;
+    @Column(length = 30)
     private String color;
+    @Column(length = 50)
     private String modelo;
+    @Column(length = 50)
     private String marca;
+    @Column
     private Integer ano;
 }
-

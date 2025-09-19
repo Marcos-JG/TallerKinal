@@ -22,4 +22,3 @@ public class AdministradorEntity {
     @Column(length = 8, unique = true)
     private String telefono;
 }
-

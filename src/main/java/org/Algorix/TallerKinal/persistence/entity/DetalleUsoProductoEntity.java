@@ -20,8 +20,10 @@ public class DetalleUsoProductoEntity {
     @JoinColumn(name = "id_producto_inventario")
     private ProductoInventarioEntity productoInventario;
 
+    @Column
     private Integer cantidadUsada;
+    @Column
     private BigDecimal precioUnitario;
+    @Column
     private BigDecimal subtotal;
 }
-

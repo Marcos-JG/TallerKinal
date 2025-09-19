@@ -12,6 +12,7 @@ public class CitaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id_cita;
 
+    @Column
     public LocalDate fechaCita;
 
     @ManyToOne
@@ -22,14 +23,16 @@ public class CitaEntity {
     @JoinColumn(name = "id_cliente")
     public ClienteEntity cliente;
 
+    @Column(length = 50)
     public String tipoCita;
 
     @ManyToOne
     @JoinColumn(name = "id_vehiculo")
     public VehiculoEntity vehiculo;
 
+    @Column(length = 30)
     public String estadoCita;
 
+    @Column(length = 255)
     public String comentario;
 }
-

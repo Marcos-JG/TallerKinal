@@ -17,22 +17,28 @@ public class ProductoInventarioEntity {
     @JoinColumn(name = "id_proveedor")
     private ProveedorEntity proveedor;
 
+    @Column(length = 100, nullable = false)
     private String nombre;
+    @Column(length = 255)
     private String descripcion;
 
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private CategoriaProductoEntity categoria;
 
+    @Column(length = 100)
     private String especificacion;
+    @Column(precision = 10, scale = 2)
     private BigDecimal precioUnitario;
+    @Column
     private Integer stockActual;
+    @Column
     private Integer stockMinimo;
 
     @ManyToOne
     @JoinColumn(name = "id_marca")
     private MarcaProductoEntity marca;
 
+    @Column
     private LocalDate fechaEntrada;
 }
-

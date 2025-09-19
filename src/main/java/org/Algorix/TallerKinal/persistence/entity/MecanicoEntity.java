@@ -11,8 +11,10 @@ public class MecanicoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_mecanico;
 
+    @Column(length = 100)
     private String nombre;
+    @Column(length = 100)
     private String apellido;
+    @Column(length = 20)
     private String telefono;
 }
-

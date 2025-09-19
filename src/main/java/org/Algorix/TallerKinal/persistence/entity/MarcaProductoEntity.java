@@ -11,6 +11,6 @@ public class MarcaProductoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_marca;
 
+    @Column(length = 100, unique = true, nullable = false)
     private String nombre;
 }
-
