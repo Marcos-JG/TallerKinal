@@ -1,7 +1,6 @@
 package org.Algorix.TallerKinal.web.mapper;
 
 import org.Algorix.TallerKinal.dominio.dto.ModVehiculoDto;
-import org.Algorix.TallerKinal.dominio.dto.ProductoInventarioDto;
 import org.Algorix.TallerKinal.dominio.dto.VehiculoDto;
 import org.Algorix.TallerKinal.persistence.entity.*;
 import org.mapstruct.*;
@@ -36,6 +35,9 @@ public interface VehiculoMapper {
     }
 
     @Mapping(source = "color", target = "color")
+    @Mapping(source = "model", target = "modelo")
+    @Mapping(source = "marca", target = "marca")
+    @Mapping(source = "year", target = "ano")
     @Mapping(source = "idCliente", qualifiedByName = "mapIdClienteToClienteEntity", target = "cliente")
     void modificarEntityFromDto(ModVehiculoDto modVehiculoDto, @MappingTarget VehiculoEntity vehiculoEntity);
 }

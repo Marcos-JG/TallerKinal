@@ -10,7 +10,6 @@ import org.Algorix.TallerKinal.dominio.dto.ModVehiculoDto;
 import org.Algorix.TallerKinal.dominio.dto.VehiculoDto;
 import org.Algorix.TallerKinal.dominio.service.VehiculoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +26,8 @@ public class VehiculoController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar vehículos", description = "Retorna todos los vehículos",
+            responses = {@ApiResponse(responseCode = "200", description = "Operación exitosa")})
     public ResponseEntity<List<VehiculoDto>> obtenerTodo(){
         return ResponseEntity.ok(this.vehiculoService.obtenerTodo());
     }
@@ -45,17 +46,23 @@ public class VehiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<VehiculoDto> guardarVehiculo(@RequestBody VehiculoDto vehiculoDto){
+    @Operation(summary = "Crear vehículo",
+            responses = {@ApiResponse(responseCode = "201", description = "Vehículo creado")})
+    public ResponseEntity<VehiculoDto> guardarVehiculo(@RequestBody @Valid VehiculoDto vehiculoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.vehiculoService.guardarVehiculo(vehiculoDto));
     }
 
     @PutMapping("{placas}")
+    @Operation(summary = "Modificar vehículo",
+            responses = {@ApiResponse(responseCode = "200", description = "Vehículo modificado")})
     public ResponseEntity<VehiculoDto> modificarVehiculo
             (@PathVariable String placas, @RequestBody @Valid ModVehiculoDto modVehiculoDto){
         return ResponseEntity.ok(this.vehiculoService.modificarVehiculo(placas, modVehiculoDto));
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Eliminar vehículo",
+            responses = {@ApiResponse(responseCode = "200", description = "Vehículo eliminado")})
     public void eliminarVehiculo(@PathVariable Long id) {
         this.vehiculoService.eliminarVehiculo(id);
     }

@@ -1,6 +1,7 @@
 package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.ProveedorDto;
+import org.Algorix.TallerKinal.dominio.exception.ProveedorNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.ProveedorRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudProveedor;
 import org.Algorix.TallerKinal.persistence.entity.ProveedorEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Repository
 public class ProveedorEntityRepository implements ProveedorRepository {
+
     private final CrudProveedor crudProveedor;
     private final ProveedorMapper proveedorMapper;
 
@@ -26,9 +28,11 @@ public class ProveedorEntityRepository implements ProveedorRepository {
 
     @Override
     public ProveedorDto buscarPorId(Long id) {
-        return crudProveedor.findById(id)
-                .map(proveedorMapper::toDto)
-                .orElse(null);
+        ProveedorEntity entity = crudProveedor.findById(id).orElse(null);
+        if (entity == null) {
+            throw new ProveedorNoExiste(id);
+        }
+        return proveedorMapper.toDto(entity);
     }
 
     @Override
@@ -41,7 +45,9 @@ public class ProveedorEntityRepository implements ProveedorRepository {
     @Override
     public ProveedorDto modificarProveedor(Long id, ProveedorDto proveedorDto) {
         ProveedorEntity entity = crudProveedor.findById(id).orElse(null);
-        if (entity == null) return null;
+        if (entity == null) {
+            throw new ProveedorNoExiste(id);
+        }
         entity.setNombreEmpresa(proveedorDto.commpanyName());
         entity.setContacto(proveedorDto.contact());
         entity.setTelefono(proveedorDto.phone());
@@ -51,6 +57,10 @@ public class ProveedorEntityRepository implements ProveedorRepository {
 
     @Override
     public void eliminarProveedor(Long id) {
+        ProveedorEntity entity = crudProveedor.findById(id).orElse(null);
+        if (entity == null) {
+            throw new ProveedorNoExiste(id);
+        }
         crudProveedor.deleteById(id);
     }
 }

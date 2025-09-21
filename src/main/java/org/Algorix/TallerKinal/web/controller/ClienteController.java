@@ -32,6 +32,14 @@ public class ClienteController {
     }
 
     @GetMapping("{id}")
+    @Operation(
+            summary = "Buscar cliente por su identificador",
+            description = "Retorna un cliente en base a su identificador",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+                    @ApiResponse(responseCode = "404", description = "Cliente no encontrado", content = @Content)
+            }
+    )
     public ResponseEntity<ClienteDto> obtenerClientePorId(@PathVariable Long id) {
         return ResponseEntity.ok(this.clienteService.buscarPorId(id));
     }
@@ -53,7 +61,7 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ClienteDto> iniciarSesion(@RequestBody UserClienteDto userClienteDto) {
+    public ResponseEntity<ClienteDto> iniciarSesion(@RequestBody @Valid UserClienteDto userClienteDto) {
         ClienteDto cliente = clienteService.iniciarSesion(userClienteDto);
         if (cliente != null) {
             System.out.println("Inicio de sesión exitoso para: " + userClienteDto.email());

@@ -2,6 +2,7 @@ package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.CitaDto;
 import org.Algorix.TallerKinal.dominio.dto.ModCitaDto;
+import org.Algorix.TallerKinal.dominio.exception.CitaNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.CitaRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudCita;
 import org.Algorix.TallerKinal.persistence.entity.CitaEntity;
@@ -28,6 +29,9 @@ public class CitaEntityRepository implements CitaRepository {
     @Override
     public CitaDto buscarPorId(Long id) {
         CitaEntity citaEntity = this.crudCita.findById(id).orElse(null);
+        if (citaEntity == null) {
+            throw new CitaNoExiste(id);
+        }
         return this.citaMapper.toDto(citaEntity);
     }
 
@@ -42,12 +46,19 @@ public class CitaEntityRepository implements CitaRepository {
     @Override
     public CitaDto modificarCita(Long id, ModCitaDto modCitaDto) {
         CitaEntity cita = this.crudCita.findById(id).orElse(null);
+        if (cita == null) {
+            throw new CitaNoExiste(id);
+        }
         this.citaMapper.modificarEntityFromDto(modCitaDto, cita);
         return this.citaMapper.toDto(this.crudCita.save(cita));
     }
 
     @Override
     public void eliminarCita(Long id) {
+        CitaEntity cita = this.crudCita.findById(id).orElse(null);
+        if (cita == null) {
+            throw new CitaNoExiste(id);
+        }
         this.crudCita.deleteById(id);
     }
 }

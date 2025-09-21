@@ -21,7 +21,7 @@ public class VehiculoEntity {
     private String color;
     @Column(length = 50)
     private String modelo;
-    @Column(length = 50)
+    @Column(length = 30)
     private String marca;
     @Column
     private Integer ano;

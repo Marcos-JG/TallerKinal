@@ -1,6 +1,10 @@
 package org.Algorix.TallerKinal.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.Algorix.TallerKinal.dominio.dto.AdministradorDto;
 import org.Algorix.TallerKinal.dominio.dto.UserAdminDto;
 import org.Algorix.TallerKinal.dominio.service.AdministradorService;
@@ -20,12 +24,19 @@ public class AdministradorController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar administradores", description = "Retorna todos los administradores",
+            responses = {@ApiResponse(responseCode = "200", description = "Operación exitosa")})
     public ResponseEntity<List<AdministradorDto>> obtenerAdministradores() {
         return ResponseEntity.ok(administradorService.obtenerAdministradores());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AdministradorDto> iniciarSesion(@RequestBody UserAdminDto userAdminDto) {
+    @Operation(summary = "Iniciar sesión de administrador",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Inicio de sesión exitoso"),
+                    @ApiResponse(responseCode = "401", description = "Credenciales inválidas", content = @Content)
+            })
+    public ResponseEntity<AdministradorDto> iniciarSesion(@RequestBody @Valid UserAdminDto userAdminDto) {
         AdministradorDto administrador = administradorService.iniciarSesion(userAdminDto);
         if (administrador != null) {
             System.out.println("Inicio de sesión exitoso para: " + userAdminDto.email());

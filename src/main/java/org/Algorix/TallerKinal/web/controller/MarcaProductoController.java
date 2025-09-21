@@ -1,6 +1,9 @@
 package org.Algorix.TallerKinal.web.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.Algorix.TallerKinal.dominio.dto.MarcaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModMarcaProductoDto;
@@ -13,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/marcas-producto")
+@RequestMapping("v1/marcas-productos")
+@Tag(name = "Marcas", description = "Operaciones sobre marcas de productos")
 public class MarcaProductoController {
     private final MarcaProductoService marcaProductoService;
 
@@ -28,13 +32,21 @@ public class MarcaProductoController {
     }
 
     @GetMapping("{codigo}")
+    @Operation(
+            summary = "Buscar marca por su identificador",
+            description = "Retorna una marca en base a su identificador",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+                    @ApiResponse(responseCode = "404", description = "Marca no encontrada", content = @Content)
+            }
+    )
     public ResponseEntity<MarcaProductoDto> obtenerMarcaPorCodigo(
             @PathVariable Long codigo){
         return ResponseEntity.ok(this.marcaProductoService.obtenerMarcaPorCodigo(codigo));
     }
 
     @PostMapping
-    public ResponseEntity<MarcaProductoDto> guardarMarca(@RequestBody MarcaProductoDto marcaProductoDto){
+    public ResponseEntity<MarcaProductoDto> guardarMarca(@RequestBody @Valid MarcaProductoDto marcaProductoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.marcaProductoService.guardarMarca(marcaProductoDto));
     }
 
@@ -51,4 +63,3 @@ public class MarcaProductoController {
     }
 
 }
-

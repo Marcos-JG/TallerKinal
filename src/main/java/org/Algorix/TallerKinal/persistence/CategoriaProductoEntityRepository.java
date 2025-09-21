@@ -2,10 +2,10 @@ package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.CategoriaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModCategoriaDto;
+import org.Algorix.TallerKinal.dominio.exception.CategoriaNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.CategoriaRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudCategoria;
 import org.Algorix.TallerKinal.persistence.entity.CategoriaProductoEntity;
-import org.Algorix.TallerKinal.persistence.entity.MarcaProductoEntity;
 import org.Algorix.TallerKinal.web.mapper.CategoriaProductoMapper;
 import org.springframework.stereotype.Repository;
 
@@ -29,18 +29,27 @@ public class CategoriaProductoEntityRepository implements CategoriaRepository {
     @Override
     public CategoriaProductoDto obtenerCategoriaPorId(Long codigo) {
         CategoriaProductoEntity categoriaEntity = this.crudCategoriaProducto.findById(codigo).orElse(null);
-        return categoriaEntity != null ? this.categoriaProductoMapper.toDto(categoriaEntity) : null;
+        if (categoriaEntity == null) {
+            throw new CategoriaNoExiste(codigo);
+        }
+        return this.categoriaProductoMapper.toDto(categoriaEntity);
     }
 
     @Override
     public void eliminarCategoria(Long codigo) {
         CategoriaProductoEntity categoriaEntity = this.crudCategoriaProducto.findById(codigo).orElse(null);
+        if (categoriaEntity == null) {
+            throw new CategoriaNoExiste(codigo);
+        }
         this.crudCategoriaProducto.deleteById(codigo);
     }
 
     @Override
     public CategoriaProductoDto modificarCategoria(Long codigo, ModCategoriaDto modCategoriaDto) {
         CategoriaProductoEntity categoriaEntity = this.crudCategoriaProducto.findById(codigo).orElse(null);
+        if (categoriaEntity == null) {
+            throw new CategoriaNoExiste(codigo);
+        }
         this.categoriaProductoMapper.modificarEntityFromDto(modCategoriaDto, categoriaEntity);
         return this.categoriaProductoMapper.toDto(this.crudCategoriaProducto.save(categoriaEntity));
     }

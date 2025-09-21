@@ -57,11 +57,11 @@ INSERT IGNORE INTO productos_inventario( id_proveedor, nombre, descripcion, id_c
 
 -- Vehículos
 INSERT IGNORE INTO vehiculos( id_cliente, placas, color, modelo, marca, ano) VALUES
-(1,'ABC-123','Rojo','Model X','MarcaA',2018),
-(2,'DEF-456','Azul','Model Y','MarcaB',2020),
-(3,'GHI-789','Blanco','Model Z','MarcaC',2015),
-(4,'JKL-012','Negro','Model A','MarcaD',2022),
-(5,'MNO-345','Gris','Model B','MarcaE',2010);
+(1,'ABC-123','Rojo','Model X','TOYOTA',2018),
+(2,'DEF-456','Azul','Model Y','TOYOTA',2020),
+(3,'GHI-789','Blanco','Model Z','TOYOTA',2015),
+(4,'JKL-012','Negro','Model A','TOYOTA',2022),
+(5,'MNO-345','Gris','Model B','TOYOTA',2010);
 
 -- Citas
 INSERT IGNORE INTO citas( fecha_cita, id_empleado, id_cliente, tipo_cita, id_vehiculo, estado_cita, comentario) VALUES
