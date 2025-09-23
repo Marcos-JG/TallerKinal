@@ -4,7 +4,9 @@ import org.Algorix.TallerKinal.dominio.dto.ClienteDto;
 import org.Algorix.TallerKinal.dominio.dto.ModClienteDto;
 import org.Algorix.TallerKinal.dominio.dto.UserClienteDto;
 import org.Algorix.TallerKinal.dominio.exception.ClienteNoExiste;
+import org.Algorix.TallerKinal.dominio.exception.ContrasenaInvalida;
 import org.Algorix.TallerKinal.dominio.exception.CorreoDuplicado;
+import org.Algorix.TallerKinal.dominio.exception.CorreoInvalido;
 import org.Algorix.TallerKinal.dominio.repository.ClienteRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudCliente;
 import org.Algorix.TallerKinal.persistence.entity.ClienteEntity;
@@ -52,23 +54,36 @@ public class ClienteEntityRepository implements ClienteRepository {
     @Override
     public ClienteDto modificarCliente(Long id, ModClienteDto modClienteDto) {
         ClienteEntity clienteEntity = this.crudCliente.findById(id).orElse(null);
+        if (clienteEntity == null) {
+            throw new ClienteNoExiste(id);
+        }
         this.clienteMapper.modificarEntityFromDto(modClienteDto, clienteEntity);
         return this.clienteMapper.toDto(this.crudCliente.save(clienteEntity));
     }
 
+    private boolean emailBasicoValido(String email) {
+        if (email == null) return false;
+        int at = email.indexOf('@');
+        int dot = email.lastIndexOf('.');
+        return at > 0 && dot > at + 1 && dot < email.length() - 1;
+    }
+
     @Override
     public ClienteDto iniciarSesion(UserClienteDto userClienteDto) {
-        if (userClienteDto == null || userClienteDto.email() == null || userClienteDto.password() == null) {
-            return null;
+        if (userClienteDto == null || !emailBasicoValido(userClienteDto.email())) {
+            throw new CorreoInvalido(userClienteDto == null ? null : userClienteDto.email());
+        }
+        if (userClienteDto.password() == null || userClienteDto.password().isBlank()) {
+            throw new ContrasenaInvalida(userClienteDto.password());
         }
         ClienteEntity clienteEntity = this.crudCliente.findFirstByCorreo(userClienteDto.email());
-        if (clienteEntity == null || clienteEntity.getContrasena() == null) {
-            return null;
+        if (clienteEntity == null) {
+            throw new ClienteNoExiste(null);
         }
-        if (clienteEntity.getContrasena().equals(userClienteDto.password())) {
-            return clienteMapper.toDto(clienteEntity);
+        if (clienteEntity.getContrasena() == null || !clienteEntity.getContrasena().equals(userClienteDto.password())) {
+            throw new ContrasenaInvalida(userClienteDto.password());
         }
-        return null;
+        return clienteMapper.toDto(clienteEntity);
     }
 
     @Override

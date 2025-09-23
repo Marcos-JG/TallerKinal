@@ -32,7 +32,7 @@ public class AdministradorEntityRepository implements AdministadorRepository {
         AdministradorEntity administradorEntity = this.crudAdministrador.findById(id).orElse(null);
         if (administradorEntity == null) {
             throw new AdministradorNoExiste(id);
-        }else  {
+        } else  {
             return administradorMapper.toDto(administradorEntity);
         }
     }
@@ -51,7 +51,4 @@ public class AdministradorEntityRepository implements AdministadorRepository {
         }
         return null;
     }
-
-
-
 }

@@ -1,5 +1,9 @@
 package org.Algorix.TallerKinal.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.Algorix.TallerKinal.dominio.dto.MarcaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.MecanicoDto;
@@ -13,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/mecanico")
+@RequestMapping("v1/mecanicos")
+@Tag(name = "Mecánicos", description = "Operaciones sobre mecánicos")
 public class MecanicoController {
     private final MecanicoService mecanicoService;
 
@@ -28,13 +33,21 @@ public class MecanicoController {
     }
 
     @GetMapping("{codigo}")
+    @Operation(
+            summary = "Buscar mecánico por su identificador",
+            description = "Retorna un mecánico en base a su identificador",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Operación exitosa"),
+                    @ApiResponse(responseCode = "404", description = "Mecánico no encontrado", content = @Content)
+            }
+    )
     public ResponseEntity<MecanicoDto> buscarMecanicoPorCodigo(
             @PathVariable Long codigo){
         return ResponseEntity.ok(this.mecanicoService.buscarMecanicoPorCodigo(codigo));
     }
 
     @PostMapping
-    public ResponseEntity<MecanicoDto> guardarMecanico(@RequestBody MecanicoDto mecanicoDto){
+    public ResponseEntity<MecanicoDto> guardarMecanico(@RequestBody @Valid MecanicoDto mecanicoDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.mecanicoService.guardarMecanico(mecanicoDto));
     }
 

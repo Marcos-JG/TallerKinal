@@ -3,6 +3,7 @@ package org.Algorix.TallerKinal.persistence;
 import org.Algorix.TallerKinal.dominio.dto.ModTrabajoRealozadoDto;
 import org.Algorix.TallerKinal.dominio.dto.TrabajoRealizadoDto;
 import org.Algorix.TallerKinal.dominio.exception.CitaNoExiste;
+import org.Algorix.TallerKinal.dominio.exception.TrabajoNoExiste;
 import org.Algorix.TallerKinal.persistence.crud.CrudCita;
 import org.Algorix.TallerKinal.dominio.repository.TrabajoRealizadoRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudTrabajoRealizado;
@@ -34,8 +35,8 @@ public class TrabajoRealizadoEntityRepository implements TrabajoRealizadoReposit
     public TrabajoRealizadoDto buscarPorId(Long id) {
         TrabajoRealizadoEntity trabajoRealizadoEntity = this.crudTrabajoRealizado.findById(id).orElse(null);
         if (trabajoRealizadoEntity == null) {
-            throw new RuntimeException("Trabajo no encontrado");
-        }else {
+            throw new TrabajoNoExiste(id);
+        } else {
             return trabajoRealizadoMapper.toDto(trabajoRealizadoEntity);
         }
     }
@@ -58,6 +59,9 @@ public class TrabajoRealizadoEntityRepository implements TrabajoRealizadoReposit
     @Override
     public TrabajoRealizadoDto modificarTrabajo(Long id, ModTrabajoRealozadoDto trabajoRealizadoDto) {
         TrabajoRealizadoEntity trabajoEntity = this.crudTrabajoRealizado.findById(id).orElse(null);
+        if (trabajoEntity == null) {
+            throw new TrabajoNoExiste(id);
+        }
         this.trabajoRealizadoMapper.modificarEntityFromDto(trabajoRealizadoDto, trabajoEntity);
         return this.trabajoRealizadoMapper.toDto(this.crudTrabajoRealizado.save(trabajoEntity));
     }
@@ -68,7 +72,7 @@ public class TrabajoRealizadoEntityRepository implements TrabajoRealizadoReposit
         if (trabajoEntity != null) {
             this.crudTrabajoRealizado.deleteById(id);
         } else {
-            throw new RuntimeException("Trabajo no encontrado");
+            throw new TrabajoNoExiste(id);
         }
     }
 }

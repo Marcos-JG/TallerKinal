@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,24 @@ public class RestExceptionHandler {
             errores.add(new Error(fieldError.getField(), fieldError.getDefaultMessage()));
         });
         return ResponseEntity.badRequest().body(errores);
+    }
+
+    // Nuevo: manejar parseo inválido del enum MarcaVehiculo
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Error> handleException(HttpMessageNotReadableException ex) {
+        String msg = ex.getMessage();
+        if (msg != null && msg.contains("MarcaVehiculo")) {
+            return ResponseEntity.badRequest().body(new Error(
+                    "marca_no_existe",
+                    "La marca no existe. Debe ingresarla en mayúsculas."
+            ));
+        }
+        return ResponseEntity.badRequest().body(new Error("mensaje_no_legible", ex.getMessage()));
+    }
+
+    @ExceptionHandler(MarcaVehiculoNoExiste.class)
+    public ResponseEntity<Error> handleException(MarcaVehiculoNoExiste ex) {
+        return ResponseEntity.badRequest().body(new Error("marca_no_existe", ex.getMessage()));
     }
 
     @ExceptionHandler(CategoriaNoExiste.class)
@@ -105,5 +124,28 @@ public class RestExceptionHandler {
         Error error = new Error("cita_no_existe", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
-}
 
+    @ExceptionHandler(AdministradorNoExiste.class)
+    public ResponseEntity<Error> handleException(AdministradorNoExiste ex) {
+        Error error = new Error("administrador_no_existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(MecanicoNoExiste.class)
+    public ResponseEntity<Error> handleException(MecanicoNoExiste ex) {
+        Error error = new Error("mecanico_no_existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(ProductoNoExiste.class)
+    public ResponseEntity<Error> handleException(ProductoNoExiste ex) {
+        Error error = new Error("producto_no_existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(TrabajoNoExiste.class)
+    public ResponseEntity<Error> handleException(TrabajoNoExiste ex) {
+        Error error = new Error("trabajo_no_existe", ex.getMessage());
+        return ResponseEntity.badRequest().body(error);
+    }
+}

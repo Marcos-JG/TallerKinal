@@ -2,6 +2,8 @@ package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.ModVehiculoDto;
 import org.Algorix.TallerKinal.dominio.dto.VehiculoDto;
+import org.Algorix.TallerKinal.dominio.exception.MarcaVehiculoNoExiste;
+import org.Algorix.TallerKinal.dominio.exception.VehiculoDuplicadoPlaca;
 import org.Algorix.TallerKinal.dominio.exception.VehiculoNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.VehiculoRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudVehiculo;
@@ -30,16 +32,20 @@ public class VehiculoEntityRepository implements VehiculoRepository {
 
     @Override
     public VehiculoDto buscarPorPlaca(String placa) {
-        if (this.crudVehiculo.findFirstByPlacas(placa) == null) {
+        VehiculoEntity entity = this.crudVehiculo.findFirstByPlacas(placa);
+        if (entity == null) {
             throw new VehiculoNoExiste(placa);
         }
-        return this.vehiculoMapper.toDto(crudVehiculo.findFirstByPlacas(placa));
+        return this.vehiculoMapper.toDto(entity);
     }
 
     @Override
     public VehiculoDto guardarVehiculo(VehiculoDto vehiculoDto) {
+        if (vehiculoDto.marca() == null) {
+            throw new MarcaVehiculoNoExiste();
+        }
         if (this.crudVehiculo.findFirstByPlacas(vehiculoDto.licensePlate()) != null) {
-            throw new VehiculoNoExiste(vehiculoDto.licensePlate());
+            throw new VehiculoDuplicadoPlaca(vehiculoDto.licensePlate());
         }
         VehiculoEntity vehiculo = this.vehiculoMapper.toEntity(vehiculoDto);
         this.crudVehiculo.save(vehiculo);
@@ -51,12 +57,21 @@ public class VehiculoEntityRepository implements VehiculoRepository {
     @Override
     public VehiculoDto modificarVehiculo(String placas, ModVehiculoDto vehiculoDto) {
         VehiculoEntity vehiculo = this.crudVehiculo.findFirstByPlacas(placas);
+        if (vehiculo == null) {
+            throw new VehiculoNoExiste(placas);
+        }
+        if (vehiculoDto.marca() == null) {
+            throw new MarcaVehiculoNoExiste();
+        }
         this.vehiculoMapper.modificarEntityFromDto(vehiculoDto, vehiculo);
         return  this.vehiculoMapper.toDto(this.crudVehiculo.save(vehiculo));
     }
 
     @Override
     public void eliminarVehiculo(Long id) {
+        if (!this.crudVehiculo.existsById(id)) {
+            throw new VehiculoNoExiste(id);
+        }
         this.crudVehiculo.deleteById(id);
     }
 }

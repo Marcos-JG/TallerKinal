@@ -2,6 +2,7 @@ package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.MarcaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModMarcaProductoDto;
+import org.Algorix.TallerKinal.dominio.exception.MarcaNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.MarcaProductoRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudMarcaProducto;
 import org.Algorix.TallerKinal.persistence.entity.MarcaProductoEntity;
@@ -29,18 +30,27 @@ public class MarcaProductoEntityRepository implements MarcaProductoRepository {
     @Override
     public MarcaProductoDto obtenerMarcaPorCodigo(Long codigo) {
         MarcaProductoEntity marcaEntity = this.crudMarcaProducto.findById(codigo).orElse(null);
-        return marcaEntity != null ? this.marcaProductoMapper.toDto(marcaEntity) : null;
+        if (marcaEntity == null) {
+            throw new MarcaNoExiste(codigo);
+        }
+        return this.marcaProductoMapper.toDto(marcaEntity);
     }
 
     @Override
     public void eliminarMarca(Long codigo) {
         MarcaProductoEntity marcaProductoEntity = this.crudMarcaProducto.findById(codigo).orElse(null);
-            this.crudMarcaProducto.deleteById(codigo);
+        if (marcaProductoEntity == null) {
+            throw new MarcaNoExiste(codigo);
+        }
+        this.crudMarcaProducto.deleteById(codigo);
     }
 
     @Override
     public MarcaProductoDto modificarMarca(Long codigo, ModMarcaProductoDto modMarcaProductoDto) {
         MarcaProductoEntity marcaProductoEntity = this.crudMarcaProducto.findById(codigo).orElse(null);
+        if (marcaProductoEntity == null) {
+            throw new MarcaNoExiste(codigo);
+        }
         this.marcaProductoMapper.modificarEntityFromDto(modMarcaProductoDto, marcaProductoEntity);
         return this.marcaProductoMapper.toDto(this.crudMarcaProducto.save(marcaProductoEntity));
     }
