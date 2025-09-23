@@ -2,9 +2,7 @@ package org.Algorix.TallerKinal.web.mapper;
 
 import org.Algorix.TallerKinal.dominio.dto.MarcaProductoDto;
 import org.Algorix.TallerKinal.dominio.dto.ModMarcaProductoDto;
-import org.Algorix.TallerKinal.dominio.dto.ProductoInventarioDto;
 import org.Algorix.TallerKinal.persistence.entity.MarcaProductoEntity;
-import org.Algorix.TallerKinal.persistence.entity.ProductoInventarioEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

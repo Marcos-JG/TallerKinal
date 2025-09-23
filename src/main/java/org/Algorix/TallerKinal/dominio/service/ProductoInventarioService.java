@@ -29,9 +29,7 @@ public class ProductoInventarioService  {
         return this.productoRepository.obtenerProductoPorCodigo(codigo);
     }
 
-    @Transactional
-    public void eliminarProducto(Long codigo) {
-        detalleUsoProductoRepository.deleteByProductoInventarioId(codigo);
+    public void eliminarProducto(Long codigo){
         this.productoRepository.eliminarProducto(codigo);
     }
 
