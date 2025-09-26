@@ -45,7 +45,7 @@ public class ProductoInventarioView implements Serializable {
 
     private void clearEdits() { this.editIdProveedor = null; this.editName = ""; this.editDescription = ""; this.editIdCategoria = null; this.editSpecification = ""; this.editUnitPrice = null; this.editCurrentStock = null; this.editMinimumStock = null; this.editIdMarca = null; this.editEntryDate = null; }
 
-    public void agregarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalInventario').show()"); }
+    public void agregarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').show()"); }
 
     public void prepararEdicionProductoInventario(ProductoInventarioDto p) {
         this.selected = p; clearEdits();
@@ -61,7 +61,7 @@ public class ProductoInventarioView implements Serializable {
             this.editIdMarca = p.idMarca();
             this.editEntryDate = p.entryDate();
         }
-        PrimeFaces.current().executeScript("PF('ventanaModalInventario').show()");
+        PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').show()");
     }
 
     public void guardarProductoInventario() {
@@ -76,8 +76,8 @@ public class ProductoInventarioView implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Modificado"));
             }
             refresh();
-            PrimeFaces.current().ajax().update("inventarioForm:tablaInventario", "growlForm:growlMensajes");
-            PrimeFaces.current().executeScript("PF('ventanaModalInventario').hide()");
+            PrimeFaces.current().ajax().update("productosForm:tablaProductos", "growlForm:growlMensajes");
+            PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').hide()");
             this.selected = null; clearEdits();
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
@@ -91,12 +91,12 @@ public class ProductoInventarioView implements Serializable {
             productoInventarioService.eliminarProducto(p.id_producto());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Eliminado"));
             refresh();
-            PrimeFaces.current().ajax().update("inventarioForm:tablaInventario", "growlForm:growlMensajes");
+            PrimeFaces.current().ajax().update("productosForm:tablaProductos", "growlForm:growlMensajes");
         } catch (Exception e){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
             PrimeFaces.current().ajax().update("growlForm:growlMensajes");
         }
     }
 
-    public void cancelarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalInventario').hide()"); }
+    public void cancelarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').hide()"); }
 }
