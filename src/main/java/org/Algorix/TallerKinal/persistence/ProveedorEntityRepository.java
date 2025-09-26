@@ -48,10 +48,10 @@ public class ProveedorEntityRepository implements ProveedorRepository {
         if (entity == null) {
             throw new ProveedorNoExiste(id);
         }
-        entity.setNombreEmpresa(proveedorDto.commpanyName());
-        entity.setContacto(proveedorDto.contact());
-        entity.setTelefono(proveedorDto.phone());
-        entity.setCorreo(proveedorDto.email());
+        entity.setNombreEmpresa(proveedorDto.getCommpanyName());
+        entity.setContacto(proveedorDto.getContact());
+        entity.setTelefono(proveedorDto.getPhone());
+        entity.setCorreo(proveedorDto.getEmail());
         return proveedorMapper.toDto(crudProveedor.save(entity));
     }
 

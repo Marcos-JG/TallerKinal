@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Clientes</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<!-- Menú superior -->
+<h:form id="menuForm">
+    <p:menubar styleClass="top-menubar">
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html" />
+        <f:facet name="options">
+            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button"
+                             onclick="PF('newClientPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<p:messages id="msgs" closable="true" />
+
+<h2 class="page-title">Clientes</h2>
+
+<!-- Formulario: Nuevo Cliente (colapsable) -->
+<h:form id="newForm">
+    <p:panel header="Nuevo Cliente" toggleable="true" collapsed="true" widgetVar="newClientPanel">
+        <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+            <h:outputLabel for="name" value="Nombre:" />
+            <p:inputText id="name" value="#{clienteView.newName}" required="true" label="Nombre"/>
+
+            <h:outputLabel for="last" value="Apellido:" />
+            <p:inputText id="last" value="#{clienteView.newLastName}" required="true" label="Apellido"/>
+
+            <h:outputLabel for="email" value="Email:" />
+            <p:inputText id="email" value="#{clienteView.newEmail}" required="true" label="Email"/>
+
+            <h:outputLabel for="pass" value="Password:" />
+            <p:password id="pass" value="#{clienteView.newPassword}" required="true" label="Password"/>
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Agregar" icon="pi pi-check" styleClass="ui-button-success"
+                         actionListener="#{clienteView.add}"
+                         update=":clientesForm:tabla :msgs :newForm" />
+        <p:commandButton value="Agregar otro" icon="pi pi-refresh" styleClass="ui-button-secondary"
+                         actionListener="#{clienteView.clearNewForm}"
+                         update=":newForm" />
+    </p:panel>
+</h:form>
+
+<!-- Listado y Filtro -->
+<h:form id="clientesForm">
+    <p:dataTable id="tabla"
+                 value="#{clienteView.clientes}"
+                 var="c"
+                 widgetVar="clientesTable"
+                 paginator="true" rows="10"
+                 rowKey="#{c.id_cliente}"
+                 emptyMessage="No hay clientes"
+                 responsiveLayout="scroll"
+                 stripedRows="true"
+                 rowHover="true"
+                 resizableColumns="true">
+        <p:column headerText="ID" style="width:80px" sortBy="#{c.id_cliente}">
+            <h:outputText value="#{c.id_cliente}" />
+        </p:column>
+        <p:column headerText="Nombre" sortBy="#{c.name}" filterBy="#{c.name}" filterMatchMode="contains">
+            <h:outputText value="#{c.name}" />
+        </p:column>
+        <p:column headerText="Apellido" sortBy="#{c.lastName}" filterBy="#{c.lastName}" filterMatchMode="contains">
+            <h:outputText value="#{c.lastName}" />
+        </p:column>
+        <p:column headerText="Email" sortBy="#{c.email}" filterBy="#{c.email}" filterMatchMode="contains">
+            <h:outputText value="#{c.email}" />
+        </p:column>
+        <p:column headerText="Acciones" style="width:260px">
+            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="ui-button-info"
+                             actionListener="#{clienteView.startEdit(c)}"
+                             update=":editContainer"/>
+            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="ui-button-danger"
+                             actionListener="#{clienteView.delete(c)}"
+                             update=":clientesForm:tabla :msgs"/>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<!-- Edición -->
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty clienteView.selected}">
+        <p:panel header="Editar Cliente" toggleable="true" collapsed="false">
+            <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+                <h:outputLabel for="ename" value="Nombre:" />
+                <p:inputText id="ename" value="#{clienteView.editName}" required="true"/>
+
+                <h:outputLabel for="eemail" value="Email:" />
+                <p:inputText id="eemail" value="#{clienteView.editEmail}" required="true"/>
+
+                <h:outputLabel for="epass" value="Password:" />
+                <p:password id="epass" value="#{clienteView.editPassword}" required="true"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-check" styleClass="ui-button-success"
+                             actionListener="#{clienteView.saveEdit}"
+                             update=":clientesForm:tabla :msgs :editContainer"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="ui-button-secondary"
+                             actionListener="#{clienteView.cancelEdit}"
+                             update=":editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

@@ -1,0 +1,41 @@
+/* Estilos base */
+* { box-sizing: border-box; }
+body { background: #f6f7fb; color: #2b2f33; }
+.page-title { margin: 16px 0 8px; font-size: 22px; font-weight: 700; }
+
+/* Menú superior */
+.top-menubar { border: none; border-radius: 10px; margin: 12px 0 4px; background: #164e63; color: #fff; }
+.top-menubar .ui-menuitem-link { color: #e5f3ff !important; font-weight: 600; }
+.top-menubar .ui-menuitem-link .ui-menuitem-icon { color: #c6e6ff !important; }
+.top-menubar .ui-button { border: none; background: #0ea5e9; color: #002333; font-weight: 700; }
+.top-menubar .ui-button:hover { background: #38bdf8; }
+
+/* Formularios */
+.form-grid { gap: 10px; }
+.label { font-weight: 600; opacity: .85; }
+
+/* Toolbars y filtros */
+.table-toolbar { background: transparent; border: none; padding: 0; margin: 8px 0; }
+.toolbar-label { margin-right: 8px; font-weight: 600; opacity: .85; }
+.global-filter { min-width: 260px; }
+
+/* Tablas */
+.ui-datatable, .ui-datatable .ui-datatable-tablewrapper table { border-radius: 10px; overflow: hidden; }
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer { border: none; }
+.ui-datatable .ui-paginator { border: none; background: transparent; }
+.ui-datatable .ui-datatable-data > tr > td { vertical-align: middle; }
+
+/* Paneles */
+.ui-panel { border-radius: 12px; overflow: hidden; }
+.ui-panel .ui-panel-titlebar { font-weight: 700; }
+
+/* Botones */
+.ui-button-danger { background: #ef4444; border: none; }
+.ui-button-danger:hover { background: #dc2626; }
+.ui-button-info { background: #22c55e; border: none; }
+.ui-button-info:hover { background: #16a34a; }
+.ui-button-success { background: #0ea5e9; border: none; }
+.ui-button-success:hover { background: #0284c7; }
+.ui-button-secondary { background: #6b7280; border: none; }
+.ui-button-secondary:hover { background: #4b5563; }
+

@@ -43,8 +43,8 @@ public class ClienteEntityRepository implements ClienteRepository {
 
     @Override
     public ClienteDto guardarCliente(ClienteDto clienteDto) {
-        if (this.crudCliente.findFirstByCorreo(clienteDto.email()) != null) {
-            throw new CorreoDuplicado(clienteDto.email());
+        if (this.crudCliente.findFirstByCorreo(clienteDto.getEmail()) != null) {
+            throw new CorreoDuplicado(clienteDto.getEmail());
         }
         ClienteEntity cliente = this.clienteMapper.toEntity(clienteDto);
         ClienteEntity saved = this.crudCliente.save(cliente);
