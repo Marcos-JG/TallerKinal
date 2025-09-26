@@ -8,61 +8,51 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
-
-<h:form id="msgsForm">
-    <p:messages id="msgs" closable="true" />
-</h:form>
-
-<p:confirmDialog global="true" modal="true">
-    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
-</p:confirmDialog>
-
-<h:form id="menuForm">
-    <p:menubar>
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
-        <f:facet name="options">
-            <p:commandButton value="Agregar nueva" icon="pi pi-plus" type="button" onclick="PF('newCategoriaPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<h:form id="newForm">
-    <p:panel header="Nueva Categoría" widgetVar="newCategoriaPanel" toggleable="true" collapsed="true">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="name" value="Nombre:" />
-            <p:inputText id="name" value="#{categoriaProductoView.newName}" required="true"/>
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" actionListener="#{categoriaProductoView.add}" update=":categoriaForm:tabla :msgsForm:msgs :newForm"/>
-    </p:panel>
-</h:form>
-
-<h:form id="categoriaForm">
-    <p:dataTable id="tabla" value="#{categoriaProductoView.categorias}" var="cat" paginator="true" rows="10" rowKey="#{cat.id_categoria}">
-        <p:column headerText="ID"><h:outputText value="#{cat.id_categoria}"/></p:column>
-        <p:column headerText="Nombre"><h:outputText value="#{cat.name}"/></p:column>
-        <p:column headerText="Acciones">
-            <p:commandButton value="Editar" actionListener="#{categoriaProductoView.startEdit(cat)}" update=":editContainer"/>
-            <p:commandButton value="Eliminar" actionListener="#{categoriaProductoView.delete(cat)}" update=":categoriaForm:tabla :msgsForm:msgs">
-                <p:confirm header="Confirmar" message="¿Eliminar categoría?" />
-            </p:commandButton>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty categoriaProductoView.selected}">
-        <p:panel header="Editar Categoría">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="ename" value="Nombre:" />
-                <p:inputText id="ename" value="#{categoriaProductoView.editName}"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" actionListener="#{categoriaProductoView.saveEdit}" update=":categoriaForm:tabla :msgsForm:msgs :editContainer"/>
-        </p:panel>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarCategorias">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nueva" icon="pi pi-plus" actionListener="#{categoriaProductoView.agregarCategoriaProducto}" update=":dialogCategoriaForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{categoriaProductoView.refresh}" update=":categoriasForm:tablaCategorias"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
     </h:form>
-</h:panelGroup>
 
+    <h:form id="categoriasForm">
+        <p:dataTable id="tablaCategorias" value="#{categoriaProductoView.categorias}" var="cat" paginator="true" rows="10"
+                     rowKey="#{cat.id_categoria}" emptyMessage="No hay categorías" stripedRows="true" rowHover="true"
+                     sortBy="#{cat.id_categoria}" sortOrder="ascending">
+            <p:column headerText="ID" sortBy="#{cat.id_categoria}" style="width:60px"><h:outputText value="#{cat.id_categoria}"/></p:column>
+            <p:column headerText="Nombre" filterBy="#{cat.name}" filterMatchMode="contains"><h:outputText value="#{cat.name}"/></p:column>
+            <p:column headerText="Acciones" style="width:150px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{categoriaProductoView.prepararEdicionCategoriaProducto(cat)}" update=":dialogCategoriaForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{categoriaProductoView.prepararEdicionCategoriaProducto(cat)}" oncomplete="PF('confirmEliminarCategoria').show()" update=":confirmEliminarCategoriaForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogCategoria" widgetVar="ventanaModalCategoriaProducto" modal="true" resizable="false" header="#{categoriaProductoView.selected == null ? 'Nueva Categoría' : 'Editar Categoría'}">
+        <h:form id="dialogCategoriaForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Nombre" for="nom"/>
+                <p:inputText id="nom" value="#{categoriaProductoView.editName}" required="true"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{categoriaProductoView.guardarCategoriaProducto}" update=":growlForm:growlMensajes :categoriasForm:tablaCategorias"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalCategoriaProducto').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarCategoria" widgetVar="confirmEliminarCategoria" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarCategoriaForm">
+            <h:panelGroup rendered="#{not empty categoriaProductoView.selected}"><h:outputText value="¿Eliminar categoría '#{categoriaProductoView.selected.name}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{categoriaProductoView.eliminarCategoriaProducto(categoriaProductoView.selected)}" update=":growlForm:growlMensajes :categoriasForm:tablaCategorias" oncomplete="PF('confirmEliminarCategoria').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarCategoria').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>
