@@ -27,8 +27,8 @@ public record AdministradorDto(
 
     public String getName() { return name; }
 
-    public String getLastname() { return lastname; }
     public String getLastName() { return lastname; }
+    public String getLastname() { return lastname; }
 
     public String getEmail() { return email; }
 

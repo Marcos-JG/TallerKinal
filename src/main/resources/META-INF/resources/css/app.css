@@ -13,7 +13,7 @@ a:hover { text-decoration: underline; }
 .top-menubar .ui-button { border: none; background: #0ea5e9; color: #002333; font-weight: 700; }
 .top-menubar .ui-button:hover { background: #38bdf8; }
 
-/* Topbar simple (index.html) */
+/* Topbar simple (index.xhtml) */
 .topbar { background: #164e63; color: #e5f3ff; position: sticky; top: 0; z-index: 10; }
 .topbar-inner { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
 .topbar .brand { color: #fff; font-weight: 800; letter-spacing: .3px; font-size: 18px; text-decoration: none; }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Inicio sesion</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+    <h:form id="loginForm">
+        <p:messages id="msgs" autoUpdate="true"/>
+
+        <p:panel header="Inicio de sesión" toggleable="false" style="margin-bottom:1rem">
+            <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+                <h:outputLabel for="loginEmail" value="Email:" />
+                <p:inputText id="loginEmail" value="#{clienteView.loginEmail}" required="true"/>
+
+                <h:outputLabel for="loginPass" value="Password:" />
+                <p:password id="loginPass" value="#{clienteView.loginPassword}" required="true"/>
+            </h:panelGrid>
+            <p:separator/>
+            <!-- ajax=false para permitir faces-redirect en el outcome -->
+            <p:commandButton value="Ingresar" icon="pi pi-sign-in" styleClass="ui-button-success"
+                             action="#{clienteView.login}" ajax="false" update=":loginForm:status :loginForm:msgs"/>
+            <p:commandButton value="Cerrar sesión" icon="pi pi-sign-out" styleClass="ui-button-secondary"
+                             action="#{clienteView.logout}" update=":loginForm:status :loginForm:msgs"/>
+        </p:panel>
+
+        <h:panelGroup id="status">
+            <h:outputText value="#{clienteView.loggedIn ? 'Estado: Conectado como ' : 'Estado: No conectado'}" />
+            <h:outputText rendered="#{clienteView.loggedIn}" value="#{clienteView.currentCliente != null ? clienteView.currentCliente.email : ''}" style="font-weight:bold; margin-left:0.5rem;"/>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>

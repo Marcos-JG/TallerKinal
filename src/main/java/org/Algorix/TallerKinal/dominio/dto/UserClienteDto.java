@@ -9,4 +9,6 @@ public record UserClienteDto (
         @NotBlank(message = "La contraseña no puede estar vacia")
         String password
 ){
+    public String getEmail() { return email; }
+    public String getPassword() { return password; }
 }
