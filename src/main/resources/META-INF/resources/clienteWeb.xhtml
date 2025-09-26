@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Mis Vehículos</title>
+    <link rel="stylesheet" href="#{request.contextPath}/css/estilo.css" />
+</h:head>
+<h:body>
+<header class="topbar">
+    <nav class="topbar-inner">
+        <a class="brand" href="index.xhtml">Taller Kinal</a>
+        <div style="margin-left:auto;">
+            <a class="card-btn" href="/taller-kinal/api/index.xhtml">Cerrar sesión</a>
+        </div>
+    </nav>
+</header>
+    <p style="font-size: 20px; background-color:black; color:white; padding:15px; text-align:center;margin: 0">
+        ¡Bienvenido, estimado cliente! Nos alegra tenerlo de vuelta en nuestro sistema. Aquí podrá consultar y gestionar la información de sus vehículos registrados de manera sencilla y segura.
+    </p>
+    <div style="text-align:center;">
+        <img src="https://senna.com/wp-content/uploads/2017/12/Hero-ext_front-3_4_dark__doors_FINAL-1.jpg-2-1.jpg" alt="Logo Kinal" style=" width:100%; height:auto;" />
+    </div>
+
+    <h1>Mis Vehículos</h1>
+    <h:form id="vehiculosForm">
+        <p:dataTable id="tabla" value="#{vehiculoView.vehiculos}" var="v" paginator="true" rows="10" rowKey="#{v.id_vehiculo}">
+            <p:column headerText="ID"><h:outputText value="#{v.id_vehiculo}"/></p:column>
+            <p:column headerText="Placas"><h:outputText value="#{v.licensePlate}"/></p:column>
+            <p:column headerText="Color"><h:outputText value="#{v.color}"/></p:column>
+            <p:column headerText="Modelo"><h:outputText value="#{v.model}"/></p:column>
+            <p:column headerText="Marca"><h:outputText value="#{v.marca}"/></p:column>
+            <p:column headerText="Año"><h:outputText value="#{v.year}"/></p:column>
+            <p:column headerText="Acciones">
+                <p:button value="Ver reportes" outcome="reportes.xhtml" styleClass="ui-button-secondary">
+                    <f:param name="idVehiculo" value="#{v.id_vehiculo}" />
+                </p:button>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>
