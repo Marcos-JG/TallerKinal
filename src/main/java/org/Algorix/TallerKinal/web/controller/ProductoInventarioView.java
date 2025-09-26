@@ -1,11 +1,13 @@
 package org.Algorix.TallerKinal.web.controller;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import lombok.Data;
 import org.Algorix.TallerKinal.dominio.dto.ModProductoInventarioDto;
 import org.Algorix.TallerKinal.dominio.dto.ProductoInventarioDto;
-import org.Algorix.TallerKinal.dominio.dto.productoWebDto;
 import org.Algorix.TallerKinal.dominio.service.ProductoInventarioService;
+import org.primefaces.PrimeFaces;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -22,19 +24,7 @@ public class ProductoInventarioView implements Serializable {
     private List<ProductoInventarioDto> productos;
     private ProductoInventarioDto selected;
 
-    // Campos nuevo
-    private Long newIdProveedor;
-    private String newName;
-    private String newDescription;
-    private Long newIdCategoria;
-    private String newSpecification;
-    private Double newUnitPrice;
-    private Integer newCurrentStock;
-    private Integer newMinimumStock;
-    private Long newIdMarca;
-    private LocalDate newEntryDate;
-
-    // Edición
+    // Campos unificados (crear/editar)
     private Long editIdProveedor;
     private String editName;
     private String editDescription;
@@ -46,34 +36,19 @@ public class ProductoInventarioView implements Serializable {
     private Long editIdMarca;
     private LocalDate editEntryDate;
 
-    public ProductoInventarioView(ProductoInventarioService productoInventarioService) {
-        this.productoInventarioService = productoInventarioService;
-    }
+    public ProductoInventarioView(ProductoInventarioService productoInventarioService) { this.productoInventarioService = productoInventarioService; }
 
     @PostConstruct
-    public void init() {
-        refresh();
-        clearNewForm();
-        clearEditForm();
-    }
+    public void init() { refresh(); clearEdits(); }
 
-    public void refresh() {
-        try {
-            this.productos = new ArrayList<>(productoInventarioService.obtenerTodo());
-        } catch (Exception e) {
-            this.productos = new ArrayList<>();
-        }
-    }
+    public void refresh() { try { this.productos = new ArrayList<>(productoInventarioService.obtenerTodo()); } catch (Exception e) { this.productos = new ArrayList<>(); } }
 
-    public void add() {
-        ProductoInventarioDto dto = new ProductoInventarioDto(null, newIdProveedor, newName, newDescription, newIdCategoria, newSpecification, newUnitPrice, newCurrentStock, newMinimumStock, newIdMarca, newEntryDate);
-        productoInventarioService.guardarProducto(dto);
-        refresh();
-        clearNewForm();
-    }
+    private void clearEdits() { this.editIdProveedor = null; this.editName = ""; this.editDescription = ""; this.editIdCategoria = null; this.editSpecification = ""; this.editUnitPrice = null; this.editCurrentStock = null; this.editMinimumStock = null; this.editIdMarca = null; this.editEntryDate = null; }
 
-    public void startEdit(ProductoInventarioDto p) {
-        this.selected = p;
+    public void agregarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').show()"); }
+
+    public void prepararEdicionProductoInventario(ProductoInventarioDto p) {
+        this.selected = p; clearEdits();
         if (p != null) {
             this.editIdProveedor = p.idProveedor();
             this.editName = p.name();
@@ -86,30 +61,42 @@ public class ProductoInventarioView implements Serializable {
             this.editIdMarca = p.idMarca();
             this.editEntryDate = p.entryDate();
         }
+        PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').show()");
     }
 
-    public void saveEdit() {
-        if (selected == null) return;
-        // ModProductoInventarioDto(order: idProveedor, name, description, idCategoria, specification, unitPrice, currentStock, minimumStock, idMarca, entryDate)
-        ModProductoInventarioDto mod = new ModProductoInventarioDto(editIdProveedor, editName, editDescription, editIdCategoria, editSpecification, editUnitPrice, editCurrentStock, editMinimumStock, editIdMarca, editEntryDate);
-        productoInventarioService.modificarProducto(selected.id_producto(), mod);
-        refresh();
-        clearEditForm();
-        this.selected = null;
+    public void guardarProductoInventario() {
+        try {
+            if (this.selected == null) {
+                ProductoInventarioDto dto = new ProductoInventarioDto(null, editIdProveedor, editName, editDescription, editIdCategoria, editSpecification, editUnitPrice, editCurrentStock, editMinimumStock, editIdMarca, editEntryDate);
+                productoInventarioService.guardarProducto(dto);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado"));
+            } else {
+                ModProductoInventarioDto mod = new ModProductoInventarioDto(editIdProveedor, editName, editDescription, editIdCategoria, editSpecification, editUnitPrice, editCurrentStock, editMinimumStock, editIdMarca, editEntryDate);
+                productoInventarioService.modificarProducto(selected.id_producto(), mod);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Modificado"));
+            }
+            refresh();
+            PrimeFaces.current().ajax().update("productosForm:tablaProductos", "growlForm:growlMensajes");
+            PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').hide()");
+            this.selected = null; clearEdits();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+            PrimeFaces.current().ajax().update("growlForm:growlMensajes");
+        }
     }
 
-    public void delete(ProductoInventarioDto p) {
+    public void eliminarProductoInventario(ProductoInventarioDto p) {
         if (p == null || p.id_producto() == null) return;
-        productoInventarioService.eliminarProducto(p.id_producto());
-        refresh();
+        try {
+            productoInventarioService.eliminarProducto(p.id_producto());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Eliminado"));
+            refresh();
+            PrimeFaces.current().ajax().update("productosForm:tablaProductos", "growlForm:growlMensajes");
+        } catch (Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+            PrimeFaces.current().ajax().update("growlForm:growlMensajes");
+        }
     }
 
-    public void cancelEdit() { this.selected = null; clearEditForm(); }
-
-    public void clearNewForm() {
-        this.newIdProveedor = null; this.newName = ""; this.newDescription = ""; this.newIdCategoria = null; this.newSpecification = ""; this.newUnitPrice = null; this.newCurrentStock = null; this.newMinimumStock = null; this.newIdMarca = null; this.newEntryDate = null;
-    }
-    public void clearEditForm() {
-        this.editName = ""; this.editDescription = ""; this.editIdCategoria = null; this.editSpecification = ""; this.editUnitPrice = null; this.editCurrentStock = null; this.editMinimumStock = null; this.editIdMarca = null; this.editEntryDate = null;
-    }
+    public void cancelarProductoInventario() { this.selected = null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalProductoInventario').hide()"); }
 }

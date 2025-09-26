@@ -8,74 +8,56 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
-
-<h:form id="msgsForm">
-    <p:messages id="msgs" closable="true" />
-</h:form>
-
-<p:confirmDialog global="true" modal="true">
-    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
-</p:confirmDialog>
-
-<h:form id="menuForm">
-    <p:menubar>
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
-        <f:facet name="options">
-            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newTrabajoPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<h:form id="newForm">
-    <p:panel header="Nuevo Trabajo" widgetVar="newTrabajoPanel" toggleable="true" collapsed="true">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="idCita" value="Id Cita:" />
-            <p:inputText id="idCita" value="#{trabajoRealizadoView.newIdCita}" required="true"/>
-            <h:outputLabel for="desc" value="Descripción:" />
-            <p:inputText id="desc" value="#{trabajoRealizadoView.newDescription}" required="true"/>
-            <h:outputLabel for="mano" value="Mano de obra:" />
-            <p:inputText id="mano" value="#{trabajoRealizadoView.newLaborCost}"/>
-            <h:outputLabel for="total" value="Total trabajo:" />
-            <p:inputText id="total" value="#{trabajoRealizadoView.newTotalWork}"/>
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" actionListener="#{trabajoRealizadoView.add}" update=":trabajosForm:tabla :msgsForm:msgs :newForm"/>
-    </p:panel>
-</h:form>
-
-<h:form id="trabajosForm">
-    <p:dataTable id="tabla" value="#{trabajoRealizadoView.trabajos}" var="t" paginator="true" rows="10" rowKey="#{t.id_trabajo}">
-        <p:column headerText="ID"><h:outputText value="#{t.id_trabajo}"/></p:column>
-        <p:column headerText="Id Cita"><h:outputText value="#{t.idCita}"/></p:column>
-        <p:column headerText="Descripción"><h:outputText value="#{t.description}"/></p:column>
-        <p:column headerText="Mano de obra"><h:outputText value="#{t.laborCost}"/></p:column>
-        <p:column headerText="Total trabajo"><h:outputText value="#{t.totalWork}"/></p:column>
-        <p:column headerText="Acciones">
-            <p:commandButton value="Editar" actionListener="#{trabajoRealizadoView.startEdit(t)}" update=":editContainer"/>
-            <p:commandButton value="Eliminar" actionListener="#{trabajoRealizadoView.delete(t)}" update=":trabajosForm:tabla :msgsForm:msgs">
-                <p:confirm header="Confirmar" message="¿Eliminar trabajo?" />
-            </p:commandButton>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty trabajoRealizadoView.selected}">
-        <p:panel header="Editar Trabajo">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="edesc" value="Descripción:" />
-                <p:inputText id="edesc" value="#{trabajoRealizadoView.editDescription}"/>
-                <h:outputLabel for="emano" value="Mano de obra:" />
-                <p:inputText id="emano" value="#{trabajoRealizadoView.editLaborCost}"/>
-                <h:outputLabel for="etotal" value="Total trabajo:" />
-                <p:inputText id="etotal" value="#{trabajoRealizadoView.editTotalWork}"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" actionListener="#{trabajoRealizadoView.saveEdit}" update=":trabajosForm:tabla :msgsForm:msgs :editContainer"/>
-        </p:panel>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarTrabajos">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{trabajoRealizadoView.agregarTrabajo}" update=":dialogTrabajoForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{trabajoRealizadoView.refresh}" update=":trabajosForm:tablaTrabajos"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
     </h:form>
-</h:panelGroup>
 
+    <h:form id="trabajosForm">
+        <p:dataTable id="tablaTrabajos" value="#{trabajoRealizadoView.trabajos}" var="t" paginator="true" rows="10" rowKey="#{t.id_trabajo}" emptyMessage="No hay trabajos" stripedRows="true" rowHover="true">
+            <p:column headerText="ID" style="width:60px"><h:outputText value="#{t.id_trabajo}"/></p:column>
+            <p:column headerText="Id Cita"><h:outputText value="#{t.idCita}"/></p:column>
+            <p:column headerText="Descripción"><h:outputText value="#{t.description}"/></p:column>
+            <p:column headerText="Mano de obra"><h:outputText value="#{t.laborCost}"/></p:column>
+            <p:column headerText="Total"><h:outputText value="#{t.totalWork}"/></p:column>
+            <p:column headerText="Acciones" style="width:160px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{trabajoRealizadoView.prepararEdicionTrabajo(t)}" update=":dialogTrabajoForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{trabajoRealizadoView.prepararEdicionTrabajo(t)}" oncomplete="PF('confirmEliminarTrabajo').show()" update=":confirmEliminarTrabajoForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogTrabajo" widgetVar="ventanaModalTrabajo" modal="true" resizable="false" header="#{trabajoRealizadoView.selected == null ? 'Nuevo Trabajo' : 'Editar Trabajo'}">
+        <h:form id="dialogTrabajoForm">
+            <p:panelGrid columns="2" columnClasses="etq,val" styleClass="ui-fluid">
+                <p:outputLabel value="Descripción" for="desc"/>
+                <p:inputText id="desc" value="#{trabajoRealizadoView.editDescription}" required="true"/>
+                <p:outputLabel value="Mano de Obra" for="mano"/>
+                <p:inputText id="mano" value="#{trabajoRealizadoView.editLaborCost}"/>
+                <p:outputLabel value="Total" for="tot"/>
+                <p:inputText id="tot" value="#{trabajoRealizadoView.editTotalWork}"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{trabajoRealizadoView.guardarTrabajo}" update=":growlForm:growlMensajes :trabajosForm:tablaTrabajos"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalTrabajo').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarTrabajo" widgetVar="confirmEliminarTrabajo" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarTrabajoForm">
+            <h:panelGroup rendered="#{not empty trabajoRealizadoView.selected}"><h:outputText value="¿Eliminar trabajo '#{trabajoRealizadoView.selected.description}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{trabajoRealizadoView.eliminarTrabajo(trabajoRealizadoView.selected)}" update=":growlForm:growlMensajes :trabajosForm:tablaTrabajos" oncomplete="PF('confirmEliminarTrabajo').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarTrabajo').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

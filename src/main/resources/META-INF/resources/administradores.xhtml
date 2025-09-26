@@ -8,80 +8,56 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
-
-<h:form id="msgsForm">
-    <p:messages id="msgs" closable="true" />
-</h:form>
-
-<p:confirmDialog global="true" modal="true">
-    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
-</p:confirmDialog>
-
-<h:form id="menuForm">
-    <p:menubar>
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
-        <f:facet name="options">
-            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newAdminPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<h:form id="newForm">
-    <p:panel header="Nuevo Administrador" widgetVar="newAdminPanel" toggleable="true" collapsed="true">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="name" value="Nombre:" />
-            <p:inputText id="name" value="#{administradorView.newName}" required="true"/>
-            <h:outputLabel for="lastname" value="Apellido:" />
-            <p:inputText id="lastname" value="#{administradorView.newLastName}" required="true"/>
-            <h:outputLabel for="email" value="Email:" />
-            <p:inputText id="email" value="#{administradorView.newEmail}" required="true"/>
-            <h:outputLabel for="password" value="Password:" />
-            <p:password id="password" value="#{administradorView.newPassword}" required="true"/>
-            <h:outputLabel for="phone" value="Teléfono:" />
-            <p:inputText id="phone" value="#{administradorView.newPhone}" />
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" actionListener="#{administradorView.add}" update=":administradoresForm:tabla :msgsForm:msgs :newForm"/>
-    </p:panel>
-</h:form>
-
-<h:form id="administradoresForm">
-    <p:dataTable id="tabla" value="#{administradorView.administradores}" var="a" paginator="true" rows="10" rowKey="#{a.id_admin}">
-        <p:column headerText="ID"><h:outputText value="#{a.id_admin}"/></p:column>
-        <p:column headerText="Nombre"><h:outputText value="#{a.name}"/></p:column>
-        <p:column headerText="Apellido"><h:outputText value="#{a.lastname}"/></p:column>
-        <p:column headerText="Email"><h:outputText value="#{a.email}"/></p:column>
-        <p:column headerText="Teléfono"><h:outputText value="#{a.phone}"/></p:column>
-        <p:column headerText="Acciones">
-            <p:commandButton value="Editar" actionListener="#{administradorView.startEdit(a)}" update=":editContainer"/>
-            <p:commandButton value="Eliminar" actionListener="#{administradorView.delete(a)}" update=":administradoresForm:tabla :msgsForm:msgs">
-                <p:confirm header="Confirmar" message="¿Eliminar administrador?" />
-            </p:commandButton>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty administradorView.selected}">
-        <p:panel header="Editar Administrador">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="ename" value="Nombre:" />
-                <p:inputText id="ename" value="#{administradorView.editName}"/>
-                <h:outputLabel for="elast" value="Apellido:" />
-                <p:inputText id="elast" value="#{administradorView.editLastName}"/>
-                <h:outputLabel for="eemail" value="Email:" />
-                <p:inputText id="eemail" value="#{administradorView.editEmail}"/>
-                <h:outputLabel for="epass" value="Password:" />
-                <p:password id="epass" value="#{administradorView.editPassword}"/>
-                <h:outputLabel for="ephone" value="Teléfono:" />
-                <p:inputText id="ephone" value="#{administradorView.editPhone}"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" actionListener="#{administradorView.saveEdit}" update=":administradoresForm:tabla :msgsForm:msgs :editContainer"/>
-        </p:panel>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarAdministradores">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{administradorView.agregarAdministrador}" update=":dialogAdministradorForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{administradorView.refresh}" update=":administradoresForm:tabla"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
     </h:form>
-</h:panelGroup>
 
+    <h:form id="administradoresForm">
+        <p:dataTable id="tabla" value="#{administradorView.administradores}" var="a" paginator="true" rows="10"
+                     rowKey="#{a.id_admin}" emptyMessage="No hay administradores" responsiveLayout="scroll" stripedRows="true" rowHover="true">
+            <p:column headerText="ID" style="width:60px"><h:outputText value="#{a.id_admin}"/></p:column>
+            <p:column headerText="Nombre" filterBy="#{a.name}" filterMatchMode="contains"><h:outputText value="#{a.name}"/></p:column>
+            <p:column headerText="Apellido" filterBy="#{a.lastname}" filterMatchMode="contains"><h:outputText value="#{a.lastname}"/></p:column>
+            <p:column headerText="Email" filterBy="#{a.email}" filterMatchMode="contains"><h:outputText value="#{a.email}"/></p:column>
+            <p:column headerText="Teléfono"><h:outputText value="#{a.phone}"/></p:column>
+            <p:column headerText="Acciones" style="width:160px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{administradorView.prepararEdicionAdministrador(a)}" update=":dialogAdministradorForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{administradorView.prepararEdicionAdministrador(a)}" oncomplete="PF('confirmEliminarAdministrador').show()" update=":confirmEliminarAdministradorForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogAdministrador" widgetVar="ventanaModalAdministrador" modal="true" resizable="false" header="#{administradorView.selected == null ? 'Nuevo Administrador' : 'Editar Administrador'}">
+        <h:form id="dialogAdministradorForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Nombre" for="nom"/><p:inputText id="nom" value="#{administradorView.editName}" required="true"/>
+                <p:outputLabel value="Apellido" for="ape"/><p:inputText id="ape" value="#{administradorView.editLastName}" required="true"/>
+                <p:outputLabel value="Email" for="em"/><p:inputText id="em" value="#{administradorView.editEmail}" required="true"/>
+                <p:outputLabel value="Password" for="pw"/><p:password id="pw" value="#{administradorView.editPassword}" required="true"/>
+                <p:outputLabel value="Teléfono" for="tel"/><p:inputText id="tel" value="#{administradorView.editPhone}"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{administradorView.guardarAdministrador}" update=":growlForm:growlMensajes :administradoresForm:tabla"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalAdministrador').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarAdministrador" widgetVar="confirmEliminarAdministrador" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarAdministradorForm">
+            <h:panelGroup rendered="#{not empty administradorView.selected}"><h:outputText value="¿Eliminar administrador '#{administradorView.selected.name}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{administradorView.eliminarAdministrador}" update=":growlForm:growlMensajes :administradoresForm:tabla" oncomplete="PF('confirmEliminarAdministrador').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarAdministrador').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

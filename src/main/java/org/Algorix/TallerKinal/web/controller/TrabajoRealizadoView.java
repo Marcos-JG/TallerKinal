@@ -1,10 +1,13 @@
 package org.Algorix.TallerKinal.web.controller;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import lombok.Data;
 import org.Algorix.TallerKinal.dominio.dto.ModTrabajoRealozadoDto;
 import org.Algorix.TallerKinal.dominio.dto.TrabajoRealizadoDto;
 import org.Algorix.TallerKinal.dominio.service.TrabajoRealizadoService;
+import org.primefaces.PrimeFaces;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -16,75 +19,32 @@ import java.util.List;
 @Component("trabajoRealizadoView")
 @SessionScope
 @Data
-public class TrabajoRealizadoView implements Serializable {
+public class TrabajoRealizadoView {
     private final TrabajoRealizadoService trabajoRealizadoService;
     private List<TrabajoRealizadoDto> trabajos;
     private TrabajoRealizadoDto selected;
 
-    // Nuevos
-    private Long newIdCita;
-    private String newDescription;
-    private BigDecimal newLaborCost;
-    private BigDecimal newTotalWork;
-
-    // Edición
+    // Campos unificados
+    private Long editIdCita; // sólo al crear
     private String editDescription;
     private BigDecimal editLaborCost;
     private BigDecimal editTotalWork;
 
-    public TrabajoRealizadoView(TrabajoRealizadoService trabajoRealizadoService) {
-        this.trabajoRealizadoService = trabajoRealizadoService;
-    }
+    public TrabajoRealizadoView(TrabajoRealizadoService trabajoRealizadoService) { this.trabajoRealizadoService = trabajoRealizadoService; }
 
-    @PostConstruct
-    public void init() {
-        refresh();
-        clearNewForm();
-        clearEditForm();
-    }
+    @PostConstruct public void init(){ refresh(); clearEdits(); }
 
-    public void refresh() {
-        try {
-            this.trabajos = new ArrayList<>(trabajoRealizadoService.listarTrabajoRealizados());
-        } catch (Exception e) {
-            this.trabajos = new ArrayList<>();
-        }
-    }
+    public void refresh(){ try { this.trabajos = new ArrayList<>(trabajoRealizadoService.listarTrabajoRealizados()); } catch (Exception e){ this.trabajos = new ArrayList<>(); } }
 
-    public void add() {
-        TrabajoRealizadoDto dto = new TrabajoRealizadoDto(null, newIdCita, newDescription, newLaborCost, newTotalWork);
-        trabajoRealizadoService.guardarTrabajo(dto);
-        refresh();
-        clearNewForm();
-    }
+    private void clearEdits(){ this.editIdCita = null; this.editDescription=""; this.editLaborCost=null; this.editTotalWork=null; }
 
-    public void startEdit(TrabajoRealizadoDto t) {
-        this.selected = t;
-        if (t != null) {
-            this.editDescription = t.description();
-            this.editLaborCost = t.laborCost();
-            this.editTotalWork = t.totalWork();
-        }
-    }
+    public void agregarTrabajo(){ this.selected=null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalTrabajo').show()"); }
 
-    public void saveEdit() {
-        if (selected == null) return;
-        ModTrabajoRealozadoDto mod = new ModTrabajoRealozadoDto(editDescription, editLaborCost, editTotalWork);
-        trabajoRealizadoService.modificarTrabajo(selected.id_trabajo(), mod);
-        refresh();
-        clearEditForm();
-        this.selected = null;
-    }
+    public void prepararEdicionTrabajo(TrabajoRealizadoDto t){ this.selected=t; clearEdits(); if(t!=null){ this.editDescription=t.description(); this.editLaborCost=t.laborCost(); this.editTotalWork=t.totalWork(); this.editIdCita=t.idCita(); } PrimeFaces.current().executeScript("PF('ventanaModalTrabajo').show()"); }
 
-    public void delete(TrabajoRealizadoDto t) {
-        if (t == null || t.id_trabajo() == null) return;
-        trabajoRealizadoService.eliminarTrabajo(t.id_trabajo());
-        refresh();
-    }
+    public void guardarTrabajo(){ try { if(this.selected==null){ TrabajoRealizadoDto dto = new TrabajoRealizadoDto(null, editIdCita, editDescription, editLaborCost, editTotalWork); trabajoRealizadoService.guardarTrabajo(dto); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Trabajo Agregado")); } else { ModTrabajoRealozadoDto mod = new ModTrabajoRealozadoDto(editDescription, editLaborCost, editTotalWork); trabajoRealizadoService.modificarTrabajo(selected.id_trabajo(), mod); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Trabajo Modificado")); } refresh(); PrimeFaces.current().ajax().update("trabajosForm:tablaTrabajos", "growlForm:growlMensajes"); PrimeFaces.current().executeScript("PF('ventanaModalTrabajo').hide()"); this.selected=null; clearEdits(); } catch(Exception e){ FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo guardar")); } }
 
-    public void cancelEdit() { this.selected = null; clearEditForm(); }
+    public void eliminarTrabajo(TrabajoRealizadoDto t){ if(t==null|| t.id_trabajo()==null) return; try { trabajoRealizadoService.eliminarTrabajo(t.id_trabajo()); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Trabajo Eliminado")); refresh(); PrimeFaces.current().ajax().update("trabajosForm:tablaTrabajos", "growlForm:growlMensajes"); } catch(Exception e){ FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo eliminar")); } }
 
-    public void clearNewForm() { this.newIdCita = null; this.newDescription = ""; this.newLaborCost = null; this.newTotalWork = null; }
-    public void clearEditForm() { this.editDescription = ""; this.editLaborCost = null; this.editTotalWork = null; }
+    public void cancelarTrabajo(){ this.selected=null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalTrabajo').hide()"); }
 }
-

@@ -9,113 +9,109 @@
 </h:head>
 <h:body>
 
-<!-- Menú superior -->
-<h:form id="menuForm">
-    <p:menubar styleClass="top-menubar">
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html" />
-        <f:facet name="options">
-            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button"
-                             onclick="PF('newProveedorPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<p:messages id="msgs" closable="true" />
-
-<h2 class="page-title">Proveedores</h2>
-
-<!-- Formulario: Nuevo Proveedor (colapsable) -->
-<h:form id="newForm">
-    <p:panel header="Nuevo Proveedor" toggleable="true" collapsed="true" widgetVar="newProveedorPanel">
-        <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
-            <h:outputLabel for="company" value="Empresa:" />
-            <p:inputText id="company" value="#{proveedorView.newCompanyName}" required="true" label="Empresa"/>
-
-            <h:outputLabel for="contact" value="Contacto:" />
-            <p:inputText id="contact" value="#{proveedorView.newContact}" required="true" label="Contacto"/>
-
-            <h:outputLabel for="phone" value="Teléfono:" />
-            <p:inputText id="phone" value="#{proveedorView.newPhone}" required="true" label="Teléfono"/>
-
-            <h:outputLabel for="email" value="Email:" />
-            <p:inputText id="email" value="#{proveedorView.newEmail}" required="true" label="Email"/>
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" icon="pi pi-check" styleClass="ui-button-success"
-                         actionListener="#{proveedorView.add}"
-                         update=":proveedoresForm:tabla :msgs :newForm" />
-        <p:commandButton value="Agregar otro" icon="pi pi-refresh" styleClass="ui-button-secondary"
-                         actionListener="#{proveedorView.clearNewForm}"
-                         update=":newForm" />
-    </p:panel>
-</h:form>
-
-<!-- Listado y Filtro -->
-<h:form id="proveedoresForm">
-    <p:dataTable id="tabla"
-                 value="#{proveedorView.proveedores}"
-                 var="pvd"
-                 widgetVar="proveedoresTable"
-                 paginator="true" rows="10"
-                 rowKey="#{pvd.id_proveedor}"
-                 emptyMessage="No hay proveedores"
-                 responsiveLayout="scroll"
-                 stripedRows="true"
-                 rowHover="true"
-                 resizableColumns="true">
-        <p:column headerText="ID" style="width:80px" sortBy="#{pvd.id_proveedor()}">
-            <h:outputText value="#{pvd.id_proveedor()}" />
-        </p:column>
-        <p:column headerText="Empresa" sortBy="#{pvd.companyName()}" filterBy="#{pvd.companyName()}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.companyName()}" />
-        </p:column>
-        <p:column headerText="Contacto" sortBy="#{pvd.contact()}" filterBy="#{pvd.contact()}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.contact()}" />
-        </p:column>
-        <p:column headerText="Teléfono" sortBy="#{pvd.phone()}" filterBy="#{pvd.phone()}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.phone()}" />
-        </p:column>
-        <p:column headerText="Email" sortBy="#{pvd.email()}" filterBy="#{pvd.email()}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.email()}" />
-        </p:column>
-        <p:column headerText="Acciones" style="width:260px">
-            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="ui-button-info"
-                             actionListener="#{proveedorView.startEdit(pvd)}"
-                             update=":editContainer"/>
-            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="ui-button-danger"
-                             actionListener="#{proveedorView.delete(pvd)}"
-                             update=":proveedoresForm:tabla :msgs"/>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<!-- Edición -->
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty proveedorView.selected}">
-        <p:panel header="Editar Proveedor" toggleable="true" collapsed="false">
-            <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
-                <h:outputLabel for="ec" value="Empresa:" />
-                <p:inputText id="ec" value="#{proveedorView.editCompanyName}" required="true"/>
-
-                <h:outputLabel for="ect" value="Contacto:" />
-                <p:inputText id="ect" value="#{proveedorView.editContact}" required="true"/>
-
-                <h:outputLabel for="ep" value="Teléfono:" />
-                <p:inputText id="ep" value="#{proveedorView.editPhone}" required="true"/>
-
-                <h:outputLabel for="ee" value="Email:" />
-                <p:inputText id="ee" value="#{proveedorView.editEmail}" required="true"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" icon="pi pi-check" styleClass="ui-button-success"
-                             actionListener="#{proveedorView.saveEdit}"
-                             update=":proveedoresForm:tabla :msgs :editContainer"/>
-            <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="ui-button-secondary"
-                             actionListener="#{proveedorView.cancelEdit}"
-                             update=":editContainer"/>
-        </p:panel>
+    <!-- Mensajes globales -->
+    <h:form id="growlForm">
+        <p:growl id="growlMensajes" showDetail="true" life="3000"/>
     </h:form>
-</h:panelGroup>
+
+    <!-- Menú / Acciones -->
+    <h:form id="accionesForm">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo Proveedor" icon="pi pi-plus"
+                                 actionListener="#{proveedorView.agregarProveedor}"
+                                 update=":dialogProveedorForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh"
+                                 actionListener="#{proveedorView.refresh}"
+                                 update=":formProveedores:tablaProveedores"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+    </h:form>
+
+    <!-- Tabla de proveedores -->
+    <h:form id="formProveedores">
+        <p:dataTable id="tablaProveedores"
+                     value="#{proveedorView.proveedores}"
+                     var="pvd"
+                     paginator="true" rows="10"
+                     rowKey="#{pvd.id_proveedor}"
+                     emptyMessage="No hay proveedores"
+                     responsiveLayout="scroll"
+                     stripedRows="true"
+                     rowHover="true"
+                     resizableColumns="true">
+            <p:column headerText="ID" sortBy="#{pvd.id_proveedor}" style="width:80px">
+                <h:outputText value="#{pvd.id_proveedor}"/>
+            </p:column>
+            <p:column headerText="Empresa" sortBy="#{pvd.companyName}" filterBy="#{pvd.companyName}" filterMatchMode="contains">
+                <h:outputText value="#{pvd.companyName}"/>
+            </p:column>
+            <p:column headerText="Contacto" sortBy="#{pvd.contact}" filterBy="#{pvd.contact}" filterMatchMode="contains">
+                <h:outputText value="#{pvd.contact}"/>
+            </p:column>
+            <p:column headerText="Teléfono" sortBy="#{pvd.phone}" filterBy="#{pvd.phone}" filterMatchMode="contains">
+                <h:outputText value="#{pvd.phone}"/>
+            </p:column>
+            <p:column headerText="Email" sortBy="#{pvd.email}" filterBy="#{pvd.email}" filterMatchMode="contains">
+                <h:outputText value="#{pvd.email}"/>
+            </p:column>
+            <p:column headerText="Acciones" style="width:220px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info"
+                                 actionListener="#{proveedorView.prepararEdicion(pvd)}"
+                                 update=":dialogProveedorForm"/>
+                <p:spacer width="6"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger"
+                                 oncomplete="if(!args.validationFailed) PF('confirmEliminarProveedor').show()"
+                                 process="@this"
+                                 update=":confirmEliminarForm"
+                                 actionListener="#{proveedorView.prepararEdicion(pvd)}"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <!-- Diálogo Crear / Editar -->
+    <p:dialog id="dialogProveedor" widgetVar="ventanaModalProveedor" modal="true" resizable="false" draggable="false" closable="true"
+              header="#{proveedorView.proveedorSeleccionado == null or proveedorView.proveedorSeleccionado.id_proveedor == null ? 'Nuevo Proveedor' : 'Editar Proveedor'}">
+        <h:form id="dialogProveedorForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Empresa" for="emp"/>
+                <p:inputText id="emp" value="#{proveedorView.editCompanyName}" required="true" label="Empresa"/>
+
+                <p:outputLabel value="Contacto" for="cont"/>
+                <p:inputText id="cont" value="#{proveedorView.editContact}" required="true" label="Contacto"/>
+
+                <p:outputLabel value="Teléfono" for="tel"/>
+                <p:inputText id="tel" value="#{proveedorView.editPhone}" required="true" label="Teléfono"/>
+
+                <p:outputLabel value="Email" for="mail"/>
+                <p:inputText id="mail" value="#{proveedorView.editEmail}" required="true" label="Email"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success"
+                             actionListener="#{proveedorView.guardarProveedor}"
+                             update=":growlForm:growlMensajes :formProveedores:tablaProveedores"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button"
+                             onclick="PF('ventanaModalProveedor').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <!-- Confirmación eliminar -->
+    <p:dialog id="confirmEliminar" widgetVar="confirmEliminarProveedor" modal="true" resizable="false" closable="false" header="Confirmar Eliminación">
+        <h:form id="confirmEliminarForm">
+            <h:panelGroup rendered="#{not empty proveedorView.proveedorSeleccionado}">
+                <h:outputText value="¿Eliminar proveedor '#{proveedorView.proveedorSeleccionado.companyName}'?"/>
+            </h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger"
+                             actionListener="#{proveedorView.eliminarProveedor}"
+                             update=":growlForm:growlMensajes :formProveedores:tablaProveedores"
+                             oncomplete="PF('confirmEliminarProveedor').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button"
+                             onclick="PF('confirmEliminarProveedor').hide()"/>
+        </h:form>
+    </p:dialog>
 
 </h:body>
 </html>

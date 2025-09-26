@@ -16,7 +16,6 @@ public record ProveedorDto (
         @NotBlank(message = "El correo no puede estar vacio")
         String email
 ){
-    // Getters JavaBean para compatibilidad con EL/JSF
     public Long getIdProveedor() { return id_proveedor; }
     public Long getId_proveedor() { return id_proveedor; }
 

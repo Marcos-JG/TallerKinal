@@ -8,25 +8,65 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarReportes">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{reporteView.agregarReporte}" update=":dialogReporteForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{reporteView.refresh}" update=":reportesForm:tablaReportes"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+    </h:form>
 
-<h:form id="msgsForm">
-    <p:messages id="msgs" closable="true" />
-</h:form>
+    <h:form id="reportesForm">
+        <p:dataTable id="tablaReportes" value="#{reporteView.reportes}" var="r" paginator="true" rows="10"
+                     rowKey="#{r.id_reporte}" emptyMessage="No hay reportes" responsiveLayout="scroll"
+                     sortBy="#{r.id_reporte}" sortOrder="ascending" stripedRows="true" rowHover="true">
+            <p:column headerText="ID" sortBy="#{r.id_reporte}" style="width:70px">
+                <h:outputText value="#{r.id_reporte}"/>
+            </p:column>
+            <p:column headerText="Id Cita" sortBy="#{r.idCita}">
+                <h:outputText value="#{r.idCita}"/>
+            </p:column>
+            <p:column headerText="Descripción" filterBy="#{r.description}" filterMatchMode="contains">
+                <h:outputText value="#{r.description}"/>
+            </p:column>
+            <p:column headerText="Total" sortBy="#{r.total}">
+                <h:outputText value="#{r.total}"/>
+            </p:column>
+            <p:column headerText="Acciones" style="width:160px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{reporteView.prepararEdicionReporte(r)}" update=":dialogReporteForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{reporteView.prepararEdicionReporte(r)}" oncomplete="PF('confirmEliminarReporte').show()" update=":confirmEliminarReporteForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
 
-<p:confirmDialog global="true" modal="true">
-    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
-</p:confirmDialog>
+    <p:dialog id="dialogReporte" widgetVar="ventanaModalReporte" modal="true" resizable="false" header="#{reporteView.selected == null ? 'Nuevo Reporte' : 'Editar Reporte'}">
+        <h:form id="dialogReporteForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Id Cita" for="cita"/>
+                <p:inputNumber id="cita" value="#{reporteView.editIdCita}" required="#{reporteView.selected == null}" />
+                <p:outputLabel value="Descripción" for="desc"/>
+                <p:inputTextarea id="desc" value="#{reporteView.editDescription}" autoResize="true" required="true"/>
+                <p:outputLabel value="Total" for="tot"/>
+                <p:inputNumber id="tot" value="#{reporteView.editTotal}" mode="decimal" minValue="0" />
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{reporteView.guardarReporte}" update=":growlForm:growlMensajes :reportesForm:tablaReportes"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalReporte').hide()"/>
+        </h:form>
+    </p:dialog>
 
-<h:form id="menuForm">
-    <p:menubar>
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
-    </p:menubar>
-</h:form>
-
-<h2 class="page-title">Reportes</h2>
-
-<p>Sección de reportes. Implementar vistas y funciones según necesidades.</p>
-
+    <p:dialog id="confirmEliminarReporte" widgetVar="confirmEliminarReporte" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarReporteForm">
+            <h:panelGroup rendered="#{not empty reporteView.selected}"><h:outputText value="¿Eliminar reporte '#{reporteView.selected.id_reporte}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{reporteView.eliminarReporte}" update=":growlForm:growlMensajes :reportesForm:tablaReportes" oncomplete="PF('confirmEliminarReporte').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarReporte').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

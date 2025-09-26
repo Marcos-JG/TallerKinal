@@ -1,9 +1,12 @@
 package org.Algorix.TallerKinal.web.controller;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import lombok.Data;
 import org.Algorix.TallerKinal.dominio.dto.AdministradorDto;
 import org.Algorix.TallerKinal.dominio.service.AdministradorService;
+import org.primefaces.PrimeFaces;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -14,17 +17,12 @@ import java.util.List;
 @Component("administradorView")
 @SessionScope
 @Data
-public class AdministradorView implements Serializable {
+public class AdministradorView {
     private final AdministradorService administradorService;
     private List<AdministradorDto> administradores;
     private AdministradorDto selected;
 
-    private String newName;
-    private String newLastName;
-    private String newEmail;
-    private String newPassword;
-    private String newPhone;
-
+    // Campos unificados para crear/editar
     private String editName;
     private String editLastName;
     private String editEmail;
@@ -38,8 +36,7 @@ public class AdministradorView implements Serializable {
     @PostConstruct
     public void init() {
         refresh();
-        clearNewForm();
-        clearEditForm();
+        clearEdits();
     }
 
     public void refresh() {
@@ -51,15 +48,23 @@ public class AdministradorView implements Serializable {
         }
     }
 
-    public void add() {
-        AdministradorDto dto = new AdministradorDto(null, newName, newLastName, newEmail, newPassword, newPhone);
-        administradorService.guardarAdministrador(dto);
-        refresh();
-        clearNewForm();
+    private void clearEdits() {
+        this.editName = "";
+        this.editLastName = "";
+        this.editEmail = "";
+        this.editPassword = "";
+        this.editPhone = "";
     }
 
-    public void startEdit(AdministradorDto a) {
+    public void agregarAdministrador() {
+        this.selected = null;
+        clearEdits();
+        PrimeFaces.current().executeScript("PF('ventanaModalAdministrador').show()");
+    }
+
+    public void prepararEdicionAdministrador(AdministradorDto a) {
         this.selected = a;
+        clearEdits();
         if (a != null) {
             this.editName = a.name();
             this.editLastName = a.lastname();
@@ -67,32 +72,47 @@ public class AdministradorView implements Serializable {
             this.editPassword = a.password();
             this.editPhone = a.phone();
         }
+        PrimeFaces.current().executeScript("PF('ventanaModalAdministrador').show()");
     }
 
-    public void saveEdit() {
-        if (selected == null) return;
-        AdministradorDto mod = new AdministradorDto(selected.id_admin(), editName, editLastName, editEmail, editPassword, editPhone);
-        administradorService.modificarAdministrador(selected.id_admin(), mod);
-        refresh();
-        clearEditForm();
+    public void guardarAdministrador() {
+        try {
+            if (this.selected == null) {
+                AdministradorDto dto = new AdministradorDto(null, editName, editLastName, editEmail, editPassword, editPhone);
+                administradorService.guardarAdministrador(dto);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Administrador Agregado"));
+            } else {
+                AdministradorDto mod = new AdministradorDto(selected.id_admin(), editName, editLastName, editEmail, editPassword, editPhone);
+                administradorService.modificarAdministrador(selected.id_admin(), mod);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Administrador Modificado"));
+            }
+            refresh();
+            PrimeFaces.current().ajax().update("administradoresForm:tabla", "growlForm:growlMensajes");
+            PrimeFaces.current().executeScript("PF('ventanaModalAdministrador').hide()");
+            this.selected = null;
+            clearEdits();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+        }
+    }
+
+    public void eliminarAdministrador() {
+        if (this.selected == null || this.selected.id_admin() == null) return;
+        try {
+            administradorService.eliminarAdministrador(this.selected.id_admin());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Administrador Eliminado"));
+            refresh();
+            PrimeFaces.current().ajax().update("administradoresForm:tabla", "growlForm:growlMensajes");
+            this.selected = null;
+            clearEdits();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo eliminar"));
+        }
+    }
+
+    public void cancelarAdministrador() {
         this.selected = null;
-    }
-
-    public void delete(AdministradorDto a) {
-        if (a == null || a.id_admin() == null) return;
-        administradorService.eliminarAdministrador(a.id_admin());
-        refresh();
-    }
-
-    public void cancelEdit() {
-        this.selected = null;
-        clearEditForm();
-    }
-
-    public void clearNewForm() {
-        this.newName = ""; this.newLastName = ""; this.newEmail = ""; this.newPassword = ""; this.newPhone = "";
-    }
-    public void clearEditForm() {
-        this.editName = ""; this.editLastName = ""; this.editEmail = ""; this.editPassword = ""; this.editPhone = "";
+        clearEdits();
+        PrimeFaces.current().executeScript("PF('ventanaModalAdministrador').hide()");
     }
 }
