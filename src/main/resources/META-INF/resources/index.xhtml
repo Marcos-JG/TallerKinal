@@ -23,6 +23,7 @@
             <!-- ajax=false para permitir faces-redirect en el outcome -->
             <p:commandButton value="Ingresar" icon="pi pi-sign-in" styleClass="ui-button-success"
                              action="#{clienteView.login}" ajax="false" update=":loginForm:status :loginForm:msgs"/>
+
             <p:commandButton value="Cerrar sesión" icon="pi pi-sign-out" styleClass="ui-button-secondary"
                              action="#{clienteView.logout}" update=":loginForm:status :loginForm:msgs"/>
         </p:panel>
