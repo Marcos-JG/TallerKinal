@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<h:html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Kinvana 2024412</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <p class="text-center">Taller Kinal es un espacio de formación técnica y profesional.</p>
+        <div class="card">
+            <h:form id="formulario-inventario">
+                <p:growl id="mensaje_emergente" showDetails="true"/>
+                <div class="card">
+                    <p:menubar>
+                        <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
+                                    update=":formulario-inventario:tabla-inventario"
+                                    actionListener="#{inventarioWeb.cargarDatos}"/>
+
+                        <p:menuitem value="Nuevo Producto" icon="pi pi-fw pi-plus"
+                                    actionListener="#{inventarioWeb.agregarProductos}"
+                                    update=":formulario-modal:ventana-producto"
+                                    onComplete="PF('ventanaModalProducto').show()"/>
+                    </p:menubar>
+                </div>
+                <!--       Tabla de datos         -->
+                <div class="card">
+                    <p:dataTable value="#{inventarioWeb.inventario}" var="producto"
+                                 id="tabla-inventario" widgetVar="tablaInventario">
+                        <f:facet name="header">
+                            <div class="flex justify-content-center flex-wrap card-container yellow-container">
+                                <div class="flex align-items-center justify-content-center w-20rem h-4rem bg-blue-500 font-bold text-gray-900 border-round m-2">
+                                    <h3>Taller KINAL, Inventario</h3>
+                                </div>
+                            </div>
+                        </f:facet>
+                        <p:column headerText="ID">
+                            <h:outputText value="#{producto.idProducto}"/>
+                        </p:column>
+                        <p:column headerText="Proveedor">
+                            <h:outputText value="#{producto.idProveedor}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{producto.name}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{producto.description}"/>
+                        </p:column>
+                        <p:column headerText="Categoría">
+                            <h:outputText value="#{producto.idCategoria}"/>
+                        </p:column>
+                        <p:column headerText="Especificación">
+                            <h:outputText value="#{producto.specification}"/>
+                        </p:column>
+                        <p:column headerText="Precio Unitario">
+                            <h:outputText value="#{producto.unitPrice}"/>
+                        </p:column>
+                        <p:column headerText="Stock Actual">
+                            <h:outputText value="#{producto.currentStock}"/>
+                        </p:column>
+                        <p:column headerText="Stock Mínimo">
+                            <h:outputText value="#{producto.minimumStock}"/>
+                        </p:column>
+                        <p:column headerText="Marca">
+                            <h:outputText value="#{producto.idMarca}"/>
+                        </p:column>
+                        <p:column headerText="Fecha Entrada">
+                            <h:outputText value="#{producto.entryDate}"/>
+                        </p:column>
+                        <p:column headerText="OPCION">
+                            <p:commandButton value="Editar" icon="pi pi-pencil" class="ui-button-primary">
+                                <!-- Aquí puedes agregar lógica para editar -->
+                            </p:commandButton>
+                            <p:commandButton value="Eliminar" icon="pi pi-trash" class="ui-button-danger">
+                                <!-- Aquí puedes agregar lógica para eliminar -->
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+            <h:form id="formulario-modal">
+                <p:dialog header="DETALLE DEL PRODUCTO" showEffect="fade"
+                          modal="true" widgetVar="ventanaModalProducto" responsive="true">
+                    <p:outputPanel id="ventana-producto" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="idProducto">ID Producto</p:outputLabel>
+                            <p:inputText id="idProducto" value="#{inventarioWeb.productoInventario.idProducto}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="idProveedor">Proveedor</p:outputLabel>
+                            <p:inputText id="idProveedor" value="#{inventarioWeb.productoInventario.proveedor.id_proveedor}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="name">Nombre</p:outputLabel>
+                            <p:inputText id="name" value="#{inventarioWeb.productoInventario.nombre}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="description">Descripción</p:outputLabel>
+                            <p:inputText id="description" value="#{inventarioWeb.productoInventario.descripcion}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="idCategoria">Categoría</p:outputLabel>
+                            <p:inputText id="idCategoria" value="#{inventarioWeb.productoInventario.categoria.idCategoria}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="specification">Especificación</p:outputLabel>
+                            <p:inputText id="specification" value="#{inventarioWeb.productoInventario.especificacion}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="unitPrice">Precio Unitario</p:outputLabel>
+                            <p:inputText id="unitPrice" value="#{inventarioWeb.productoInventario.precioUnitario}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="currentStock">Stock Actual</p:outputLabel>
+                            <p:inputText id="currentStock" value="#{inventarioWeb.productoInventario.stockActual}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="minimumStock">Stock Mínimo</p:outputLabel>
+                            <p:inputText id="minimumStock" value="#{inventarioWeb.productoInventario.stockMinimo}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="idMarca">Marca</p:outputLabel>
+                            <p:inputText id="idMarca" value="#{inventarioWeb.productoInventario.marca.idMarca}"/>
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="entryDate">Fecha Entrada</p:outputLabel>
+                            <p:inputText id="entryDate" value="#{inventarioWeb.productoInventario.fechaEntrada}"/>
+                        </div>c
+                    </p:outputPanel>
+                    <f:facet name="footer">
+                        <p:commandButton value="GUARDAR" icon="pi pi-check" class="ui-button-primary"
+                                         actionListener="#{inventarioWeb.guardarProducto}"
+                                         update=":formulario-inventario:tabla-inventario"
+                                         onComplete="PF('ventanaModalProducto').hide()"/>
+                        <p:commandButton value="CANCELAR" icon="pi pi-times" class="ui-button-secondary"
+                                         onClick="PF('ventanaModalProducto').hide()" type="button"/>
+                    </f:facet>
+                </p:dialog>
+            </h:form>
+        </div>
+    </h:body>
+</h:html>

@@ -11,10 +11,10 @@ import java.time.LocalDate;
 public class ProductoInventarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_producto;
+    private Long idProducto;
 
     @ManyToOne
-    @JoinColumn(name = "id_proveedor")
+    @JoinColumn(name = "idProveedor")
     private ProveedorEntity proveedor;
 
     @Column(length = 100, nullable = false)
@@ -23,7 +23,7 @@ public class ProductoInventarioEntity {
     private String descripcion;
 
     @ManyToOne
-    @JoinColumn(name = "id_categoria")
+    @JoinColumn(name = "idCategoria")
     private CategoriaProductoEntity categoria;
 
     @Column(length = 100)
@@ -36,7 +36,7 @@ public class ProductoInventarioEntity {
     private Integer stockMinimo;
 
     @ManyToOne
-    @JoinColumn(name = "id_marca")
+    @JoinColumn(name = "idMarca")
     private MarcaProductoEntity marca;
 
     @Column

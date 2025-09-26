@@ -14,7 +14,7 @@ import java.util.List;
 public interface DetalleUsoProductoMapper {
 
     @Mapping(source = "trabajoRealizado.id_trabajo", target = "idTrabajoRealizado")
-    @Mapping(source = "productoInventario.id_producto", target = "idProductoInventario")
+    @Mapping(source = "productoInventario.idProducto", target = "idProductoInventario")
     @Mapping(source = "cantidadUsada", target = "usedQuantity")
     @Mapping(source = "precioUnitario", target = "unitPrice")
     @Mapping(source = "subtotal", target = "subtotal")
@@ -23,14 +23,14 @@ public interface DetalleUsoProductoMapper {
     List<DetalleUsoProductoDto> toDto(Iterable <DetalleUsoProductoEntity> entities);
 
     @Mapping(source = "idTrabajoRealizado", target = "trabajoRealizado.id_trabajo")
-    @Mapping(source = "idProductoInventario", target = "productoInventario.id_producto")
+    @Mapping(source = "idProductoInventario", target = "productoInventario.idProducto")
     @Mapping(source = "usedQuantity", target = "cantidadUsada")
     @Mapping(source = "unitPrice", target = "precioUnitario")
     @Mapping(source = "subtotal", target = "subtotal")
     DetalleUsoProductoEntity toEntity(DetalleUsoProductoDto d);
 
     @Mapping(source = "idTrabajoRealizado", target = "trabajoRealizado.id_trabajo")
-    @Mapping(source = "idProductoInventario", target = "productoInventario.id_producto")
+    @Mapping(source = "idProductoInventario", target = "productoInventario.idProducto")
     @Mapping(source = "usedQuantity", target = "cantidadUsada")
     @Mapping(source = "unitPrice", target = "precioUnitario")
     @Mapping(source = "subtotal", target = "subtotal")

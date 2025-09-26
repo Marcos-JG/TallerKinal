@@ -2,6 +2,7 @@ package org.Algorix.TallerKinal.persistence;
 
 import org.Algorix.TallerKinal.dominio.dto.ModProductoInventarioDto;
 import org.Algorix.TallerKinal.dominio.dto.ProductoInventarioDto;
+import org.Algorix.TallerKinal.dominio.dto.productoWebDto;
 import org.Algorix.TallerKinal.dominio.exception.ProductoNoExiste;
 import org.Algorix.TallerKinal.dominio.repository.ProductoRepository;
 import org.Algorix.TallerKinal.persistence.crud.CrudProducto;
@@ -62,5 +63,17 @@ public class ProductoInventarioEntityRepository implements ProductoRepository {
         ProductoInventarioEntity producto = this.productoInventarioMapper.toEntity(productoInventarioDto);
         this.crudProducto.save(producto);
         return this.productoInventarioMapper.toDto(producto);
+    }
+
+    @Override
+    public List<productoWebDto> obtenerProductos() {
+        return this.productoInventarioMapper.toProductoWebDto(this.crudProducto.findAll());
+    }
+
+    @Override
+    public productoWebDto guardarProductos(productoWebDto productoWeb) {
+        ProductoInventarioEntity producto = this.productoInventarioMapper.toEntitys(productoWeb);
+        this.crudProducto.save(producto);
+        return this.productoInventarioMapper.toProductoWebDto(producto);
     }
 }
