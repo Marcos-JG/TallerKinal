@@ -26,7 +26,7 @@ public class ClienteView implements Serializable {
     private String newEmail;
     private String newPassword;
 
-    // Campos de edición (lastName no se edita, acorde a ModClienteDto)
+    // Campos de edición (lastName no se edita, acorde MechanicView ModClienteDto)
     private String editName;
     private String editEmail;
     private String editPassword;

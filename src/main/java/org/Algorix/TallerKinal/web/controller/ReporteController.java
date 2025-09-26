@@ -34,7 +34,7 @@ public class ReporteController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar reporte por su id",
-            description = "Retorna un reporte en base a su id",
+            description = "Retorna un reporte en base MechanicView su id",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operacion exitosa"),
                     @ApiResponse(responseCode = "404", description = "reporte no encontrada", content = @Content)

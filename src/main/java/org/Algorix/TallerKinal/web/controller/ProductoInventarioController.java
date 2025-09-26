@@ -38,14 +38,14 @@ public class ProductoInventarioController {
     @GetMapping("{codigo}")
     @Operation(
             summary = "Buscar producto por su identificador",
-            description = "Retorna un producto en base a su identificador",
+            description = "Retorna un producto en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Producto no encontrado", content = @Content)
             }
     )
     public ResponseEntity<ProductoInventarioDto> obtenerProductoPorCodigo(
-            @Parameter(description = "Identificador del producto a recuperar",example = "5")
+            @Parameter(description = "Identificador del producto MechanicView recuperar",example = "5")
             @PathVariable Long codigo){
         return ResponseEntity.ok(this.productoInventarioService.obtenerProductoPorCodigo(codigo));
     }

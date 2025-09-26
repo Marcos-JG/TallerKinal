@@ -37,7 +37,7 @@ public class CategoriaProductoController {
     @GetMapping("{codigo}")
     @Operation(
             summary = "Buscar categoría por su identificador",
-            description = "Retorna una categoría en base a su identificador",
+            description = "Retorna una categoría en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Categoría no encontrada", content = @Content)

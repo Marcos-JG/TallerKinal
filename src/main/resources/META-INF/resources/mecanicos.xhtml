@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Mecánicos</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+    <!-- Menú superior -->
+    <h:form id="menuForm">
+        <p:menubar styleClass="top-menubar">
+            <p:menuitem value="Inicio" icon="pi pi-home" url="index.html" />
+            <f:facet name="options">
+                <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button"
+                                 onclick="PF('newMecanicoPanel').toggle()"/>
+            </f:facet>
+        </p:menubar>
+    </h:form>
+
+    <h:form id="msgsForm">
+        <p:messages id="msgs" closable="true" />
+    </h:form>
+
+    <!-- Diálogo global de confirmación (PrimeFaces) -->
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" modal="true">
+        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+    </p:confirmDialog>
+
+    <h2 class="page-title">Mecánicos</h2>
+
+    <!-- Formulario: Nuevo Mecánico (colapsable) -->
+    <h:form id="newForm">
+        <p:panel header="Nuevo Mecánico" toggleable="true" collapsed="true" widgetVar="newMecanicoPanel">
+            <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+                <h:outputLabel for="name" value="Nombre:" />
+                <p:inputText id="name" value="#{mecanicoView.newName}" required="true" label="Nombre"/>
+
+                <h:outputLabel for="last" value="Apellido:" />
+                <p:inputText id="last" value="#{mecanicoView.newLastName}" required="true" label="Apellido"/>
+
+                <h:outputLabel for="phone" value="Teléfono:" />
+                <p:inputText id="phone" value="#{mecanicoView.newPhone}" required="true" label="Teléfono"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Agregar" icon="pi pi-check" styleClass="ui-button-success"
+                             actionListener="#{mecanicoView.add}"
+                             update=":mecanicosForm:tabla :msgsForm:msgs :newForm" />
+            <p:commandButton value="Agregar otro" icon="pi pi-refresh" styleClass="ui-button-secondary"
+                             actionListener="#{mecanicoView.clearNewForm}"
+                             update=":newForm :msgsForm:msgs" />
+        </p:panel>
+    </h:form>
+
+    <!-- Listado y Filtro -->
+    <h:form id="mecanicosForm">
+        <p:dataTable id="tabla"
+                     value="#{mecanicoView.mecanicos}"
+                     var="m"
+                     widgetVar="mecanicosTable"
+                     paginator="true" rows="10"
+                     rowKey="#{m.idMecanico}"
+                     emptyMessage="No hay mecánicos"
+                     responsiveLayout="scroll"
+                     stripedRows="true"
+                     rowHover="true"
+                     resizableColumns="true">
+            <p:column headerText="ID" style="width:80px" sortBy="#{m.idMecanico}">
+                <h:outputText value="#{m.idMecanico}" />
+            </p:column>
+            <p:column headerText="Nombre" sortBy="#{m.name}" filterBy="#{m.name}" filterMatchMode="contains">
+                <h:outputText value="#{m.name}" />
+            </p:column>
+            <p:column headerText="Apellido" sortBy="#{m.lastName}" filterBy="#{m.lastName}" filterMatchMode="contains">
+                <h:outputText value="#{m.lastName}" />
+            </p:column>
+            <p:column headerText="Teléfono" sortBy="#{m.phone}" filterBy="#{m.phone}" filterMatchMode="contains">
+                <h:outputText value="#{m.phone}" />
+            </p:column>
+            <p:column headerText="Acciones" style="width:260px">
+                <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="ui-button-info"
+                                 actionListener="#{mecanicoView.startEdit(m)}"
+                                 update=":editContainer"/>
+                <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="ui-button-danger"
+                                 actionListener="#{mecanicoView.delete(m)}"
+                                 update=":mecanicosForm:tabla :msgsForm:msgs">
+                    <p:confirm header="Confirmar eliminación" message="¿Desea eliminar este mecánico?" icon="pi pi-exclamation-triangle" />
+                </p:commandButton>
+             </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <!-- Edición -->
+    <h:panelGroup id="editContainer">
+        <h:form id="editForm" rendered="#{not empty mecanicoView.selected}">
+            <p:panel header="Editar Mecánico" toggleable="true" collapsed="false">
+                <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+                    <h:outputLabel for="ename" value="Nombre:" />
+                    <p:inputText id="ename" value="#{mecanicoView.editName}" required="true"/>
+
+                    <h:outputLabel for="elast" value="Apellido:" />
+                    <p:inputText id="elast" value="#{mecanicoView.editLastName}" required="true"/>
+
+                    <h:outputLabel for="ephone" value="Teléfono:" />
+                    <p:inputText id="ephone" value="#{mecanicoView.editPhone}" required="true"/>
+                </h:panelGrid>
+                <p:separator/>
+                <p:commandButton value="Guardar" icon="pi pi-check" styleClass="ui-button-success"
+                                 actionListener="#{mecanicoView.saveEdit}"
+                                 update=":mecanicosForm:tabla :msgsForm:msgs :editContainer"/>
+                <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="ui-button-secondary"
+                                 actionListener="#{mecanicoView.cancelEdit}"
+                                 update=":editContainer :msgsForm:msgs"/>
+            </p:panel>
+        </h:form>
+    </h:panelGroup>
+
+</h:body>
+</html>

@@ -22,9 +22,9 @@ public record ProductoInventarioDto(
      String specification,
     @DecimalMin(value = "0.0", inclusive = true, message = "El precio unitario no puede ser negativo")
      Double unitPrice,
-    @Min(value = 0, message = "El stock actual no puede ser menor a 0")
+    @Min(value = 0, message = "El stock actual no puede ser menor MechanicView 0")
      Integer currentStock,
-    @Min(value = 0, message = "El stock mínimo no puede ser menor a 0")
+    @Min(value = 0, message = "El stock mínimo no puede ser menor MechanicView 0")
      Integer minimumStock,
      Long idMarca,
     @PastOrPresent(message = "La fecha de entrada no puede ser futura")

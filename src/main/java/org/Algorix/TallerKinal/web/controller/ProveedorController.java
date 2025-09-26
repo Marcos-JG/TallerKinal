@@ -30,7 +30,7 @@ public class ProveedorController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar proveedor por su identificador",
-            description = "Retorna un proveedor en base a su identificador",
+            description = "Retorna un proveedor en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Proveedor no encontrado", content = @Content)

@@ -13,6 +13,7 @@ import java.util.List;
 public interface MecanicoMapper {
 
 
+    @Mapping(source = "id_mecanico", target = "idMecanico")
     @Mapping(source = "nombre", target = "name")
     @Mapping(source = "apellido", target = "lastName")
     @Mapping(source = "telefono", target = "phone")
@@ -20,6 +21,7 @@ public interface MecanicoMapper {
 
     public List<MecanicoDto> toDto(Iterable <MecanicoEntity> entities);
 
+    @Mapping(source = "idMecanico", target = "id_mecanico")
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "lastName", target = "apellido")
     @Mapping(source = "phone", target = "telefono")

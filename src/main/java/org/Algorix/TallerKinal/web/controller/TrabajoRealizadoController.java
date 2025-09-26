@@ -32,7 +32,7 @@ public class TrabajoRealizadoController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar trabajo realizado por su identificador",
-            description = "Retorna un trabajo realizado en base a su identificador",
+            description = "Retorna un trabajo realizado en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Trabajo no encontrado", content = @Content)

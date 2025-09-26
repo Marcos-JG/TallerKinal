@@ -35,7 +35,7 @@ public class DetalleUsoProductoController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar detalle por su identificador",
-            description = "Retorna un detalle en base a su identificador",
+            description = "Retorna un detalle en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "detalle no encontrado", content = @Content)

@@ -20,7 +20,7 @@ public record ModProductoInventarioDto(
         Integer currentStock,
         Integer minimumStock,
         Long idMarca,
-        @PastOrPresent(message = "La fecha de entrada debe ser anterior o igual a la fecha actual")
+        @PastOrPresent(message = "La fecha de entrada debe ser anterior o igual MechanicView la fecha actual")
         LocalDate entryDate
 
 ) {

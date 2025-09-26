@@ -56,11 +56,11 @@ public class InventarioWeb implements Serializable {
         this.productoInventario.setCategoria(new CategoriaProductoEntity());
         this.productoInventario.setMarca(new MarcaProductoEntity());
     }
-
+/*
     // Guarda el producto desde el modal
     public void guardarProducto() {
         try {
-            // Mapeamos el DTO web a entity
+            // Mapeamos el DTO web MechanicView entity
             ProductoInventarioEntity entity = mapper.toEntity(productoInventario);
 
             // Guardamos con el servicio
@@ -74,5 +74,5 @@ public class InventarioWeb implements Serializable {
             logger.error("Error al guardar producto", e);
         }
     }
-
+*/
 }

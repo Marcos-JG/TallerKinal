@@ -16,8 +16,8 @@ public record ModVehiculoDto (
         @NotNull(message = "La marca no puede estar vacia")
         MarcaVehiculo marca,
 
-        @Min(value = 1886, message = "El año no puede ser menor a 1886")
-        @Max(value = 2100, message = "El año no puede ser mayor a 2100")
+        @Min(value = 1886, message = "El año no puede ser menor MechanicView 1886")
+        @Max(value = 2100, message = "El año no puede ser mayor MechanicView 2100")
         Integer year,
 
         Long idCliente

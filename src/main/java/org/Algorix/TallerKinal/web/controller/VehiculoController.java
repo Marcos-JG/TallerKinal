@@ -35,7 +35,7 @@ public class VehiculoController {
     @GetMapping("{placas}")
     @Operation(
             summary = "Buscar Vehiculo por su placa",
-            description = "Retorna una vehiculo en base a su placa",
+            description = "Retorna una vehiculo en base MechanicView su placa",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operacion exitosa"),
                     @ApiResponse(responseCode = "404", description = "Vehiculo no encontrada", content = @Content)

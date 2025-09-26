@@ -9,7 +9,7 @@ public record ModReporteDto(
         Long idCita,
         @NotBlank(message = "La descripcion del reporte no puede estar vacia")
         String description,
-        @Min(value = 0, message = "El total del reporte debe ser mayor o igual a 0")
+        @Min(value = 0, message = "El total del reporte debe ser mayor o igual MechanicView 0")
         Double total
 ) {
 }

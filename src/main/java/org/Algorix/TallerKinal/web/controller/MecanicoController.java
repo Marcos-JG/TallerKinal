@@ -35,7 +35,7 @@ public class MecanicoController {
     @GetMapping("{codigo}")
     @Operation(
             summary = "Buscar mecánico por su identificador",
-            description = "Retorna un mecánico en base a su identificador",
+            description = "Retorna un mecánico en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Mecánico no encontrado", content = @Content)

@@ -34,7 +34,7 @@ public class ClienteController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar cliente por su identificador",
-            description = "Retorna un cliente en base a su identificador",
+            description = "Retorna un cliente en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Cliente no encontrado", content = @Content)

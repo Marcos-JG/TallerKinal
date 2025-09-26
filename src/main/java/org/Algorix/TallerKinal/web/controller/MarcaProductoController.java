@@ -34,7 +34,7 @@ public class MarcaProductoController {
     @GetMapping("{codigo}")
     @Operation(
             summary = "Buscar marca por su identificador",
-            description = "Retorna una marca en base a su identificador",
+            description = "Retorna una marca en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Marca no encontrada", content = @Content)

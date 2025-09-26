@@ -33,7 +33,7 @@ public class CitaController {
     @GetMapping("{id}")
     @Operation(
             summary = "Buscar cita por su identificador",
-            description = "Retorna una cita en base a su identificador",
+            description = "Retorna una cita en base MechanicView su identificador",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Operación exitosa"),
                     @ApiResponse(responseCode = "404", description = "Cita no encontrada", content = @Content)
