@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Trabajos Realizados</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<h:form id="msgsForm">
+    <p:messages id="msgs" closable="true" />
+</h:form>
+
+<p:confirmDialog global="true" modal="true">
+    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+</p:confirmDialog>
+
+<h:form id="menuForm">
+    <p:menubar>
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
+        <f:facet name="options">
+            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newTrabajoPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<h:form id="newForm">
+    <p:panel header="Nuevo Trabajo" widgetVar="newTrabajoPanel" toggleable="true" collapsed="true">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="idCita" value="Id Cita:" />
+            <p:inputText id="idCita" value="#{trabajoRealizadoView.newIdCita}" required="true"/>
+            <h:outputLabel for="desc" value="Descripción:" />
+            <p:inputText id="desc" value="#{trabajoRealizadoView.newDescription}" required="true"/>
+            <h:outputLabel for="mano" value="Mano de obra:" />
+            <p:inputText id="mano" value="#{trabajoRealizadoView.newLaborCost}"/>
+            <h:outputLabel for="total" value="Total trabajo:" />
+            <p:inputText id="total" value="#{trabajoRealizadoView.newTotalWork}"/>
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Agregar" actionListener="#{trabajoRealizadoView.add}" update=":trabajosForm:tabla :msgsForm:msgs :newForm"/>
+    </p:panel>
+</h:form>
+
+<h:form id="trabajosForm">
+    <p:dataTable id="tabla" value="#{trabajoRealizadoView.trabajos}" var="t" paginator="true" rows="10" rowKey="#{t.id_trabajo}">
+        <p:column headerText="ID"><h:outputText value="#{t.id_trabajo}"/></p:column>
+        <p:column headerText="Id Cita"><h:outputText value="#{t.idCita}"/></p:column>
+        <p:column headerText="Descripción"><h:outputText value="#{t.description}"/></p:column>
+        <p:column headerText="Mano de obra"><h:outputText value="#{t.laborCost}"/></p:column>
+        <p:column headerText="Total trabajo"><h:outputText value="#{t.totalWork}"/></p:column>
+        <p:column headerText="Acciones">
+            <p:commandButton value="Editar" actionListener="#{trabajoRealizadoView.startEdit(t)}" update=":editContainer"/>
+            <p:commandButton value="Eliminar" actionListener="#{trabajoRealizadoView.delete(t)}" update=":trabajosForm:tabla :msgsForm:msgs">
+                <p:confirm header="Confirmar" message="¿Eliminar trabajo?" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty trabajoRealizadoView.selected}">
+        <p:panel header="Editar Trabajo">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="edesc" value="Descripción:" />
+                <p:inputText id="edesc" value="#{trabajoRealizadoView.editDescription}"/>
+                <h:outputLabel for="emano" value="Mano de obra:" />
+                <p:inputText id="emano" value="#{trabajoRealizadoView.editLaborCost}"/>
+                <h:outputLabel for="etotal" value="Total trabajo:" />
+                <p:inputText id="etotal" value="#{trabajoRealizadoView.editTotalWork}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" actionListener="#{trabajoRealizadoView.saveEdit}" update=":trabajosForm:tabla :msgsForm:msgs :editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

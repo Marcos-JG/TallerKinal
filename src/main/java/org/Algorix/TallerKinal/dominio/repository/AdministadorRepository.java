@@ -9,4 +9,9 @@ public interface AdministadorRepository {
     List<AdministradorDto> obtenerAdministradores();
     AdministradorDto buscarPorId(Long id);
     AdministradorDto iniciarSesion(UserAdminDto userAdminDto);
+
+    // CRUD adicionales
+    AdministradorDto guardarAdministrador(AdministradorDto administradorDto);
+    AdministradorDto modificarAdministrador(Long id, AdministradorDto administradorDto);
+    void eliminarAdministrador(Long id);
 }

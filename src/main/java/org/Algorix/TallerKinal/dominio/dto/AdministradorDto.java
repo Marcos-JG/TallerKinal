@@ -21,5 +21,18 @@ public record AdministradorDto(
         @NotBlank(message = "El teléfono no puede estar vacio")
         String phone
 ) {
+    // Getters JavaBean para compatibilidad con EL/JSF (snake_case y camelCase)
+    public Long getIdAdmin() { return id_admin; }
+    public Long getId_admin() { return id_admin; }
 
+    public String getName() { return name; }
+
+    public String getLastname() { return lastname; }
+    public String getLastName() { return lastname; }
+
+    public String getEmail() { return email; }
+
+    public String getPassword() { return password; }
+
+    public String getPhone() { return phone; }
 }

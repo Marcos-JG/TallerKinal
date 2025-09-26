@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Administradores</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<h:form id="msgsForm">
+    <p:messages id="msgs" closable="true" />
+</h:form>
+
+<p:confirmDialog global="true" modal="true">
+    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+</p:confirmDialog>
+
+<h:form id="menuForm">
+    <p:menubar>
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
+        <f:facet name="options">
+            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newAdminPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<h:form id="newForm">
+    <p:panel header="Nuevo Administrador" widgetVar="newAdminPanel" toggleable="true" collapsed="true">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="name" value="Nombre:" />
+            <p:inputText id="name" value="#{administradorView.newName}" required="true"/>
+            <h:outputLabel for="lastname" value="Apellido:" />
+            <p:inputText id="lastname" value="#{administradorView.newLastName}" required="true"/>
+            <h:outputLabel for="email" value="Email:" />
+            <p:inputText id="email" value="#{administradorView.newEmail}" required="true"/>
+            <h:outputLabel for="password" value="Password:" />
+            <p:password id="password" value="#{administradorView.newPassword}" required="true"/>
+            <h:outputLabel for="phone" value="Teléfono:" />
+            <p:inputText id="phone" value="#{administradorView.newPhone}" />
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Agregar" actionListener="#{administradorView.add}" update=":administradoresForm:tabla :msgsForm:msgs :newForm"/>
+    </p:panel>
+</h:form>
+
+<h:form id="administradoresForm">
+    <p:dataTable id="tabla" value="#{administradorView.administradores}" var="a" paginator="true" rows="10" rowKey="#{a.id_admin}">
+        <p:column headerText="ID"><h:outputText value="#{a.id_admin}"/></p:column>
+        <p:column headerText="Nombre"><h:outputText value="#{a.name}"/></p:column>
+        <p:column headerText="Apellido"><h:outputText value="#{a.lastname}"/></p:column>
+        <p:column headerText="Email"><h:outputText value="#{a.email}"/></p:column>
+        <p:column headerText="Teléfono"><h:outputText value="#{a.phone}"/></p:column>
+        <p:column headerText="Acciones">
+            <p:commandButton value="Editar" actionListener="#{administradorView.startEdit(a)}" update=":editContainer"/>
+            <p:commandButton value="Eliminar" actionListener="#{administradorView.delete(a)}" update=":administradoresForm:tabla :msgsForm:msgs">
+                <p:confirm header="Confirmar" message="¿Eliminar administrador?" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty administradorView.selected}">
+        <p:panel header="Editar Administrador">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="ename" value="Nombre:" />
+                <p:inputText id="ename" value="#{administradorView.editName}"/>
+                <h:outputLabel for="elast" value="Apellido:" />
+                <p:inputText id="elast" value="#{administradorView.editLastName}"/>
+                <h:outputLabel for="eemail" value="Email:" />
+                <p:inputText id="eemail" value="#{administradorView.editEmail}"/>
+                <h:outputLabel for="epass" value="Password:" />
+                <p:password id="epass" value="#{administradorView.editPassword}"/>
+                <h:outputLabel for="ephone" value="Teléfono:" />
+                <p:inputText id="ephone" value="#{administradorView.editPhone}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" actionListener="#{administradorView.saveEdit}" update=":administradoresForm:tabla :msgsForm:msgs :editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

@@ -28,4 +28,27 @@ public record CitaDto (
         @NotBlank (message = "Los comentarios no pueden estar vacios")
         String comments
 ){
+    // Getters JavaBean para compatibilidad con EL/JSF (variantes con y sin guión bajo)
+    public Long getIdCita() { return id_cita; }
+    public Long getId_cita() { return id_cita; }
+
+    public LocalDate getAppointmentDate() { return appointmentDate; }
+    public LocalDate getAppointment_date() { return appointmentDate; }
+
+    public Long getIdEmpleado() { return idEmpleado; }
+    public Long getId_empleado() { return idEmpleado; }
+
+    public Long getIdCliente() { return idCliente; }
+    public Long getId_cliente() { return idCliente; }
+
+    public String getAppointmentType() { return appointmentType; }
+    public String getAppointment_type() { return appointmentType; }
+
+    public Long getIdVehiculo() { return idVehiculo; }
+    public Long getId_vehiculo() { return idVehiculo; }
+
+    public String getStatus() { return status; }
+
+    public String getComments() { return comments; }
+    public String getComentarios() { return comments; }
 }

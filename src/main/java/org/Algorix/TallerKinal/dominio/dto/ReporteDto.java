@@ -14,4 +14,14 @@ public record ReporteDto (
         @DecimalMin(value = "0.0", inclusive = true, message = "El total no puede ser negativo")
         BigDecimal total
 ){
+    // Getters JavaBean para compatibilidad con EL/JSF
+    public Long getIdReporte() { return id_reporte; }
+    public Long getId_reporte() { return id_reporte; }
+
+    public Long getIdCita() { return idCita; }
+    public Long getId_cita() { return idCita; }
+
+    public String getDescription() { return description; }
+
+    public BigDecimal getTotal() { return total; }
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Marcas de Producto</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<h:form id="msgsForm">
+    <p:messages id="msgs" closable="true" />
+</h:form>
+
+<p:confirmDialog global="true" modal="true">
+    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+</p:confirmDialog>
+
+<h:form id="menuForm">
+    <p:menubar>
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
+        <f:facet name="options">
+            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newMarcaPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<h:form id="newForm">
+    <p:panel header="Nueva Marca" widgetVar="newMarcaPanel" toggleable="true" collapsed="true">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="name" value="Nombre:" />
+            <p:inputText id="name" value="#{marcaProductoView.newName}" required="true"/>
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Agregar" actionListener="#{marcaProductoView.add}" update=":marcaForm:tabla :msgsForm:msgs :newForm"/>
+    </p:panel>
+</h:form>
+
+<h:form id="marcaForm">
+    <p:dataTable id="tabla" value="#{marcaProductoView.marcas}" var="m" paginator="true" rows="10" rowKey="#{m.id_marca}">
+        <p:column headerText="ID"><h:outputText value="#{m.id_marca}"/></p:column>
+        <p:column headerText="Nombre"><h:outputText value="#{m.name}"/></p:column>
+        <p:column headerText="Acciones">
+            <p:commandButton value="Editar" actionListener="#{marcaProductoView.startEdit(m)}" update=":editContainer"/>
+            <p:commandButton value="Eliminar" actionListener="#{marcaProductoView.delete(m)}" update=":marcaForm:tabla :msgsForm:msgs">
+                <p:confirm header="Confirmar" message="¿Eliminar marca?" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty marcaProductoView.selected}">
+        <p:panel header="Editar Marca">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="ename" value="Nombre:" />
+                <p:inputText id="ename" value="#{marcaProductoView.editName}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" actionListener="#{marcaProductoView.saveEdit}" update=":marcaForm:tabla :msgsForm:msgs :editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

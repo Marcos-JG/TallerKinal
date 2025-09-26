@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Categorías de Producto</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<h:form id="msgsForm">
+    <p:messages id="msgs" closable="true" />
+</h:form>
+
+<p:confirmDialog global="true" modal="true">
+    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+</p:confirmDialog>
+
+<h:form id="menuForm">
+    <p:menubar>
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
+        <f:facet name="options">
+            <p:commandButton value="Agregar nueva" icon="pi pi-plus" type="button" onclick="PF('newCategoriaPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<h:form id="newForm">
+    <p:panel header="Nueva Categoría" widgetVar="newCategoriaPanel" toggleable="true" collapsed="true">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="name" value="Nombre:" />
+            <p:inputText id="name" value="#{categoriaProductoView.newName}" required="true"/>
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Agregar" actionListener="#{categoriaProductoView.add}" update=":categoriaForm:tabla :msgsForm:msgs :newForm"/>
+    </p:panel>
+</h:form>
+
+<h:form id="categoriaForm">
+    <p:dataTable id="tabla" value="#{categoriaProductoView.categorias}" var="cat" paginator="true" rows="10" rowKey="#{cat.id_categoria}">
+        <p:column headerText="ID"><h:outputText value="#{cat.id_categoria}"/></p:column>
+        <p:column headerText="Nombre"><h:outputText value="#{cat.name}"/></p:column>
+        <p:column headerText="Acciones">
+            <p:commandButton value="Editar" actionListener="#{categoriaProductoView.startEdit(cat)}" update=":editContainer"/>
+            <p:commandButton value="Eliminar" actionListener="#{categoriaProductoView.delete(cat)}" update=":categoriaForm:tabla :msgsForm:msgs">
+                <p:confirm header="Confirmar" message="¿Eliminar categoría?" />
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty categoriaProductoView.selected}">
+        <p:panel header="Editar Categoría">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="ename" value="Nombre:" />
+                <p:inputText id="ename" value="#{categoriaProductoView.editName}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" actionListener="#{categoriaProductoView.saveEdit}" update=":categoriaForm:tabla :msgsForm:msgs :editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

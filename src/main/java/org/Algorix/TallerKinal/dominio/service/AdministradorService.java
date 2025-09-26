@@ -26,4 +26,21 @@ public class AdministradorService {
     public AdministradorDto iniciarSesion(UserAdminDto userAdminDto){
         return this.administadorRepository.iniciarSesion(userAdminDto);
     }
+
+    // compatibility methods used by views
+    public List<AdministradorDto> obtenerTodo() {
+        return obtenerAdministradores();
+    }
+
+    public AdministradorDto guardarAdministrador(AdministradorDto administradorDto) {
+        return this.administadorRepository.guardarAdministrador(administradorDto);
+    }
+
+    public AdministradorDto modificarAdministrador(Long id, AdministradorDto administradorDto) {
+        return this.administadorRepository.modificarAdministrador(id, administradorDto);
+    }
+
+    public void eliminarAdministrador(Long id) {
+        this.administadorRepository.eliminarAdministrador(id);
+    }
 }

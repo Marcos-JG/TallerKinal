@@ -28,7 +28,7 @@ public class DetalleUsoProductoService {
 
     }
 
-    public DetalleUsoProductoDto modficarDetalle(Long codigo, ModDetalleUsoProductoDto modDetalleUsoProductoDto){
+    public DetalleUsoProductoDto modificarDetalle(Long codigo, ModDetalleUsoProductoDto modDetalleUsoProductoDto){
         return this.detalleUsoProductoRepository.modificarDetalle(codigo, modDetalleUsoProductoDto);
     }
 

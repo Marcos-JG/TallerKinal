@@ -51,4 +51,41 @@ public class AdministradorEntityRepository implements AdministadorRepository {
         }
         return null;
     }
+
+    @Override
+    public AdministradorDto guardarAdministrador(AdministradorDto administradorDto) {
+        // Map DTO to entity manually (mapper does not have direct DTO->Entity for AdministradorDto)
+        AdministradorEntity administrador = new AdministradorEntity();
+        administrador.setNombre(administradorDto.name());
+        administrador.setApellido(administradorDto.lastname());
+        administrador.setCorreo(administradorDto.email());
+        administrador.setContrasena(administradorDto.password());
+        administrador.setTelefono(administradorDto.phone());
+        this.crudAdministrador.save(administrador);
+        return administradorMapper.toDto(administrador);
+    }
+
+    @Override
+    public AdministradorDto modificarAdministrador(Long id, AdministradorDto administradorDto) {
+        AdministradorEntity existing = this.crudAdministrador.findById(id).orElse(null);
+        if (existing == null) {
+            throw new AdministradorNoExiste(id);
+        }
+        existing.setNombre(administradorDto.name());
+        existing.setApellido(administradorDto.lastname());
+        existing.setCorreo(administradorDto.email());
+        existing.setContrasena(administradorDto.password());
+        existing.setTelefono(administradorDto.phone());
+        this.crudAdministrador.save(existing);
+        return administradorMapper.toDto(existing);
+    }
+
+    @Override
+    public void eliminarAdministrador(Long id) {
+        AdministradorEntity existing = this.crudAdministrador.findById(id).orElse(null);
+        if (existing == null) {
+            throw new AdministradorNoExiste(id);
+        }
+        this.crudAdministrador.deleteById(id);
+    }
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Citas</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+
+<h:form id="msgsForm">
+    <p:messages id="msgs" closable="true" />
+</h:form>
+
+<p:confirmDialog global="true" modal="true">
+    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
+</p:confirmDialog>
+
+<h:form id="menuForm">
+    <p:menubar>
+        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
+        <f:facet name="options">
+            <p:commandButton value="Agendar" icon="pi pi-plus" type="button" onclick="PF('newCitaPanel').toggle()"/>
+        </f:facet>
+    </p:menubar>
+</h:form>
+
+<h:form id="newForm">
+    <p:panel header="Nueva Cita" widgetVar="newCitaPanel" toggleable="true" collapsed="true">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="fecha" value="Fecha:" />
+            <p:calendar id="fecha" value="#{citaView.newAppointmentDate}" pattern="yyyy-MM-dd" required="true"/>
+
+            <h:outputLabel for="empleado" value="Mecánico (id):" />
+            <p:inputText id="empleado" value="#{citaView.newIdEmpleado}" required="true"/>
+
+            <h:outputLabel for="cliente" value="Cliente (id):" />
+            <p:inputText id="cliente" value="#{citaView.newIdCliente}" required="true"/>
+
+            <h:outputLabel for="tipo" value="Tipo:" />
+            <p:inputText id="tipo" value="#{citaView.newAppointmentType}" required="true"/>
+
+            <h:outputLabel for="vehiculo" value="Vehículo (id):" />
+            <p:inputText id="vehiculo" value="#{citaView.newIdVehiculo}" required="true"/>
+
+            <h:outputLabel for="estado" value="Estado:" />
+            <p:inputText id="estado" value="#{citaView.newStatus}" required="true"/>
+
+            <h:outputLabel for="coment" value="Comentario:" />
+            <p:inputText id="coment" value="#{citaView.newComments}" />
+        </h:panelGrid>
+        <p:separator/>
+        <p:commandButton value="Crear" actionListener="#{citaView.add}" update=":citasForm:tabla :msgsForm:msgs :newForm"/>
+    </p:panel>
+</h:form>
+
+<h:form id="citasForm">
+    <p:dataTable id="tabla" value="#{citaView.citas}" var="c" paginator="true" rows="10" rowKey="#{c.id_cita}">
+        <p:column headerText="ID"><h:outputText value="#{c.id_cita}"/></p:column>
+        <p:column headerText="Fecha"><h:outputText value="#{c.appointmentDate}"/></p:column>
+        <p:column headerText="Mecánico"><h:outputText value="#{c.idEmpleado}"/></p:column>
+        <p:column headerText="Cliente"><h:outputText value="#{c.idCliente}"/></p:column>
+        <p:column headerText="Tipo"><h:outputText value="#{c.appointmentType}"/></p:column>
+        <p:column headerText="Vehículo"><h:outputText value="#{c.idVehiculo}"/></p:column>
+        <p:column headerText="Estado"><h:outputText value="#{c.status}"/></p:column>
+        <p:column headerText="Acciones">
+            <p:commandButton value="Editar" actionListener="#{citaView.startEdit(c)}" update=":editContainer"/>
+            <p:commandButton value="Eliminar" actionListener="#{citaView.delete(c)}" update=":citasForm:tabla :msgsForm:msgs">
+                <p:confirm header="Confirmar" message="¿Eliminar cita?"/>
+            </p:commandButton>
+        </p:column>
+    </p:dataTable>
+</h:form>
+
+<h:panelGroup id="editContainer">
+    <h:form id="editForm" rendered="#{not empty citaView.selected}">
+        <p:panel header="Editar Cita">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="efecha" value="Fecha:" />
+                <p:calendar id="efecha" value="#{citaView.editAppointmentDate}" pattern="yyyy-MM-dd"/>
+                <h:outputLabel for="estatus" value="Estado:" />
+                <p:inputText id="estatus" value="#{citaView.editStatus}"/>
+                <h:outputLabel for="ecoment" value="Comentario:" />
+                <p:inputText id="ecoment" value="#{citaView.editComments}"/>
+            </h:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" actionListener="#{citaView.saveEdit}" update=":citasForm:tabla :msgsForm:msgs :editContainer"/>
+        </p:panel>
+    </h:form>
+</h:panelGroup>
+
+</h:body>
+</html>

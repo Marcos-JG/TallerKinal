@@ -17,4 +17,16 @@ public record TrabajoRealizadoDto (
         @DecimalMin(value = "0.0", inclusive = true, message = "El total del trabajo no puede ser negativo")
         BigDecimal totalWork
 ){
+    // Getters JavaBean para compatibilidad con EL/JSF
+    public Long getId_trabajo() { return id_trabajo; }
+    public Long getIdTrabajo() { return id_trabajo; }
+
+    public Long getIdCita() { return idCita; }
+    public Long getId_cita() { return idCita; }
+
+    public String getDescription() { return description; }
+
+    public BigDecimal getLaborCost() { return laborCost; }
+
+    public BigDecimal getTotalWork() { return totalWork; }
 }

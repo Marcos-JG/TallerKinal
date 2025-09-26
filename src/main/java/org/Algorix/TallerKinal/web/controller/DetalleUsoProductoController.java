@@ -56,7 +56,7 @@ public class DetalleUsoProductoController {
     @Operation(summary = "Buscar Detalle por su identificador",
             responses = {@ApiResponse(responseCode = "201", description = "Detalle modificado")})
     public ResponseEntity<DetalleUsoProductoDto> modificarDetalle(@PathVariable Long id, @RequestBody @Valid ModDetalleUsoProductoDto modDetalleUsoProductoDto) {
-        return ResponseEntity.ok(this.detalleUsoProductoService.modficarDetalle(id, modDetalleUsoProductoDto));
+        return ResponseEntity.ok(this.detalleUsoProductoService.modificarDetalle(id, modDetalleUsoProductoDto));
     }
 
     @DeleteMapping("{id}")
