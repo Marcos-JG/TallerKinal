@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Productos Inventario</title>
+    <h:outputStylesheet library="css" name="app.css"/>
+</h:head>
+<h:body>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+
+    <h:form id="toolbarProductos">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{productoInventarioView.agregarProductoInventario}" update=":dialogProductoInventarioForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{productoInventarioView.refresh}" update=":productosForm:tablaProductos"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+    </h:form>
+
+    <h:form id="productosForm">
+        <p:dataTable id="tablaProductos" value="#{productoInventarioView.productos}" var="p" paginator="true" rows="10" rowKey="#{p.id_producto}" emptyMessage="No hay productos" stripedRows="true" rowHover="true">
+            <p:column headerText="ID" style="width:60px"><h:outputText value="#{p.id_producto}"/></p:column>
+            <p:column headerText="Proveedor"><h:outputText value="#{p.idProveedor}"/></p:column>
+            <p:column headerText="Nombre" filterBy="#{p.name}" filterMatchMode="contains"><h:outputText value="#{p.name}"/></p:column>
+            <p:column headerText="Descripción"><h:outputText value="#{p.description}"/></p:column>
+            <p:column headerText="Categoría"><h:outputText value="#{p.idCategoria}"/></p:column>
+            <p:column headerText="Precio"><h:outputText value="#{p.unitPrice}"/></p:column>
+            <p:column headerText="Stock"><h:outputText value="#{p.currentStock}"/></p:column>
+            <p:column headerText="Mínimo"><h:outputText value="#{p.minimumStock}"/></p:column>
+            <p:column headerText="Marca"><h:outputText value="#{p.idMarca}"/></p:column>
+            <p:column headerText="Entrada"><h:outputText value="#{p.entryDate}"/></p:column>
+            <p:column headerText="Acciones" style="width:170px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{productoInventarioView.prepararEdicionProductoInventario(p)}" update=":dialogProductoInventarioForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{productoInventarioView.prepararEdicionProductoInventario(p)}" oncomplete="PF('confirmEliminarProductoInventario').show()" update=":confirmEliminarProductoInventarioForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogProductoInventario" widgetVar="ventanaModalProductoInventario" modal="true" resizable="false" header="#{productoInventarioView.selected == null ? 'Nuevo Producto' : 'Editar Producto'}">
+        <h:form id="dialogProductoInventarioForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Proveedor" for="prov"/><p:inputText id="prov" value="#{productoInventarioView.editIdProveedor}"/>
+                <p:outputLabel value="Nombre" for="nom"/><p:inputText id="nom" value="#{productoInventarioView.editName}" required="true"/>
+                <p:outputLabel value="Descripción" for="des"/><p:inputText id="des" value="#{productoInventarioView.editDescription}"/>
+                <p:outputLabel value="Categoría" for="cat"/><p:inputText id="cat" value="#{productoInventarioView.editIdCategoria}"/>
+                <p:outputLabel value="Especificación" for="esp"/><p:inputText id="esp" value="#{productoInventarioView.editSpecification}"/>
+                <p:outputLabel value="Precio" for="pre"/><p:inputText id="pre" value="#{productoInventarioView.editUnitPrice}"/>
+                <p:outputLabel value="Stock" for="sto"/><p:inputText id="sto" value="#{productoInventarioView.editCurrentStock}"/>
+                <p:outputLabel value="Mínimo" for="min"/><p:inputText id="min" value="#{productoInventarioView.editMinimumStock}"/>
+                <p:outputLabel value="Marca" for="mar"/><p:inputText id="mar" value="#{productoInventarioView.editIdMarca}"/>
+                <p:outputLabel value="Entrada" for="ent"/><p:inputText id="ent" value="#{productoInventarioView.editEntryDate}"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{productoInventarioView.guardarProductoInventario}" update=":growlForm:growlMensajes :productosForm:tablaProductos"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalProductoInventario').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarProductoInventario" widgetVar="confirmEliminarProductoInventario" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarProductoInventarioForm">
+            <h:panelGroup rendered="#{not empty productoInventarioView.selected}"><h:outputText value="¿Eliminar producto '#{productoInventarioView.selected.name}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{productoInventarioView.eliminarProductoInventario(productoInventarioView.selected)}" update=":growlForm:growlMensajes :productosForm:tablaProductos" oncomplete="PF('confirmEliminarProductoInventario').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarProductoInventario').hide()"/>
+        </h:form>
+    </p:dialog>
+</h:body>
+</html>

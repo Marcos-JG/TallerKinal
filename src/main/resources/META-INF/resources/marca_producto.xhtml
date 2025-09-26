@@ -8,61 +8,49 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
-
-<h:form id="msgsForm">
-    <p:messages id="msgs" closable="true" />
-</h:form>
-
-<p:confirmDialog global="true" modal="true">
-    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times"/>
-</p:confirmDialog>
-
-<h:form id="menuForm">
-    <p:menubar>
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html"/>
-        <f:facet name="options">
-            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button" onclick="PF('newMarcaPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<h:form id="newForm">
-    <p:panel header="Nueva Marca" widgetVar="newMarcaPanel" toggleable="true" collapsed="true">
-        <h:panelGrid columns="2">
-            <h:outputLabel for="name" value="Nombre:" />
-            <p:inputText id="name" value="#{marcaProductoView.newName}" required="true"/>
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" actionListener="#{marcaProductoView.add}" update=":marcaForm:tabla :msgsForm:msgs :newForm"/>
-    </p:panel>
-</h:form>
-
-<h:form id="marcaForm">
-    <p:dataTable id="tabla" value="#{marcaProductoView.marcas}" var="m" paginator="true" rows="10" rowKey="#{m.id_marca}">
-        <p:column headerText="ID"><h:outputText value="#{m.id_marca}"/></p:column>
-        <p:column headerText="Nombre"><h:outputText value="#{m.name}"/></p:column>
-        <p:column headerText="Acciones">
-            <p:commandButton value="Editar" actionListener="#{marcaProductoView.startEdit(m)}" update=":editContainer"/>
-            <p:commandButton value="Eliminar" actionListener="#{marcaProductoView.delete(m)}" update=":marcaForm:tabla :msgsForm:msgs">
-                <p:confirm header="Confirmar" message="¿Eliminar marca?" />
-            </p:commandButton>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty marcaProductoView.selected}">
-        <p:panel header="Editar Marca">
-            <h:panelGrid columns="2">
-                <h:outputLabel for="ename" value="Nombre:" />
-                <p:inputText id="ename" value="#{marcaProductoView.editName}"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" actionListener="#{marcaProductoView.saveEdit}" update=":marcaForm:tabla :msgsForm:msgs :editContainer"/>
-        </p:panel>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarMarcas">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nueva" icon="pi pi-plus" actionListener="#{marcaProductoView.agregarMarcaProducto}" update=":dialogMarcaForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{marcaProductoView.refresh}" update=":marcasForm:tablaMarcas"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
     </h:form>
-</h:panelGroup>
 
+    <h:form id="marcasForm">
+        <p:dataTable id="tablaMarcas" value="#{marcaProductoView.marcas}" var="m" paginator="true" rows="10" rowKey="#{m.id_marca}" emptyMessage="No hay marcas" stripedRows="true" rowHover="true">
+            <p:column headerText="ID" style="width:60px"><h:outputText value="#{m.id_marca}"/></p:column>
+            <p:column headerText="Nombre" filterBy="#{m.name}" filterMatchMode="contains"><h:outputText value="#{m.name}"/></p:column>
+            <p:column headerText="Acciones" style="width:150px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{marcaProductoView.prepararEdicionMarcaProducto(m)}" update=":dialogMarcaForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger" actionListener="#{marcaProductoView.prepararEdicionMarcaProducto(m)}" oncomplete="PF('confirmEliminarMarca').show()" update=":confirmEliminarMarcaForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogMarca" widgetVar="ventanaModalMarcaProducto" modal="true" resizable="false" header="#{marcaProductoView.selected == null ? 'Nueva Marca' : 'Editar Marca'}">
+        <h:form id="dialogMarcaForm">
+            <p:panelGrid columns="2" styleClass="ui-fluid" columnClasses="etq,val">
+                <p:outputLabel value="Nombre" for="nom"/>
+                <p:inputText id="nom" value="#{marcaProductoView.editName}" required="true"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{marcaProductoView.guardarMarcaProducto}" update=":growlForm:growlMensajes :marcasForm:tablaMarcas"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalMarcaProducto').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarMarca" widgetVar="confirmEliminarMarca" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarMarcaForm">
+            <h:panelGroup rendered="#{not empty marcaProductoView.selected}"><h:outputText value="¿Eliminar marca '#{marcaProductoView.selected.name}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{marcaProductoView.eliminarMarcaProducto(marcaProductoView.selected)}" update=":growlForm:growlMensajes :marcasForm:tablaMarcas" oncomplete="PF('confirmEliminarMarca').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarMarca').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>

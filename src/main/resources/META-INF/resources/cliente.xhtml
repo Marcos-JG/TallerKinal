@@ -8,109 +8,58 @@
     <h:outputStylesheet library="css" name="app.css"/>
 </h:head>
 <h:body>
-
-<!-- Menú superior -->
-<h:form id="menuForm">
-    <p:menubar styleClass="top-menubar">
-        <p:menuitem value="Inicio" icon="pi pi-home" url="index.html" />
-        <f:facet name="options">
-            <p:commandButton value="Agregar nuevo" icon="pi pi-plus" type="button"
-                             onclick="PF('newClientPanel').toggle()"/>
-        </f:facet>
-    </p:menubar>
-</h:form>
-
-<p:messages id="msgs" closable="true" />
-
-<h2 class="page-title">Clientes</h2>
-
-<!-- Formulario: Nuevo Cliente (colapsable) -->
-<h:form id="newForm">
-    <p:panel header="Nuevo Cliente" toggleable="true" collapsed="true" widgetVar="newClientPanel">
-        <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
-            <h:outputLabel for="name" value="Nombre:" />
-            <p:inputText id="name" value="#{clienteView.newName}" required="true" label="Nombre"/>
-
-            <h:outputLabel for="last" value="Apellido:" />
-            <p:inputText id="last" value="#{clienteView.newLastName}" required="true" label="Apellido"/>
-
-            <h:outputLabel for="email" value="Email:" />
-            <p:inputText id="email" value="#{clienteView.newEmail}" required="true" label="Email"/>
-
-            <h:outputLabel for="pass" value="Password:" />
-            <p:password id="pass" value="#{clienteView.newPassword}" required="true" label="Password"/>
-        </h:panelGrid>
-        <p:separator/>
-        <p:commandButton value="Agregar" icon="pi pi-check" styleClass="ui-button-success"
-                         actionListener="#{clienteView.add}"
-                         update=":clientesForm:tabla :msgs :newForm" />
-        <p:commandButton value="Agregar otro" icon="pi pi-refresh" styleClass="ui-button-secondary"
-                         actionListener="#{clienteView.clearNewForm}"
-                         update=":newForm" />
-    </p:panel>
-</h:form>
-
-<!-- Listado y Filtro -->
-<h:form id="clientesForm">
-    <p:dataTable id="tabla"
-                 value="#{clienteView.clientes}"
-                 var="c"
-                 widgetVar="clientesTable"
-                 paginator="true" rows="10"
-                 rowKey="#{c.id_cliente}"
-                 emptyMessage="No hay clientes"
-                 responsiveLayout="scroll"
-                 stripedRows="true"
-                 rowHover="true"
-                 resizableColumns="true">
-        <p:column headerText="ID" style="width:80px" sortBy="#{c.id_cliente}">
-            <h:outputText value="#{c.id_cliente}" />
-        </p:column>
-        <p:column headerText="Nombre" sortBy="#{c.name}" filterBy="#{c.name}" filterMatchMode="contains">
-            <h:outputText value="#{c.name}" />
-        </p:column>
-        <p:column headerText="Apellido" sortBy="#{c.lastName}" filterBy="#{c.lastName}" filterMatchMode="contains">
-            <h:outputText value="#{c.lastName}" />
-        </p:column>
-        <p:column headerText="Email" sortBy="#{c.email}" filterBy="#{c.email}" filterMatchMode="contains">
-            <h:outputText value="#{c.email}" />
-        </p:column>
-        <p:column headerText="Acciones" style="width:260px">
-            <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="ui-button-info"
-                             actionListener="#{clienteView.startEdit(c)}"
-                             update=":editContainer"/>
-            <p:commandButton value="Eliminar" icon="pi pi-trash" styleClass="ui-button-danger"
-                             actionListener="#{clienteView.delete(c)}"
-                             update=":clientesForm:tabla :msgs"/>
-        </p:column>
-    </p:dataTable>
-</h:form>
-
-<!-- Edición -->
-<h:panelGroup id="editContainer">
-    <h:form id="editForm" rendered="#{not empty clienteView.selected}">
-        <p:panel header="Editar Cliente" toggleable="true" collapsed="false">
-            <h:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
-                <h:outputLabel for="ename" value="Nombre:" />
-                <p:inputText id="ename" value="#{clienteView.editName}" required="true"/>
-
-                <h:outputLabel for="eemail" value="Email:" />
-                <p:inputText id="eemail" value="#{clienteView.editEmail}" required="true"/>
-
-                <h:outputLabel for="epass" value="Password:" />
-                <p:password id="epass" value="#{clienteView.editPassword}" required="true"/>
-            </h:panelGrid>
-            <p:separator/>
-            <p:commandButton value="Guardar" icon="pi pi-check" styleClass="ui-button-success"
-                             actionListener="#{clienteView.saveEdit}"
-                             update=":clientesForm:tabla :msgs :editContainer"/>
-            <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="ui-button-secondary"
-                             actionListener="#{clienteView.cancelEdit}"
-                             update=":editContainer"/>
-        </p:panel>
+    <h:form id="growlForm"><p:growl id="growlMensajes" showDetail="true" life="3000"/></h:form>
+    <h:form id="toolbarClientes">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="Nuevo" icon="pi pi-plus" actionListener="#{clienteView.agregarCliente}" update=":dialogClienteForm"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{clienteView.refresh}" update=":clientesForm:tablaClientes"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+            </p:toolbarGroup>
+        </p:toolbar>
     </h:form>
-</h:panelGroup>
 
+    <h:form id="clientesForm">
+        <p:dataTable id="tablaClientes" value="#{clienteView.clientes}" var="c" paginator="true" rows="10"
+                     rowKey="#{c.id_cliente}" emptyMessage="No hay clientes" responsiveLayout="scroll"
+                     stripedRows="true" rowHover="true" resizableColumns="true">
+            <p:column headerText="ID" style="width:70px" sortBy="#{c.id_cliente}"><h:outputText value="#{c.id_cliente}"/></p:column>
+            <p:column headerText="Nombre" sortBy="#{c.name}" filterBy="#{c.name}" filterMatchMode="contains"><h:outputText value="#{c.name}"/></p:column>
+            <p:column headerText="Apellido" sortBy="#{c.lastName}" filterBy="#{c.lastName}" filterMatchMode="contains"><h:outputText value="#{c.lastName}"/></p:column>
+            <p:column headerText="Email" sortBy="#{c.email}" filterBy="#{c.email}" filterMatchMode="contains"><h:outputText value="#{c.email}"/></p:column>
+            <p:column headerText="Acciones" style="width:160px">
+                <p:commandButton icon="pi pi-pencil" title="Editar" styleClass="ui-button-info" actionListener="#{clienteView.prepararEdicionCliente(c)}" update=":dialogClienteForm"/>
+                <p:commandButton icon="pi pi-trash" title="Eliminar" styleClass="ui-button-danger"
+                                 actionListener="#{clienteView.startEdit(c)}" oncomplete="PF('confirmEliminarCliente').show()" update=":confirmEliminarClienteForm"/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="dialogCliente" widgetVar="ventanaModalCliente" modal="true" resizable="false" header="#{clienteView.selected == null ? 'Nuevo Cliente' : 'Editar Cliente'}">
+        <h:form id="dialogClienteForm">
+            <p:panelGrid columns="2" columnClasses="etq,val" styleClass="ui-fluid">
+                <p:outputLabel value="Nombre" for="nom"/>
+                <p:inputText id="nom" value="#{clienteView.editName}" required="true"/>
+                <p:outputLabel value="Email" for="em"/>
+                <p:inputText id="em" value="#{clienteView.editEmail}" required="true"/>
+                <p:outputLabel value="Password" for="pw"/>
+                <p:password id="pw" value="#{clienteView.editPassword}" required="true"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{clienteView.guardarCliente}" update=":growlForm:growlMensajes :clientesForm:tablaClientes"/>
+            <p:commandButton value="Cancelar" icon="pi pi-times" type="button" onclick="PF('ventanaModalCliente').hide()"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog id="confirmEliminarCliente" widgetVar="confirmEliminarCliente" modal="true" resizable="false" closable="false" header="Confirmar">
+        <h:form id="confirmEliminarClienteForm">
+            <h:panelGroup rendered="#{not empty clienteView.selected}"><h:outputText value="¿Eliminar cliente '#{clienteView.selected.name}'?"/></h:panelGroup>
+            <p:separator/>
+            <p:commandButton value="Sí" icon="pi pi-check" styleClass="ui-button-danger" actionListener="#{clienteView.eliminarCliente}" update=":growlForm:growlMensajes :clientesForm:tablaClientes" oncomplete="PF('confirmEliminarCliente').hide()"/>
+            <p:commandButton value="No" icon="pi pi-times" type="button" onclick="PF('confirmEliminarCliente').hide()"/>
+        </h:form>
+    </p:dialog>
 </h:body>
 </html>
-
