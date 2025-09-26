@@ -63,20 +63,20 @@
                  stripedRows="true"
                  rowHover="true"
                  resizableColumns="true">
-        <p:column headerText="ID" style="width:80px" sortBy="#{pvd.id_proveedor}">
-            <h:outputText value="#{pvd.id_proveedor}" />
+        <p:column headerText="ID" style="width:80px" sortBy="#{pvd.id_proveedor()}">
+            <h:outputText value="#{pvd.id_proveedor()}" />
         </p:column>
-        <p:column headerText="Empresa" sortBy="#{pvd.commpanyName}" filterBy="#{pvd.commpanyName}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.commpanyName}" />
+        <p:column headerText="Empresa" sortBy="#{pvd.companyName()}" filterBy="#{pvd.companyName()}" filterMatchMode="contains">
+            <h:outputText value="#{pvd.companyName()}" />
         </p:column>
-        <p:column headerText="Contacto" sortBy="#{pvd.contact}" filterBy="#{pvd.contact}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.contact}" />
+        <p:column headerText="Contacto" sortBy="#{pvd.contact()}" filterBy="#{pvd.contact()}" filterMatchMode="contains">
+            <h:outputText value="#{pvd.contact()}" />
         </p:column>
-        <p:column headerText="Teléfono" sortBy="#{pvd.phone}" filterBy="#{pvd.phone}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.phone}" />
+        <p:column headerText="Teléfono" sortBy="#{pvd.phone()}" filterBy="#{pvd.phone()}" filterMatchMode="contains">
+            <h:outputText value="#{pvd.phone()}" />
         </p:column>
-        <p:column headerText="Email" sortBy="#{pvd.email}" filterBy="#{pvd.email}" filterMatchMode="contains">
-            <h:outputText value="#{pvd.email}" />
+        <p:column headerText="Email" sortBy="#{pvd.email()}" filterBy="#{pvd.email()}" filterMatchMode="contains">
+            <h:outputText value="#{pvd.email()}" />
         </p:column>
         <p:column headerText="Acciones" style="width:260px">
             <p:commandButton value="Editar" icon="pi pi-pencil" styleClass="ui-button-info"

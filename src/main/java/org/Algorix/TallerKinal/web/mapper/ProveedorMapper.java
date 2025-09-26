@@ -12,14 +12,14 @@ public interface ProveedorMapper {
     ProveedorMapper INSTANCE = Mappers.getMapper(ProveedorMapper.class);
 
     @Mapping(source = "id_proveedor", target = "id_proveedor")
-    @Mapping(source = "nombreEmpresa", target = "commpanyName")
+    @Mapping(source = "nombreEmpresa", target = "companyName")
     @Mapping(source = "contacto", target = "contact")
     @Mapping(source = "telefono", target = "phone")
     @Mapping(source = "correo", target = "email")
     ProveedorDto toDto(ProveedorEntity entity);
 
     @Mapping(source = "id_proveedor", target = "id_proveedor")
-    @Mapping(source = "commpanyName", target = "nombreEmpresa")
+    @Mapping(source = "companyName", target = "nombreEmpresa")
     @Mapping(source = "contact", target = "contacto")
     @Mapping(source = "phone", target = "telefono")
     @Mapping(source = "email", target = "correo")

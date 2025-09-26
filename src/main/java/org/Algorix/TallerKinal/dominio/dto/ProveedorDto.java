@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 public record ProveedorDto (
         Long id_proveedor,
         @NotBlank(message = "El nombre de la empresa no puede estar vacio")
-        String commpanyName,
+        String companyName,
 
         @NotBlank(message = "El contacto no puede estar vacio")
         String contact,

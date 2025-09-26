@@ -60,25 +60,25 @@ public class ProveedorView implements Serializable {
     public void startEdit(ProveedorDto p) {
         this.selected = p;
         if (p != null) {
-            this.editCompanyName = p.getCommpanyName();
-            this.editContact = p.getContact();
-            this.editPhone = p.getPhone();
-            this.editEmail = p.getEmail();
+            this.editCompanyName = p.companyName();
+            this.editContact = p.contact();
+            this.editPhone = p.phone();
+            this.editEmail = p.email();
         }
     }
 
     public void saveEdit() {
         if (selected == null) return;
-        ProveedorDto mod = new ProveedorDto(selected.getId_proveedor(), editCompanyName, editContact, editPhone, editEmail);
-        proveedorService.modificarProveedor(selected.getId_proveedor(), mod);
+        ProveedorDto mod = new ProveedorDto(selected.id_proveedor(), editCompanyName, editContact, editPhone, editEmail);
+        proveedorService.modificarProveedor(selected.id_proveedor(), mod);
         refresh();
         clearEditForm();
         this.selected = null;
     }
 
     public void delete(ProveedorDto p) {
-        if (p == null || p.getId_proveedor() == null) return;
-        proveedorService.eliminarProveedor(p.getId_proveedor());
+        if (p == null || p.id_proveedor() == null) return;
+        proveedorService.eliminarProveedor(p.id_proveedor());
         refresh();
     }
 
