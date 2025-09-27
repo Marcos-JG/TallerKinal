@@ -12,6 +12,10 @@ localhost:8083/taller-kinal/api
 
 /v1/vehiculos
 
+### DetalleUsoProducto
+
+/v1/detalleusoproducto
+
 ### Proveedores
 
 /v1/proveedores
@@ -22,15 +26,15 @@ localhost:8083/taller-kinal/api
 
 ### Productos en Inventario
 
-/v1/productos-inventario
+/v1/productos-inventarios
 
 ### Mecánicos
 
-/v1/mecanico
+/v1/mecanicos
 
 ### Marcas de Producto
 
-/v1/marcas-producto
+/v1/marcas-productos
 
 ### Clientes
 
@@ -46,8 +50,11 @@ localhost:8083/taller-kinal/api
 
 ### Administradores
 
-
 /v1/administradores
+
+### Reportes
+
+/v1/reportes
 
 ## Mapeo CRUD por Entidad
 
@@ -56,13 +63,16 @@ localhost:8083/taller-kinal/api
 | Vehículos              | `/v1/vehiculos`                   | `GET`, `POST`, `PUT`, `DELETE`   |
 | Proveedores            | `/v1/proveedores`                 | `GET`, `POST`, `PUT`, `DELETE`   |
 | Trabajos Realizados    | `/v1/trabajosRealizados`          | `GET`, `POST`, `PUT`, `DELETE`   |
-| Productos Inventario   | `/v1/productos-inventario`        | `GET`, `POST`, `PUT`, `DELETE`   |
-| Mecánicos              | `/v1/mecanico`                    | `GET`, `POST`, `PUT`, `DELETE`   |
-| Marcas Producto        | `/v1/marcas-producto`             | `GET`, `POST`, `PUT`, `DELETE`   |
+| Productos Inventario   | `/v1/productos-inventarios`       | `GET`, `POST`, `PUT`, `DELETE`   |
+| Mecánicos              | `/v1/mecanicos`                   | `GET`, `POST`, `PUT`, `DELETE`   |
+| Marcas Producto        | `/v1/marcas-productos`            | `GET`, `POST`, `PUT`, `DELETE`   |
 | Clientes               | `/v1/clientes`                    | `GET`, `POST`, `PUT`, `DELETE`   |
 | Citas                  | `/v1/citas`                       | `GET`, `POST`, `PUT`, `DELETE`   |
-| Categorías Producto    | `/v1/categorias-producto`         | `GET`, `POST`, `PUT`, `DELETE`   |
+| Categorías Producto    | `7v1/categorias-productos`        | `GET`, `POST`, `PUT`, `DELETE`   |
 | Administradores        | `/v1/administradores`             | `GET`, `POST`, `PUT`, `DELETE`   |
+| DetalleUsoProducto     | `/v1/detalleusoproductos`         | `GET`, `POST`, `PUT`, `DELETE`   |
+| Reportes               | `/v1/reportes`                    | `GET`, `POST`, `PUT`, `DELETE`   |
+
 
 ## Integrantes del Proyecto
 
