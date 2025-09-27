@@ -16,7 +16,7 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{clienteView.refresh}" update=":clientesForm:tablaClientes"/>
-                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='static/AdministradorWeb.html'"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='#{request.contextPath}/AdministradorWeb.html'"/>
             </p:toolbarGroup>
         </p:toolbar>
     </h:form>
@@ -42,10 +42,12 @@
             <p:panelGrid columns="2" columnClasses="etq,val" styleClass="ui-fluid">
                 <p:outputLabel value="Nombre" for="nom"/>
                 <p:inputText id="nom" value="#{clienteView.editName}" required="true"/>
+                <p:outputLabel value="Apellido" for="ape"/>
+                <p:inputText id="ape" value="#{clienteView.editLastName}" required="true"/>
                 <p:outputLabel value="Email" for="em"/>
                 <p:inputText id="em" value="#{clienteView.editEmail}" required="true"/>
                 <p:outputLabel value="Password" for="pw"/>
-                <p:password id="pw" value="#{clienteView.editPassword}" required="true"/>
+                <p:password id="pw" value="#{clienteView.editPassword}" required="true" feedback="false"/>
             </p:panelGrid>
             <p:separator/>
             <p:commandButton value="Guardar" icon="pi pi-save" styleClass="ui-button-success" actionListener="#{clienteView.guardarCliente}" update=":growlForm:growlMensajes :clientesForm:tablaClientes"/>

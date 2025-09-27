@@ -9,6 +9,7 @@ public record ModCitaDto(
         @FutureOrPresent(message = "la fecha no puede ser pasada")
         LocalDate appointmentDate,
         String appointmentType,
+        Long idCliente,
         Long idVehiculo,
         String status,
         String comments

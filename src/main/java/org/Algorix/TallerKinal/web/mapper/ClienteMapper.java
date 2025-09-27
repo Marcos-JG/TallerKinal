@@ -29,7 +29,7 @@ public interface ClienteMapper {
     @Mapping(source = "name", target = "nombre")
     @Mapping(source = "email", target = "correo")
     @Mapping(source = "password", target = "contrasena")
-    void modificarEntityFromDto(ModClienteDto modClienteDto, @MappingTarget ClienteEntity clienteEntity);
+    void modificarEntityFromDto(ClienteDto modClienteDto, @MappingTarget ClienteEntity clienteEntity);
 
     @Mapping(source = "email", target = "correo")
     @Mapping(source = "password", target = "contrasena")

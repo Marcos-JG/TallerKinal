@@ -4,7 +4,6 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import lombok.Data;
 import org.Algorix.TallerKinal.dominio.dto.ClienteDto;
-import org.Algorix.TallerKinal.dominio.dto.ModClienteDto;
 import org.Algorix.TallerKinal.dominio.dto.UserClienteDto;
 import org.Algorix.TallerKinal.dominio.dto.UserAdminDto;
 import org.Algorix.TallerKinal.dominio.service.AdministradorService;
@@ -56,7 +55,7 @@ public class ClienteView implements Serializable {
                 clienteService.guardarCliente(nuevo);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cliente Agregado"));
             } else {
-                ModClienteDto mod = new ModClienteDto(editName, editEmail, editPassword);
+                ClienteDto mod = new ClienteDto(selected.getId_cliente(), editName, editLastName, editEmail, editPassword);
                 clienteService.modificarCliente(selected.getId_cliente(), mod);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cliente Modificado"));
             }
@@ -64,7 +63,8 @@ public class ClienteView implements Serializable {
             PrimeFaces.current().ajax().update("clientesForm:tablaClientes", "growlForm:growlMensajes");
             PrimeFaces.current().executeScript("PF('ventanaModalCliente').hide()");
             this.selected = null; clearEdits();
-        } catch (Exception e) {
+
+        }catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
         }
     }

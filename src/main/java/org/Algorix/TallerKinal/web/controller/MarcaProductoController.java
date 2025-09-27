@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/marcas-productos")
+@RequestMapping("/v1/marcas-productos")
 @Tag(name = "Marcas", description = "Operaciones sobre marcas de productos")
 public class MarcaProductoController {
     private final MarcaProductoService marcaProductoService;

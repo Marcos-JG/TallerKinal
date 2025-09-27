@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/detalleusoproducto")
+@RequestMapping("/v1/detalleusoproductos")
 @Tag(name = "DetalleUsoProducto", description = "Operaciones sobre el detalle del uso de productos")
 public class DetalleUsoProductoController {
     private final DetalleUsoProductoService detalleUsoProductoService;

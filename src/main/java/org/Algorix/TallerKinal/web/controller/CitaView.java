@@ -33,21 +33,88 @@ public class CitaView implements Serializable {
     private String editStatus;
     private String editComments;
 
-    public CitaView(CitaService citaService) { this.citaService = citaService; }
+    public CitaView(CitaService citaService) {
+        this.citaService = citaService;
+    }
 
-    @PostConstruct public void init(){ refresh(); clearEdits(); }
+    @PostConstruct
+    public void init() {
+        refresh();
+        clearEdits();
+    }
 
-    public void refresh(){ try { this.citas = new ArrayList<>(citaService.obtenerTodo()); } catch (Exception e){ this.citas = new ArrayList<>(); } }
+    public void refresh() {
+        try {
+            this.citas = new ArrayList<>(citaService.obtenerTodo());
+        } catch (Exception e) {
+            this.citas = new ArrayList<>();
+        }
+    }
 
-    private void clearEdits(){ this.editAppointmentDate=null; this.editIdEmpleado=null; this.editIdCliente=null; this.editAppointmentType=null; this.editIdVehiculo=null; this.editStatus=null; this.editComments=null; }
+    private void clearEdits() {
+        this.editAppointmentDate = null;
+        this.editIdEmpleado = null;
+        this.editIdCliente = null;
+        this.editAppointmentType = null;
+        this.editIdVehiculo = null;
+        this.editStatus = null;
+        this.editComments = null;
+    }
 
-    public void agregarCita(){ this.selected=null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalCita').show()"); }
+    public void agregarCita() {
+        this.selected = null;
+        clearEdits();
+        PrimeFaces.current().executeScript("PF('ventanaModalCita').show()");
+    }
 
-    public void prepararEdicionCita(CitaDto c){ this.selected=c; clearEdits(); if(c!=null){ this.editAppointmentDate=c.appointmentDate(); this.editIdEmpleado=c.idEmpleado(); this.editIdCliente=c.idCliente(); this.editAppointmentType=c.appointmentType(); this.editIdVehiculo=c.idVehiculo(); this.editStatus=c.status(); this.editComments=c.comments(); } PrimeFaces.current().executeScript("PF('ventanaModalCita').show()"); }
+    public void prepararEdicionCita(CitaDto c) {
+        this.selected = c;
+        clearEdits();
+        if (c != null) {
+            this.editAppointmentDate = c.appointmentDate();
+            this.editIdEmpleado = c.idEmpleado();
+            this.editIdCliente = c.idCliente();
+            this.editAppointmentType = c.appointmentType();
+            this.editIdVehiculo = c.idVehiculo();
+            this.editStatus = c.status();
+            this.editComments = c.comments();
+        }
+        PrimeFaces.current().executeScript("PF('ventanaModalCita').show()");
+    }
 
-    public void guardarCita(){ try { if(this.selected==null){ CitaDto nuevo = new CitaDto(null, editAppointmentDate, editIdEmpleado, editIdCliente, editAppointmentType, editIdVehiculo, editStatus, editComments); citaService.guardarCita(nuevo); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Cita Agregada")); } else { ModCitaDto mod = new ModCitaDto(editIdEmpleado!=null?editIdEmpleado:selected.idEmpleado(), editAppointmentDate, editAppointmentType!=null?editAppointmentType:selected.appointmentType(), editIdVehiculo!=null?editIdVehiculo:selected.idVehiculo(), editStatus, editComments); citaService.modificarCita(selected.id_cita(), mod); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Cita Modificada")); } refresh(); PrimeFaces.current().ajax().update("citasForm:tabla", "growlForm:growlMensajes"); PrimeFaces.current().executeScript("PF('ventanaModalCita').hide()"); this.selected=null; clearEdits(); } catch(Exception e){ FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo guardar")); } }
+    public void guardarCita() {
+        try {
+            if (this.selected == null) {
+                // Crear
+                CitaDto nuevo = new CitaDto(null, editAppointmentDate, editIdEmpleado, editIdCliente, editAppointmentType, editIdVehiculo, editStatus, editComments);
+                citaService.guardarCita(nuevo);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cita Agregada"));
+            } else {
+                // Editar (si un campo viene null, usamos el valor previo)
+                ModCitaDto mod = new ModCitaDto(
+                        editIdEmpleado != null ? editIdEmpleado : selected.idEmpleado(),
+                        editAppointmentDate != null ? editAppointmentDate : selected.appointmentDate(),
+                        editAppointmentType != null && !editAppointmentType.isBlank() ? editAppointmentType : selected.appointmentType(),
+                        editIdCliente != null ? editIdCliente : selected.idCliente(),
+                        editIdVehiculo != null ? editIdVehiculo : selected.idVehiculo(),
+                        editStatus != null && !editStatus.isBlank() ? editStatus : selected.status(),
+                        editComments != null && !editComments.isBlank() ? editComments : selected.comments()
+                );
+                citaService.modificarCita(selected.id_cita(), mod);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cita Modificada"));
+            }
+            refresh();
+            PrimeFaces.current().ajax().update("citasForm:tabla", "growlForm:growlMensajes");
+            PrimeFaces.current().executeScript("PF('ventanaModalCita').hide()");
+            this.selected = null;
+            clearEdits();
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo guardar"));
+        }
+    }
 
-    public void eliminarCita(){ if(this.selected==null || this.selected.id_cita()==null) return; try { citaService.eliminarCita(this.selected.id_cita()); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Cita Eliminada")); refresh(); PrimeFaces.current().ajax().update("citasForm:tabla", "growlForm:growlMensajes"); this.selected=null; clearEdits(); } catch(Exception e){ FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo eliminar")); } }
 
-    public void cancelarCita(){ this.selected=null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalCita').hide()"); }
+   public void eliminarCita(){ if(this.selected==null || this.selected.id_cita()==null) return; try { citaService.eliminarCita(this.selected.id_cita()); FacesContext.getCurrentInstance().addMessage(null,new FacesMessage("Cita Eliminada")); refresh(); PrimeFaces.current().ajax().update("citasForm:tabla", "growlForm:growlMensajes"); this.selected=null; clearEdits(); } catch(Exception e){ FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error","No se pudo eliminar")); } }
+
+   public void cancelarCita(){ this.selected=null; clearEdits(); PrimeFaces.current().executeScript("PF('ventanaModalCita').hide()"); }
 }

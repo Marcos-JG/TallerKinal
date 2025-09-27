@@ -26,6 +26,8 @@
                 <p:commandButton value="Refrescar" icon="pi pi-refresh"
                                  actionListener="#{proveedorView.refresh}"
                                  update=":formProveedores:tablaProveedores"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='#{request.contextPath}/AdministradorWeb.html'"/>
+
             </p:toolbarGroup>
         </p:toolbar>
     </h:form>

@@ -10,7 +10,7 @@ public interface ClienteRepository {
     List<ClienteDto> obtenerClientes();
     ClienteDto buscarPorId(Long id);
     ClienteDto guardarCliente(ClienteDto clienteDto);
-    ClienteDto modificarCliente(Long id, ModClienteDto modClienteDto);
+    ClienteDto modificarCliente(Long id, ClienteDto modClienteDto);
     ClienteDto iniciarSesion(UserClienteDto userClienteDto);
     void eliminarCliente(Long id);
 }

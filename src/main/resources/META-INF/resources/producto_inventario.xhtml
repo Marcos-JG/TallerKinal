@@ -17,7 +17,7 @@
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Refrescar" icon="pi pi-refresh" actionListener="#{productoInventarioView.refresh}" update=":productosForm:tablaProductos"/>
-                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='index.html'"/>
+                <p:commandButton value="Inicio" icon="pi pi-home" type="button" onclick="window.location='#{request.contextPath}/AdministradorWeb.html'"/>
             </p:toolbarGroup>
         </p:toolbar>
     </h:form>

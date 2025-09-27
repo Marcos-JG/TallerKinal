@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/categorias-productos")
+@RequestMapping("/v1/categorias-productos")
 @Tag(name = "Categorias", description = "Operaciones sobre categorías de productos")
 public class CategoriaProductoController {
 

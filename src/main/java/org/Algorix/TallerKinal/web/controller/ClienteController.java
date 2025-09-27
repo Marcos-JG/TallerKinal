@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.Algorix.TallerKinal.dominio.dto.ClienteDto;
-import org.Algorix.TallerKinal.dominio.dto.ModClienteDto;
 import org.Algorix.TallerKinal.dominio.dto.UserClienteDto;
 import org.Algorix.TallerKinal.dominio.service.ClienteService;
 import org.springframework.http.HttpStatus;
@@ -50,7 +49,7 @@ public class ClienteController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ClienteDto> modificarCliente(@PathVariable Long id, @RequestBody @Valid ModClienteDto modClienteDto) {
+    public ResponseEntity<ClienteDto> modificarCliente(@PathVariable Long id, @RequestBody @Valid ClienteDto modClienteDto) {
         return ResponseEntity.ok(this.clienteService.modificarCliente(id, modClienteDto));
     }
 

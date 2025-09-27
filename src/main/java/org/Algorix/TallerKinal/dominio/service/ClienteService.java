@@ -32,7 +32,7 @@ public class ClienteService {
         return this.clienteRepository.iniciarSesion(userClienteDto);
     }
 
-    public ClienteDto modificarCliente(Long id, ModClienteDto modClienteDto) {
+    public ClienteDto modificarCliente(Long id, ClienteDto modClienteDto) {
         return this.clienteRepository.modificarCliente(id, modClienteDto);
     }
 

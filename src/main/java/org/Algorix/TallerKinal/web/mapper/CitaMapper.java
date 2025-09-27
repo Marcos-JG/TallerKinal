@@ -62,6 +62,7 @@ public interface CitaMapper {
 
     @Mapping(source = "appointmentDate", target = "fechaCita")
     @Mapping(source = "idEmpleado", target = "empleado" , qualifiedByName = "mapIdEmpleadoToEmpleadoEntity")
+    @Mapping(source = "idCliente", target = "cliente" , qualifiedByName = "mapIdClienteToClienteEntity")
     @Mapping(source = "appointmentType", target = "tipoCita")
     @Mapping(source = "idVehiculo", target = "vehiculo", qualifiedByName = "mapIdVehiculoToVehiculoEntity")
     @Mapping(source = "status", target = "estadoCita")

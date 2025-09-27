@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record ModTrabajoRealozadoDto(
+        @NotNull(message = "La cita no puede ser nula")
+        Long idCita,
         @NotBlank(message = "La descripción no puede estar vacia")
         String description,
         @NotNull(message = "La mano de obra no puede ser nula")

@@ -52,7 +52,7 @@ public class ClienteEntityRepository implements ClienteRepository {
     }
 
     @Override
-    public ClienteDto modificarCliente(Long id, ModClienteDto modClienteDto) {
+    public ClienteDto modificarCliente(Long id, ClienteDto modClienteDto) {
         ClienteEntity clienteEntity = this.crudCliente.findById(id).orElse(null);
         if (clienteEntity == null) {
             throw new ClienteNoExiste(id);

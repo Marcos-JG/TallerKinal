@@ -42,5 +42,6 @@ public interface TrabajoRealizadoMapper {
     @Mapping(source = "description", target = "descripcion")
     @Mapping(source = "laborCost", target = "manoObra")
     @Mapping(source = "totalWork", target = "totalTrabajo")
+    @Mapping(source = "idCita", target = "cita", qualifiedByName = "mapIdCitaToCitaEntity")
     void modificarEntityFromDto(ModTrabajoRealozadoDto dto, @MappingTarget TrabajoRealizadoEntity entity);
 }
