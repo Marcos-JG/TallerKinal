@@ -1,5 +1,8 @@
 # Taller Kinal - API REST
 
+Link de Video de presentacion del proyecto Sprint 3
+https://www.youtube.com/watch?v=JHqPYoeIyD8
+
 Pagina principal
 http://localhost:8083/taller-kinal/api/index.xhtml
 
