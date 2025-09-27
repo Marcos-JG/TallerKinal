@@ -1,6 +1,10 @@
 # Taller Kinal - API REST
 
-Este proyecto expone un conjunto de endpoints RESTful para la gestión de un taller mecánico. A continuación se presenta el mapeo de solicitudes CRUD para cada una de las entidades disponibles en el sistema.
+Pagina principal
+http://localhost:8083/taller-kinal/api/index.xhtml
+
+Documentacion Swagger ui
+http://localhost:8083/taller-kinal/api/swagger-ui/index.html#/
 
 ## URL Base del Servidor
 
